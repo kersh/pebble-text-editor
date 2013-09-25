@@ -8,17 +8,17 @@ Support
 -------
 
 ### Desktop
-Internet Explorer 9+
-Chrome
-Firefox
-Safari
-Opera
+- Internet Explorer 9+
+- Chrome
+- Firefox
+- Safari
+- Opera
 
 ### Mobile
-WP Internet Explorer 10+
-iOS Safari 5+
-iOS/Android Chrome
-Android Firefox
+- WP Internet Explorer 10+
+- iOS Safari 5+
+- iOS/Android Chrome
+- Android Firefox
 
 
 Licence
