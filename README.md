@@ -1,7 +1,14 @@
 Pebble Text Editor
 ==================
-
 Simple JavaScript library for inline editing.
+
+Features
+--------
+- Paste plain text
+- Bold/Italic
+- Make Web Link/Email Link
+- Text Color
+- Paragraph styles
 
 
 Support
