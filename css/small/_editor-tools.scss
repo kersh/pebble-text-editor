@@ -1,0 +1,33 @@
+.arrow-pointer {
+	display: none;
+}
+
+.editor-tools-wrapper {
+	left: 0;
+	bottom: 0;
+
+	width: 100%;
+	height: 150px;
+	overflow: auto;
+	overflow-y: hidden;
+
+	.editor-tools-container {
+		position: absolute;
+		left: 0;
+		bottom: 0;
+		width: 787px;
+
+		> li {
+			float: none;
+			white-space: nowrap;
+			display: inline;
+
+			> button {
+				padding: 32px 30px;
+			}
+		}
+	}
+}
+
+.editor-tools-container > li > .color-menu { margin: -32px 0 0 -89px; }
+.editor-tools-container > li > .paragraph-menu { margin: 24px 0 0 -88px; }
