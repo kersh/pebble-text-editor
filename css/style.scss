@@ -1,0 +1,68 @@
+/* style.scss */
+
+.group:before,
+.group:after {
+    content: "";
+    display: table;
+} 
+.group:after {
+    clear: both;
+}
+.group {
+    zoom: 1; /* For IE 6/7 (trigger hasLayout) */
+}
+
+@mixin rounded($radius : 5px) {
+	-webkit-border-radius: $radius;
+	-moz-border-radius: $radius;
+	border-radius: $radius;
+}
+
+.box1 {
+	@include rounded;
+}
+
+.box2 {
+	@extend .box1;
+	color: red;
+}
+
+.content {
+	width: 850px;
+	margin: 0 auto 10px auto;
+	padding: 0 20px;
+	border: 1px solid #a4a4a4;
+}
+
+ul.random-text {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+
+	> li {
+		display: inline-block;
+		margin: 10px 0;
+	}
+}
+
+.navigation {
+	width: 300px;
+	margin: 0 auto;
+
+	> ul {
+		list-style-type: none;
+		margin: 10px 0;
+		padding: 0;
+
+		li {
+			float: left;
+			margin: 0 10px 0 0;
+			
+			a {
+				background-color: #eee;
+			}
+		}
+	}
+}
+
+@import "editor-tools";
