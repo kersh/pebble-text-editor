@@ -10,6 +10,7 @@
 	height: 150px;
 	overflow: auto;
 	overflow-y: hidden;
+	-webkit-overflow-scrolling: touch;
 
 	.editor-tools-container {
 		position: absolute;
