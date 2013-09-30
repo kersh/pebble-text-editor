@@ -238,7 +238,7 @@
             }
 
             // Place tools in right place
-            showTools(oRect.top + sel_height, oRect.left);
+            showTools(oRect.top + sel_height, 0);
         }
         // Hide tools when not used
         else {
@@ -415,18 +415,24 @@
      */
     function setEventListener(content_elements, i) {
         var id = i; // make local variable to use the closure in the loop
-
+        
         // Adding event listeners
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
         content_elements[i].addEventListener("focus",     function(e){
             if(sel_type==="Range"){ showTools(); }
+
+            document.getElementById('tools').style.position = 'asbolute';
+            // document.getElementById('tools').style.top   = '0';
+
         }, false);
         
         // Saves all data into textarea.
         // Hides editing tools when out of editing element focus
         content_elements[i].addEventListener("blur",      function(e){ 
             updateTextarea(e, id);
+            document.getElementById('tools').style.position = 'fixed';
+            // document.getElementById('tools').style.top   = '0';
             
             var selection = window.getSelection();
             sel_type = checkSelectionType(selection);      // defines whether user selected text or not
@@ -434,9 +440,9 @@
         }, false);
 
         // Place formatting tools
-        // content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low.
-        // content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
-        // content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
+        content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low.
+        content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
+        content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
         document           .addEventListener("scroll",    function(){
             if(sel_type === "Range") {
                 positionTools();
@@ -444,8 +450,9 @@
         }, false); // Show formatting tools when Scroll
 
         // Touch events
-        // content_elements[i].addEventListener("touchmove", positionTools, false); // React on mouse move. Remove this if performance will be low.
-        // content_elements[i].addEventListener("touchend",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
+        content_elements[i].addEventListener("touchstart", positionTools, false);
+        content_elements[i].addEventListener("touchmove", positionTools, false); // React on mouse move. Remove this if performance will be low.
+        content_elements[i].addEventListener("touchend",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
     }
 
     function setFormatTools() {
@@ -465,7 +472,6 @@
         formatTools["toggle-email-link"]    .addEventListener("click", function(){ toggleEmailLink(); }, false);
         formatTools["remove-formatting"]    .addEventListener("click", function(){ removeFormatting(); }, false);
     }
-
 
     // Loop through each 'text editor content' element and add event listeners
     for(var i = 0; i < content_elements.length; i++) {

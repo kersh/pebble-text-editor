@@ -19,7 +19,13 @@
 $zEditingTools: 1000;
 $zInterface: 0;
 
+body {
+	// -webkit-user-select: none;
+    -webkit-touch-callout: none !important;
+}
+
 * {
+	-webkit-touch-callout: none !important;
 	-webkit-box-sizing: border-box;
 	   -moz-box-sizing: border-box;
 			box-sizing: border-box;
@@ -88,6 +94,11 @@ ul.random-text {
 }
 
 @import "editor-tools";
+
+#main-content {
+	height: 100%;
+	-webkit-overflow-scrolling: touch;
+}
 
 /* old Smartphones (portrait and landscape) ----------- */
 @media screen and (max-width: 28.688em) {
