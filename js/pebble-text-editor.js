@@ -237,8 +237,15 @@
                 arrow_pointer.style.marginLeft = "0px";
             }
 
-            // Place tools in right place
-            showTools(oRect.top + sel_height, 0);
+            var width_em = 28.688;
+            var mobile_width = width_em * 16;
+
+            if (window.innerWidth < mobile_width) {
+                showTools(oRect.top + sel_height, 0);
+            } else {
+                // Place tools in right place
+                showTools(oRect.top + sel_height, oRect.left);
+            }
         }
         // Hide tools when not used
         else {
@@ -431,8 +438,10 @@
         // Hides editing tools when out of editing element focus
         content_elements[i].addEventListener("blur",      function(e){ 
             updateTextarea(e, id);
-            document.getElementById('tools').style.position = 'fixed';
+            // document.getElementById('tools').style.position = 'fixed';
             // document.getElementById('tools').style.top   = '0';
+
+            window.scrollTo(0, 0);
             
             var selection = window.getSelection();
             sel_type = checkSelectionType(selection);      // defines whether user selected text or not
@@ -450,9 +459,9 @@
         }, false); // Show formatting tools when Scroll
 
         // Touch events
-        content_elements[i].addEventListener("touchstart", positionTools, false);
-        content_elements[i].addEventListener("touchmove", positionTools, false); // React on mouse move. Remove this if performance will be low.
-        content_elements[i].addEventListener("touchend",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
+        // content_elements[i].addEventListener("touchstart", positionTools, false);
+        // content_elements[i].addEventListener("touchmove", positionTools, false); // React on mouse move. Remove this if performance will be low.
+        // content_elements[i].addEventListener("touchend",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
     }
 
     function setFormatTools() {
