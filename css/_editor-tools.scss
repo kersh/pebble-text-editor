@@ -14,9 +14,9 @@
 	/*left: 0;*/
 	visibility: hidden;
 	opacity: 0;
-	transition: opacity .15s ease-in-out;
-	-moz-transition: opacity .15s ease-in-out;
-	-webkit-transition: opacity .15s ease-in-out;
+	// transition: opacity .15s ease-in-out;
+	// -moz-transition: opacity .15s ease-in-out;
+	// -webkit-transition: opacity .15s ease-in-out;
 	z-index: $zEditingTools;
 
 	.editor-tools-container {
@@ -64,9 +64,9 @@
 	display: inline-block;
 	visibility: hidden;
 	opacity: 0;
-	transition: opacity .15s ease-in-out;
-	-moz-transition: opacity .15s ease-in-out;
-	-webkit-transition: opacity .15s ease-in-out;
+	// transition: opacity .15s ease-in-out;
+	// -moz-transition: opacity .15s ease-in-out;
+	// -webkit-transition: opacity .15s ease-in-out;
 }
 
 .editor-tools-container > li > .color-menu { margin: 24px 0 0 -52px; }

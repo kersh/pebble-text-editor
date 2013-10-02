@@ -20,6 +20,9 @@
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
 
+    var timer = null;  // Timer for mobile and tablet devices
+    var selectedRange; // Selected range for mobile and tablet devices
+
     // All core elements
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
     var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
@@ -213,6 +216,8 @@
     // It finds the position of selected range and places toolbox next to that.
     //
     var positionTools = function(){
+        // console.log("in positionTools");
+
         var oRange, oRect, selection, sel_width, sel_height;
 
         selection = window.getSelection();
@@ -414,6 +419,21 @@
 
 
 //------------------------------------------
+// Mobile functionality
+//------------------------------------------
+
+    /*
+     * Paste everything into editable div without HTML formatting.
+     */
+    function getSelectedRange() {
+        selectedRange = window.getSelection().type;
+    }
+
+
+
+
+
+//------------------------------------------
 // App.Init
 //------------------------------------------
 
@@ -427,6 +447,9 @@
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
         content_elements[i].addEventListener("focus",     function(e){
+            console.log("I'm in focus");
+            timer = setInterval(positionTools, 150);
+
             if(sel_type==="Range"){ showTools(); }
 
             document.getElementById('tools').style.position = 'asbolute';
@@ -437,6 +460,9 @@
         // Saves all data into textarea.
         // Hides editing tools when out of editing element focus
         content_elements[i].addEventListener("blur",      function(e){ 
+            console.log("I'm out of focus");
+            clearInterval(timer);
+
             updateTextarea(e, id);
             // document.getElementById('tools').style.position = 'fixed';
             // document.getElementById('tools').style.top   = '0';
@@ -459,9 +485,21 @@
         }, false); // Show formatting tools when Scroll
 
         // Touch events
-        // content_elements[i].addEventListener("touchstart", positionTools, false);
-        // content_elements[i].addEventListener("touchmove", positionTools, false); // React on mouse move. Remove this if performance will be low.
-        // content_elements[i].addEventListener("touchend",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
+        content_elements[i].addEventListener("touchstart", function() {
+            console.log("touchstart");
+            positionTools;
+        }, false);
+        
+        content_elements[i].addEventListener("touchmove", function() {
+            // document.getElementById('debug-info').innerText = 'touchmove';
+            console.log("touchmove");
+            positionTools;
+        }, false); // React on mouse move. Remove this if performance will be low.
+        content_elements[i].addEventListener("touchend",   function() {
+            // document.getElementById('debug-info').innerText = 'touchend';
+            console.log("touchend");
+            positionTools;
+        }, false); // Show formatting tools when SELECTED with MOUSE
     }
 
     function setFormatTools() {
