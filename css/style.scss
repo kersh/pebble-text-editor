@@ -20,15 +20,15 @@ $zEditingTools: 1000;
 $zInterface: 0;
 
 body {
-	// -webkit-user-select: none;
+    // -webkit-user-select: none;
     -webkit-touch-callout: none !important;
 }
 
 * {
-	-webkit-touch-callout: none !important;
-	-webkit-box-sizing: border-box;
-	   -moz-box-sizing: border-box;
-			box-sizing: border-box;
+    -webkit-touch-callout: none !important;
+    -webkit-box-sizing: border-box;
+       -moz-box-sizing: border-box;
+            box-sizing: border-box;
 }
 
 /* style.scss */
@@ -45,67 +45,67 @@ body {
 }
 
 .content {
-	position: relative;
-	max-width: 850px;
-	width: 90%;
-	margin: 0 auto 10px auto;
-	padding: 0 20px;
-	border: 1px solid #a4a4a4;
+    position: relative;
+    max-width: 850px;
+    width: 90%;
+    margin: 0 auto 10px auto;
+    padding: 0 20px;
+    border: 1px solid #a4a4a4;
 }
 
 ul.random-text {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 
-	> li {
-		display: inline-block;
-		margin: 10px 0;
-	}
+    > li {
+        display: inline-block;
+        margin: 10px 0;
+    }
 }
 
 .navigation {
-	width: 300px;
-	margin: 0 auto;
+    width: 300px;
+    margin: 0 auto;
 
-	> ul {
-		list-style-type: none;
-		margin: 10px 0;
-		padding: 0;
+    > ul {
+        list-style-type: none;
+        margin: 10px 0;
+        padding: 0;
 
-		li {
-			float: left;
-			margin: 0 10px 0 0;
-			
-			a {
-				background-color: #eee;
-			}
-		}
-	}
+        li {
+            float: left;
+            margin: 0 10px 0 0;
+            
+            a {
+                background-color: #eee;
+            }
+        }
+    }
 }
 
 .text-editor-content,
 .text-editor-textarea {
-	float: left;
-	border: 1px solid #a4a4a4;
-	height:200px;
-	width: 49%;
-	overflow: hidden;
+    float: left;
+    border: 1px solid #a4a4a4;
+    height:200px;
+    width: 49%;
+    overflow: hidden;
 }
 
 @import "editor-tools";
 
 #main-content {
-	height: 100%;
-	-webkit-overflow-scrolling: touch;
+    height: 100%;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* old Smartphones (portrait and landscape) ----------- */
 @media screen and (max-width: 28.688em) {
-	.text-editor-content,
-	.text-editor-textarea {
-		width: 100%;
-	}
+    .text-editor-content,
+    .text-editor-textarea {
+        width: 100%;
+    }
 
-	@import "small/editor-tools";
+    @import "small/editor-tools";
 }

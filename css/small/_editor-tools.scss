@@ -1,33 +1,34 @@
 .arrow-pointer {
-	display: none;
+    display: none;
 }
 
 .editor-tools-wrapper {
-	left: 0;
-	bottom: 0;
+    left: 0;
+    bottom: 0;
 
-	width: 100%;
-	height: 110px;
-	overflow: auto;
-	overflow-y: hidden;
-	-webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 65px;
+    background-color: cyan;
+    overflow: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
 
-	.editor-tools-container {
-		position: absolute;
-		left: 0;
-		bottom: 0;
-		width: 787px;
+    .editor-tools-container {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 787px;
 
-		> li {
-			float: none;
-			white-space: nowrap;
-			display: inline;
+        > li {
+            float: none;
+            white-space: nowrap;
+            display: inline;
 
-			> button {
-				padding: 32px 30px;
-			}
-		}
-	}
+            > button {
+                padding: 10px 30px;
+            }
+        }
+    }
 }
 
 .editor-tools-container > li > .color-menu { margin: -32px 0 0 -89px; }
