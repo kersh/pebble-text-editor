@@ -475,9 +475,9 @@
         }, false);
 
         // Place formatting tools
-        content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low.
-        content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
-        content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
+        // content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low.
+        // content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
+        // content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
         document           .addEventListener("scroll",    function(){
             if(sel_type === "Range") {
                 positionTools();
