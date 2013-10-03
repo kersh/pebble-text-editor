@@ -311,7 +311,7 @@
     // Make text bold and backwards
     //
     function toggleBold() {
-        hideAllContextMenus();
+        // hideAllContextMenus();
         document.execCommand("bold", false, null);
         content_elements[container_id].focus();         // return focus back to editing field
     }
