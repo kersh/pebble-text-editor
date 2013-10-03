@@ -7,7 +7,6 @@
     bottom: 0;
 
     width: 100%;
-    /*height: 65px;*/
     height: 135px;
     background-color: cyan;
     overflow: auto;
@@ -36,8 +35,37 @@
 .editor-tools-container > li > .paragraph-menu {
     position: fixed;
     left: 0;
-    -webkit-overflow-scrolling: touch;
+    height: 41px;
 }
 
-.editor-tools-container > li > .color-menu { margin: -32px 0 0 0; }
+.editor-tools-container > li .sub-menu-container {
+    display: inline-block;
+    width: 500px;
+    overflow: auto;
+    overflow-y: hidden;
+}
+
+.editor-tools-container > li > .color-menu {
+    > button.back-to-main {
+        float: left;
+        display: block;
+        height: 31px;
+        width: auto;
+        border: 1px solid #555;
+        margin: 0 2px 0 0;
+    }
+}
+.editor-tools-container > li > .color-menu > .sub-menu-container {
+    > button {
+        /*float: left;*/
+        width: 27px;
+        height: 27px;
+        display: inline-block;
+        border: 2px solid #555;
+        margin: 0 2px 0 0;
+    }
+    > button:hover { border: 2px solid #aaa; }
+}
+
+.editor-tools-container > li > .color-menu { margin: -44px 0 0 0; }
 .editor-tools-container > li > .paragraph-menu { margin: 24px 0 0 -88px; }
