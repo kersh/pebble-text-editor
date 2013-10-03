@@ -28,6 +28,7 @@
     var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
     var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
     var format_tools_div  = document.getElementById("tools");                        // div with formatting tools
+    var main_menu        = document.getElementById("main-menu");                   // main menu
     var color_menu        = document.getElementById("color-menu");                   // context menu that holds color pallete
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
 
@@ -39,6 +40,7 @@
         formatTools['color-red']         = document.getElementById("color-red");
         formatTools['color-green']       = document.getElementById("color-green");
         formatTools['color-blue']        = document.getElementById("color-blue");
+    formatTools['back-to-main']          = document.getElementById("back-to-main");
     formatTools['toggle-paragraph-menu'] = document.getElementById("toggle-paragraph-menu");
         formatTools['toggle-heading-h1'] = document.getElementById("toggle-heading-h1");
         formatTools["toggle-heading-h2"] = document.getElementById("toggle-heading-h2");
@@ -263,15 +265,21 @@
     //
     function toggleColorMenu() {
         // Close other menus
-        hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
+        // hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
+
+        if(hasClass(main_menu, "hide-main-menu")) {
+            removeClass(main_menu, "hide-main-menu");
+        } else {
+            addClass(main_menu, "hide-main-menu");
+        }
 
         // Toggle menu with colors
-        if(hasClass(color_menu, show_menu_class)) {
-            hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
-        } else {
-            showContextMenu(color_menu, formatTools["toggle-color-menu"]);
-            content_elements[container_id].focus(); // return focus back to editing field
-        }
+        // if(hasClass(color_menu, show_menu_class)) {
+        //     hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
+        // } else {
+        //     showContextMenu(color_menu, formatTools["toggle-color-menu"]);
+        //     content_elements[container_id].focus(); // return focus back to editing field
+        // }
     }
 
     //
@@ -507,13 +515,14 @@
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
         formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
+        formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
         formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
 
         formatTools["toggle-paragraph-menu"].addEventListener("click", toggleParagraphMenu, false);
-        formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
-        formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
+        // formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
+        // formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
         
         formatTools["toggle-web-link"]      .addEventListener("click", function(){ toggleWebLink(); }, false);
         formatTools["toggle-email-link"]    .addEventListener("click", function(){ toggleEmailLink(); }, false);
