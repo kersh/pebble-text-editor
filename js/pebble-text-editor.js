@@ -232,7 +232,7 @@
             oRect = oRange.getBoundingClientRect();
 
             // Height and width of selecion
-            sel_height = oRect.bottom - oRect.top + 20;
+            sel_height = oRect.bottom - oRect.top;
             sel_width = oRect.right - oRect.left;
             
             // Should move arrow pointer in the middle of selection
