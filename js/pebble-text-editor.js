@@ -217,8 +217,8 @@
     // Function that defines position of formatting tools on the screen.
     // It finds the position of selected range and places toolbox next to that.
     //
-    var positionTools = function(){
-        // console.log("in positionTools");
+    var positionTools = function(event){
+        console.log("e:", event);
 
         var oRange, oRect, selection, sel_width, sel_height;
 
@@ -232,7 +232,7 @@
             oRect = oRange.getBoundingClientRect();
 
             // Height and width of selecion
-            sel_height = oRect.bottom - oRect.top;
+            sel_height = oRect.bottom - oRect.top + 20;
             sel_width = oRect.right - oRect.left;
             
             // Should move arrow pointer in the middle of selection
@@ -454,7 +454,7 @@
         // Adding event listeners
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
-        content_elements[i].addEventListener("focus",     function(e){
+        content_elements[i].addEventListener("focus",     function(event){
             console.log("I'm in focus");
             timer = setInterval(positionTools, 150);
 
@@ -488,34 +488,41 @@
         // content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
         document           .addEventListener("scroll",    function(){
             if(sel_type === "Range") {
-                positionTools();
+                positionTools;
             }
         }, false); // Show formatting tools when Scroll
 
         // Touch events
         content_elements[i].addEventListener("touchstart", function() {
-            console.log("touchstart");
+            // console.log("touchstart");
             positionTools;
         }, false);
         
         content_elements[i].addEventListener("touchmove", function() {
             // document.getElementById('debug-info').innerText = 'touchmove';
-            console.log("touchmove");
+            // console.log("touchmove");
             positionTools;
         }, false); // React on mouse move. Remove this if performance will be low.
         content_elements[i].addEventListener("touchend",   function() {
             // document.getElementById('debug-info').innerText = 'touchend';
-            console.log("touchend");
+            // console.log("touchend");
             positionTools;
+
         }, false); // Show formatting tools when SELECTED with MOUSE
     }
 
     function setFormatTools() {
         // Formatting tools
-        formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
+        // formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
+        formatTools["toggle-bold"]          .addEventListener("touchstart", toggleBold,   false);
+
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
-        formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
+        // formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
+        formatTools["toggle-color-menu"]    .addEventListener("touchstart", toggleColorMenu, false);
+        
+        // formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
+        formatTools["back-to-main"]         .addEventListener("touchstart", toggleColorMenu, false);
+
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
         formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
