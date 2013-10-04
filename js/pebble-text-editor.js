@@ -185,7 +185,7 @@
         removeClass(format_tools_div, "show-tools");   // Removes class to hide tools
         
         // Hide all context menus
-        hideAllContextMenus();
+        // hideAllContextMenus();
     }
 
     //
@@ -217,8 +217,8 @@
     // Function that defines position of formatting tools on the screen.
     // It finds the position of selected range and places toolbox next to that.
     //
-    var positionTools = function(event){
-        console.log("e:", event);
+    var positionTools = function(){
+        console.log("positionTools");
 
         var oRange, oRect, selection, sel_width, sel_height;
 
@@ -272,6 +272,10 @@
         } else {
             addClass(main_menu, "hide-main-menu");
         }
+            content_elements[container_id].focus();         // return focus back to editing field
+
+        // console.log("container_id:", container_id);
+        // console.log("content_elements[container_id]", content_elements[container_id]);
 
         // Toggle menu with colors
         // if(hasClass(color_menu, show_menu_class)) {
@@ -313,7 +317,13 @@
     function toggleBold() {
         // hideAllContextMenus();
         document.execCommand("bold", false, null);
+
+        console.log("container_id:", container_id);
+        console.log("content_elements[container_id]", content_elements[container_id]);
+        
         content_elements[container_id].focus();         // return focus back to editing field
+
+        console.log("I'm in focus again!");
     }
 
     //
@@ -361,7 +371,7 @@
     //
     function setColor(color) {
         document.execCommand("foreColor", false, color);
-        hideContextMenu(color_menu, formatTools["toggle-color-menu"]); // close color menu when done
+        // hideContextMenu(color_menu, formatTools["toggle-color-menu"]); // close color menu when done
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
@@ -454,14 +464,11 @@
         // Adding event listeners
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
-        content_elements[i].addEventListener("focus",     function(event){
+        content_elements[i].addEventListener("focus",     function(){
             console.log("I'm in focus");
             timer = setInterval(positionTools, 150);
 
             if(sel_type==="Range"){ showTools(); }
-
-            document.getElementById('tools').style.position = 'asbolute';
-            // document.getElementById('tools').style.top   = '0';
 
         }, false);
         
@@ -470,16 +477,13 @@
         content_elements[i].addEventListener("blur",      function(e){ 
             console.log("I'm out of focus");
             clearInterval(timer);
-
             updateTextarea(e, id);
-            // document.getElementById('tools').style.position = 'fixed';
-            // document.getElementById('tools').style.top   = '0';
-
-            window.scrollTo(0, 0);
             
             var selection = window.getSelection();
             sel_type = checkSelectionType(selection);      // defines whether user selected text or not
-            if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
+            if(sel_type === "None" || sel_type === "Caret") { 
+                hideTools();
+            }
         }, false);
 
         // Place formatting tools
@@ -514,14 +518,14 @@
     function setFormatTools() {
         // Formatting tools
         // formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
-        formatTools["toggle-bold"]          .addEventListener("touchstart", toggleBold,   false);
+        formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
 
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
         // formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        formatTools["toggle-color-menu"]    .addEventListener("touchstart", toggleColorMenu, false);
+        formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
         
         // formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
-        formatTools["back-to-main"]         .addEventListener("touchstart", toggleColorMenu, false);
+        formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
 
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
