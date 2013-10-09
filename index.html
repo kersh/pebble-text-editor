@@ -18,6 +18,8 @@
 	<![endif]-->
 
 	<!-- CONDITIONAL JAVASCRIPT -->
+	<!--<script src="js/modernizr-full.js"></script>-->
+	<script src="js/modernizr-custom.js"></script>
 	<script src="js/if-ie.js"></script>
 
 </head>
@@ -36,7 +38,7 @@
 		</div>
 	</div>
 
-
+	<div id="debugging-info">This is touch device!</div>
 
 	<div class="content" id="main-content">
 
@@ -148,7 +150,14 @@
 	</div><!-- /.content -->
 
 	<!-- SCRIPTS GO HERE -->
-	<script src="js/events-test.js"></script>
-	<script src="js/pebble-text-editor.js"></script>
+	<!-- <script src="js/events-test.js"></script> -->
+	<script>
+		yepnope({
+		  test : "touch",
+		  yep  : 'js/pebble-text-editor.js',
+		  nope : 'js/pebble-text-editor-mobile.js', 
+		});
+	</script>
+	<!-- <script src="js/pebble-text-editor.js"></script> -->
 </body>
 </html>

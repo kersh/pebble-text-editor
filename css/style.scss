@@ -93,6 +93,17 @@ ul.random-text {
     overflow: hidden;
 }
 
+.touch #debugging-info {
+    margin: 10px auto;
+    width: 150px;
+    text-align: center;
+    background-color: cyan;
+    display: block;
+}
+.no-touch #debugging-info {
+    display: none;
+}
+
 @import "editor-tools";
 
 #main-content {

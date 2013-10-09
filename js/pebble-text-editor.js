@@ -28,7 +28,7 @@
     var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
     var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
     var format_tools_div  = document.getElementById("tools");                        // div with formatting tools
-    var main_menu        = document.getElementById("main-menu");                   // main menu
+    var main_menu         = document.getElementById("main-menu");                    // main menu
     var color_menu        = document.getElementById("color-menu");                   // context menu that holds color pallete
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
 
