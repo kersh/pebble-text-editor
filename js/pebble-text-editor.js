@@ -11,10 +11,14 @@
  * 
  * Copyright 2013 - 2014 Pebble Learning
  */
+// Global variable to detect if browser is IE.
+window.isMSIE = /*@cc_on!@*/0;
+
 (function(window, document, undefined){
 //------------------------------------------
 // All Variables defined here
 //------------------------------------------
+
     // Helpers
     var sel_type          = "Caret";     // variable to store type of selection: caret or range
     var container_id      = 0;           // Needs to detect which container currently is edited
@@ -47,7 +51,6 @@
     formatTools['toggle-web-link']       = document.getElementById("toggle-web-link");
     formatTools['toggle-email-link']     = document.getElementById("toggle-email-link");
     formatTools["remove-formatting"]     = document.getElementById("remove-formatting");
-
 
 
 
@@ -142,6 +145,21 @@
     function hideAllContextMenus() {
         hideContextMenu(color_menu, formatTools["toggle-color-menu"]);          // hide color menu
         hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);  // hide paragraph menu
+    }
+
+    //
+    // Loads script conditionally
+    //
+    function loadScript(url) {
+        console.log("loadScript here, url: ", url);
+        // adding the script tag to the head as suggested before
+        var head = document.getElementsByTagName('head')[0];
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.src = url;
+
+        // fire the loading
+        head.appendChild(script);
     }
 
 
@@ -454,6 +472,14 @@
 //------------------------------------------
 // App.Init
 //------------------------------------------
+    window.addEventListener("click", function() {
+        console.log("Loaded!");
+        if(isMSIE) {
+            console.log("I'm IE!");
+            // fix for text editor
+            loadScript("js/ie-pebble-text-editor.js");
+        }
+    }, false);
 
     /*
      * This function was created due to the closure inside the loops
