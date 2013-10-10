@@ -8,7 +8,7 @@
 
 
 
-(function(window, document, undefined){ // ============ DESKTOP
+(function(window, document, undefined){ // ============ MOBILE
 //------------------------------------------
 // All Variables defined here
 //------------------------------------------
