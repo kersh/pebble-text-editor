@@ -15,9 +15,9 @@
     /*left: 0;*/
     visibility: hidden;
     opacity: 0;
-    // transition: opacity .15s ease-in-out;
-    // -moz-transition: opacity .15s ease-in-out;
-    // -webkit-transition: opacity .15s ease-in-out;
+    transition: opacity .15s ease-in-out;
+    -moz-transition: opacity .15s ease-in-out;
+    -webkit-transition: opacity .15s ease-in-out;
     z-index: $zEditingTools;
 
     .editor-tools-container {
@@ -99,7 +99,7 @@
         height: 21px;
         display: block;
         border: 2px solid #555;
-        margin: 0 2px 0 0;
+        margin: 2px 2px 0 0;
         background-color: #fff;
     }
 
@@ -130,4 +130,36 @@
 
 .buttons-wrapper .color-menu.show-menu {
     margin-top: 0;
+}
+
+.buttons-wrapper > .color-menu,
+.buttons-wrapper > .paragraph-menu {
+    
+    > button.back-to-main {
+        position: relative;
+        font-size: .7em;
+        float: left;
+        height: 31px;
+        width: 15%;
+        border: 1px solid #555;
+        margin: 0 2px 0 0;
+    }
+}
+
+.no-touch .buttons-wrapper > .color-menu,
+.no-touch .buttons-wrapper > .paragraph-menu {
+    margin: -1px 0 0 89px;
+    width: 106px;
+
+    > button.back-to-main {
+        display: none;
+    }
+}
+
+.touch .buttons-wrapper > .color-menu,
+.touch .buttons-wrapper > .paragraph-menu {
+    
+    > button.back-to-main {
+        display: inline-block;
+    }
 }

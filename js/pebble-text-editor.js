@@ -17,9 +17,6 @@
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
 
-    // var timer = null;  // Timer for mobile and tablet devices
-    // var selectedRange; // Selected range for mobile and tablet devices
-
     // All core elements
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
     var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
@@ -213,9 +210,7 @@
     // Function that defines position of formatting tools on the screen.
     // It finds the position of selected range and places toolbox next to that.
     //
-    var positionTools = function(){
-        console.log("positionTools");
-
+    var positionTools = function() {
         var oRange, oRect, selection, sel_width, sel_height;
 
         selection = window.getSelection();
@@ -231,8 +226,8 @@
             sel_height = oRect.bottom - oRect.top;
             sel_width = oRect.right - oRect.left;
             
-            // Should move arrow pointer in the middle of selection
-            if(sel_width > 10){
+            // Moves arrow pointer in the middle of selection
+            if(sel_width > 10) {
                 sel_width = (sel_width - 10) / 2;
                 arrow_pointer.style.marginLeft = sel_width + "px";
             }
@@ -243,15 +238,16 @@
             // Place tools in right place
             showTools(oRect.top + sel_height, oRect.left);
         }
+
         // Hide tools when not used
         else {
             hideTools();
         }
     }
 
-    //
-    // Show/Hide color menu
-    //
+    /*
+     * Show/Hide color menu
+     */
     function toggleColorMenu() {
         // Close other menus
         // hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
@@ -261,7 +257,7 @@
         } else {
             addClass(main_menu, "hide-main-menu");
         }
-            content_elements[container_id].focus();         // return focus back to editing field
+        content_elements[container_id].focus();         // return focus back to editing field
 
         // console.log("container_id:", container_id);
         // console.log("content_elements[container_id]", content_elements[container_id]);
@@ -275,9 +271,9 @@
         // }
     }
 
-    //
-    // Show/Hide color menu
-    //
+    /*
+     * Show/Hide color menu
+     */
     function toggleParagraphMenu() {
         // close other menus
         hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
@@ -300,9 +296,9 @@
 // Formatting tools functions
 //------------------------------------------
 
-    //
-    // Make text bold and backwards
-    //
+    /*
+     * Make text bold and backwards
+     */
     function toggleBold() {
         // hideAllContextMenus();
         document.execCommand("bold", false, null);
@@ -315,9 +311,9 @@
         console.log("I'm in focus again!");
     }
 
-    //
-    // Make text italic and backwards
-    //
+    /*
+     * Make text italic and backwards
+     */
     function toggleItalic() {
         hideAllContextMenus();
         document.execCommand("italic", false, null);
