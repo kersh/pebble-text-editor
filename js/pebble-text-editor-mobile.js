@@ -260,6 +260,7 @@
     // Show/Hide color menu
     //
     function toggleColorMenu() {
+        console.log("toggleColorMenu");
         // Close other menus
         // hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
 
@@ -518,7 +519,11 @@
 
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
         // formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
+        formatTools["toggle-color-menu"]    .addEventListener("touchend", function() {
+            console.log("touchend");
+            toggleColorMenu();
+            content_elements[container_id].focus();          // return focus back to editing field
+        }, false);
         
         // formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
         formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);

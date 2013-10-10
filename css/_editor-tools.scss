@@ -1,4 +1,4 @@
-.arrow-pointer {
+.arrow-pointer-top {
     position: relative;
     display: block;
     margin-left: 0px;
@@ -7,6 +7,17 @@
     border-left: 5px solid transparent;
     border-right: 5px solid transparent;
     border-bottom: 5px solid black;
+}
+
+.arrow-pointer-bottom {
+    position: relative;
+    display: block;
+    margin-left: 0px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid black;
 }
 
 .editor-tools-wrapper {
@@ -170,5 +181,5 @@
 }
 .touch .buttons-wrapper > .color-menu.show-menu,
 .touch .buttons-wrapper > .paragraph-menu.show-menu {
-    
+
 }

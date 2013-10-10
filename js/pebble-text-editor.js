@@ -19,7 +19,8 @@
     var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
 
     // All core elements
-    var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
+    var arrow_pointer_top = document.getElementById("arrow-pointer-top");            // arrow icon that pointing on selection
+    var arrow_pointer_bottom = document.getElementById("arrow-pointer-bottom");      // arrow icon that pointing on selection
     var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
     var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
     var format_tools_div  = document.getElementById("tools");                        // div with formatting tools
@@ -214,7 +215,9 @@
     var positionTools = function() {
         // console.log("positionTools");
 
-        var oRange, oRect, selection, sel_width, sel_height;
+        var oRange, oRect, selection, sel_width, sel_height, current_bottom_distance;
+        var min_bottom_distance = 140;
+        var tools_height = 38;
 
         selection = window.getSelection();
         sel_type = checkSelectionType(selection); // defines whether user selected text or not
@@ -228,18 +231,32 @@
             // Height and width of selecion
             sel_height = oRect.bottom - oRect.top;
             sel_width = oRect.right - oRect.left;
+
+            // Current distance from selection to bottom
+            current_bottom_distance = window.innerHeight - oRect.bottom;
             
             // Moves arrow pointer in the middle of selection
             if(sel_width > 10) {
                 sel_width = (sel_width - 10) / 2;
-                arrow_pointer.style.marginLeft = sel_width + "px";
+                arrow_pointer_top.style.marginLeft = sel_width + "px";
             }
             else {
-                arrow_pointer.style.marginLeft = "0px";
+                arrow_pointer_top.style.marginLeft = "0px";
             }
 
-            // Place tools in right place
-            showTools(oRect.top + sel_height, oRect.left);
+            console.log("to bottom:", current_bottom_distance);
+
+            if (current_bottom_distance > min_bottom_distance) {
+                // Place tools below selection
+                showTools(oRect.top + sel_height, oRect.left);
+            }
+
+            else {
+                // Place tools above selection
+                showTools(oRect.top - tools_height, oRect.left);
+            }
+
+
         }
 
         // Hide tools when not used
@@ -484,6 +501,10 @@
         content_elements[i].addEventListener("mousemove", function() {           // React on mouse move. Remove this if performance will be low
             if(is_in_focus === true) { positionTools(); }
         }, false);
+        format_tools_div.addEventListener("mousemove", function() {           // React on mouse move. Remove this if performance will be low
+            if(is_in_focus === true) { positionTools(); }
+        }, false);
+
         content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
         content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
         document           .addEventListener("scroll",    function() {           // Show formatting tools when Scroll and move with the content
