@@ -150,10 +150,15 @@
 .no-touch .buttons-wrapper > .paragraph-menu {
     margin: -1px 0 0 89px;
     width: 106px;
+    display: none;
 
     > button.back-to-main {
         display: none;
     }
+}
+.no-touch .buttons-wrapper > .color-menu.show-menu,
+.no-touch .buttons-wrapper > .paragraph-menu.show-menu {
+    display: block;
 }
 
 .touch .buttons-wrapper > .color-menu,
@@ -162,4 +167,8 @@
     > button.back-to-main {
         display: inline-block;
     }
+}
+.touch .buttons-wrapper > .color-menu.show-menu,
+.touch .buttons-wrapper > .paragraph-menu.show-menu {
+    
 }

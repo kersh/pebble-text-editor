@@ -16,6 +16,7 @@
     var sel_type          = "Caret";     // variable to store type of selection: caret or range
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
+    var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
 
     // All core elements
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
@@ -211,6 +212,8 @@
     // It finds the position of selected range and places toolbox next to that.
     //
     var positionTools = function() {
+        // console.log("positionTools");
+
         var oRange, oRect, selection, sel_width, sel_height;
 
         selection = window.getSelection();
@@ -249,15 +252,24 @@
      * Show/Hide color menu
      */
     function toggleColorMenu() {
+        console.log("Hello, color menu!");
+        
+        if(hasClass(color_menu, show_menu_class)) {
+            removeClass(color_menu, show_menu_class);
+        } else {
+            addClass(color_menu, show_menu_class);
+            content_elements[container_id].focus(); // return focus back to editing field
+        }
+
         // Close other menus
         // hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
 
-        if(hasClass(main_menu, "hide-main-menu")) {
-            removeClass(main_menu, "hide-main-menu");
-        } else {
-            addClass(main_menu, "hide-main-menu");
-        }
-        content_elements[container_id].focus();         // return focus back to editing field
+        // if(hasClass(main_menu, "hide-main-menu")) {
+        //     removeClass(main_menu, "hide-main-menu");
+        // } else {
+        //     addClass(main_menu, "hide-main-menu");
+        // }
+        // content_elements[container_id].focus();         // return focus back to editing field
 
         // console.log("container_id:", container_id);
         // console.log("content_elements[container_id]", content_elements[container_id]);
@@ -450,11 +462,15 @@
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
         content_elements[i].addEventListener("focus",     function(){
+            is_in_focus = true; // got the focus
+
             if(sel_type==="Range"){ showTools(); }
         }, false);
         
         // Saves all data into textarea. Hides editing tools when out of editing element focus
         content_elements[i].addEventListener("blur",      function(e){
+            is_in_focus = false; // lost the focus
+            
             // Updates textarea for back-end submition
             updateTextarea(e, id);
 
@@ -465,10 +481,12 @@
         }, false);
 
         // Place formatting tools
-        content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low
+        content_elements[i].addEventListener("mousemove", function() {           // React on mouse move. Remove this if performance will be low
+            if(is_in_focus === true) { positionTools(); }
+        }, false);
         content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
         content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
-        document           .addEventListener("scroll",    function(){            // Show formatting tools when Scroll and move with the content
+        document           .addEventListener("scroll",    function() {           // Show formatting tools when Scroll and move with the content
             if(sel_type === "Range") { positionTools(); }
         }, false);
     }
