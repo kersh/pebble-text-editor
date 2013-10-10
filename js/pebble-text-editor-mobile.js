@@ -1,6 +1,5 @@
 /* 
  * Pebble Text Editor
- * 
  * Copyright @ Pebble Learning
  */
 ;

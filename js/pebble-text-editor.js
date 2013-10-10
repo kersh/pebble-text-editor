@@ -1,6 +1,5 @@
 /* 
  * Pebble Text Editor
- * 
  * Copyright @ Pebble Learning
  */
 ;
@@ -18,8 +17,8 @@
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
 
-    var timer = null;  // Timer for mobile and tablet devices
-    var selectedRange; // Selected range for mobile and tablet devices
+    // var timer = null;  // Timer for mobile and tablet devices
+    // var selectedRange; // Selected range for mobile and tablet devices
 
     // All core elements
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
@@ -241,15 +240,8 @@
                 arrow_pointer.style.marginLeft = "0px";
             }
 
-            var width_em = 28.688;
-            var mobile_width = width_em * 16;
-
-            if (window.innerWidth < mobile_width) {
-                showTools(oRect.top + sel_height, 0);
-            } else {
-                // Place tools in right place
-                showTools(oRect.top + sel_height, oRect.left);
-            }
+            // Place tools in right place
+            showTools(oRect.top + sel_height, oRect.left);
         }
         // Hide tools when not used
         else {
@@ -362,10 +354,10 @@
         content_elements[container_id].focus();         // return focus back to editing field
     }
 
-    //
-    // Accordingly changes color of selected text
-    // @color defines color that will be applied
-    //
+    /*
+     * Accordingly changes color of selected text
+     * @color defines color that will be applied
+     */
     function setColor(color) {
         document.execCommand("foreColor", false, color);
         // hideContextMenu(color_menu, formatTools["toggle-color-menu"]); // close color menu when done
@@ -462,72 +454,38 @@
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
         content_elements[i].addEventListener("focus",     function(){
-            console.log("I'm in focus");
-            timer = setInterval(positionTools, 150);
-
             if(sel_type==="Range"){ showTools(); }
-
         }, false);
         
-        // Saves all data into textarea.
-        // Hides editing tools when out of editing element focus
-        content_elements[i].addEventListener("blur",      function(e){ 
-            console.log("I'm out of focus");
-            clearInterval(timer);
+        // Saves all data into textarea. Hides editing tools when out of editing element focus
+        content_elements[i].addEventListener("blur",      function(e){
+            // Updates textarea for back-end submition
             updateTextarea(e, id);
-            
-            var selection = window.getSelection();
-            sel_type = checkSelectionType(selection);      // defines whether user selected text or not
-            if(sel_type === "None" || sel_type === "Caret") { 
-                hideTools();
-            }
+
+            // Defines whether user selected text or not
+            sel_type = checkSelectionType(window.getSelection());
+
+            if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
         }, false);
 
         // Place formatting tools
-        // content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low.
-        // content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
-        // content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
-        document           .addEventListener("scroll",    function(){
-            if(sel_type === "Range") {
-                positionTools;
-            }
-        }, false); // Show formatting tools when Scroll
-
-        // Touch events
-        content_elements[i].addEventListener("touchstart", function() {
-            // console.log("touchstart");
-            positionTools;
+        content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low
+        content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
+        content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
+        document           .addEventListener("scroll",    function(){            // Show formatting tools when Scroll and move with the content
+            if(sel_type === "Range") { positionTools(); }
         }, false);
-        
-        content_elements[i].addEventListener("touchmove", function() {
-            // document.getElementById('debug-info').innerText = 'touchmove';
-            // console.log("touchmove");
-            positionTools;
-        }, false); // React on mouse move. Remove this if performance will be low.
-        content_elements[i].addEventListener("touchend",   function() {
-            // document.getElementById('debug-info').innerText = 'touchend';
-            // console.log("touchend");
-            positionTools;
-
-        }, false); // Show formatting tools when SELECTED with MOUSE
     }
 
     function setFormatTools() {
         // Formatting tools
-        // formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
-
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
-        // formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
         formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        
-        // formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
         formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
-
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
         formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
-
         formatTools["toggle-paragraph-menu"].addEventListener("click", toggleParagraphMenu, false);
         // formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
         // formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
