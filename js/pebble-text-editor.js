@@ -13,17 +13,18 @@
 //------------------------------------------
 
     // Helpers
-    var sel_type          = "Caret";     // variable to store type of selection: caret or range
+    var sel_type          = "Caret";     // Variable to store type of selection: caret or range
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
     var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
 
     // All core elements
-    var arrow_pointer_top = document.getElementById("arrow-pointer-top");            // arrow icon that pointing on selection
-    var arrow_pointer_bottom = document.getElementById("arrow-pointer-bottom");      // arrow icon that pointing on selection
+    var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
+    var buttons_wrapper   = document.getElementById("buttons-wrapper");              // all button holder
     var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
     var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
     var format_tools_div  = document.getElementById("tools");                        // div with formatting tools
+    var format_tools_div_reverse  = document.getElementById("tools");                // div with formatting tools reverse
     var main_menu         = document.getElementById("main-menu");                    // main menu
     var color_menu        = document.getElementById("color-menu");                   // context menu that holds color pallete
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
@@ -217,7 +218,7 @@
 
         var oRange, oRect, selection, sel_width, sel_height, current_bottom_distance;
         var min_bottom_distance = 140;
-        var tools_height = 38;
+        var tools_height = 32;
 
         selection = window.getSelection();
         sel_type = checkSelectionType(selection); // defines whether user selected text or not
@@ -238,20 +239,28 @@
             // Moves arrow pointer in the middle of selection
             if(sel_width > 10) {
                 sel_width = (sel_width - 10) / 2;
-                arrow_pointer_top.style.marginLeft = sel_width + "px";
+                arrow_pointer.style.marginLeft = sel_width + "px";
             }
             else {
-                arrow_pointer_top.style.marginLeft = "0px";
+                arrow_pointer.style.marginLeft = "0px";
             }
 
-            console.log("to bottom:", current_bottom_distance);
+            // console.log("to bottom:", current_bottom_distance);
+            // var new_element = format_tools_div.appendChild(arrow_pointer);
+            // console.log("new_element:", new_element);
 
             if (current_bottom_distance > min_bottom_distance) {
+                format_tools_div.insertBefore(arrow_pointer, buttons_wrapper);
+                removeClass(arrow_pointer, "arrow-pointer-bottom");
+
                 // Place tools below selection
                 showTools(oRect.top + sel_height, oRect.left);
             }
 
             else {
+                format_tools_div.appendChild(arrow_pointer);
+                addClass(arrow_pointer, "arrow-pointer-bottom");
+                
                 // Place tools above selection
                 showTools(oRect.top - tools_height, oRect.left);
             }
