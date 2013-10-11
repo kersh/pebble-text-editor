@@ -252,6 +252,7 @@
             if (current_bottom_distance > min_bottom_distance) {
                 format_tools_div.insertBefore(arrow_pointer, buttons_wrapper);
                 removeClass(arrow_pointer, "arrow-pointer-bottom");
+                removeClass(color_menu, "located-reverse");
 
                 // Place tools below selection
                 showTools(oRect.top + sel_height, oRect.left);
@@ -260,6 +261,7 @@
             else {
                 format_tools_div.appendChild(arrow_pointer);
                 addClass(arrow_pointer, "arrow-pointer-bottom");
+                addClass(color_menu, "located-reverse");
                 
                 // Place tools above selection
                 showTools(oRect.top - tools_height, oRect.left);

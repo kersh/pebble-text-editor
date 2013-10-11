@@ -162,6 +162,10 @@
         display: none;
     }
 }
+.no-touch .buttons-wrapper > .color-menu.located-reverse {
+    margin: -130px 0 0 89px;
+}
+
 .no-touch .buttons-wrapper > .color-menu.show-menu,
 .no-touch .buttons-wrapper > .paragraph-menu.show-menu {
     display: block;
