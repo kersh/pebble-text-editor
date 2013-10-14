@@ -519,6 +519,9 @@
     }
 
     function setFormatTools() {
+        var tools_btns = document.getElementById('tools-btns');
+        console.log("tools_btns:", tools_btns);
+
         // Formatting tools
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
         new FastClick(formatTools["toggle-bold"]);
@@ -530,6 +533,7 @@
         new FastClick(formatTools["toggle-color-menu"]);
         
         formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
+        new FastClick(formatTools["back-to-main"]);
 
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);

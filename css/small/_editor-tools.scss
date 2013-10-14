@@ -42,7 +42,7 @@
             }
         }
         > .editor-tools-container-wrapper.hide-main-menu {
-            margin-top: -41px;
+            margin-top: -51px;
             transition: margin .15s ease-in-out;
             -moz-transition: margin .15s ease-in-out;
             -webkit-transition: margin .15s ease-in-out;
@@ -80,7 +80,7 @@
         font-size: .7em;
         float: left;
         display: inline-block;
-        height: 31px;
+        height: 41px;
         width: 15%;
         border: 1px solid #555;
         margin: 0 2px 0 0;
@@ -89,8 +89,8 @@
 .buttons-wrapper > .color-menu .sub-menu-container {
     > button {
         /*float: left;*/
-        width: 27px;
-        height: 27px;
+        width: 37px;
+        height: 37px;
         display: inline-block;
         border: 2px solid #555;
         margin: 0 2px 0 0;
