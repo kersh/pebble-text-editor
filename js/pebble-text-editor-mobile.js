@@ -521,59 +521,15 @@
     function setFormatTools() {
         // Formatting tools
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
-        // var button = document.getElementById("toggle-bold");
         new FastClick(formatTools["toggle-bold"]);
-        
-        // var tap = true;
-        
-        // formatTools["toggle-bold"]          .addEventListener("touchstart", function(e) {
-        //     console.log("touchstart");
-        //     tap = true;
-        // },   false);
-
-        // formatTools["toggle-bold"]          .addEventListener("touchmove", function(e) {
-        //     console.log("touchmove");
-        //     tap = false;
-        // },   false);
-        
-        // formatTools["toggle-bold"]          .addEventListener("touchend", function(e) {
-        //     console.log("touchend");
-        //     if (tap) {
-        //         toggleBold();
-        //     }
-        // },   false);
-
-        // formatTools["toggle-bold"]          .addEventListener("touchcancel", function(e) {
-        //     console.log("touchcancel");
-        //     tap = false;
-        // },   false);
-
-
-
 
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
-        // formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        formatTools["toggle-color-menu"]    .addEventListener("touchstart", function() {
-            console.log("touchstart");
-            toggleColorMenu();
-            console.log("after toggleColorMenu");
-            console.log("container_id:", container_id);
-            
-            // content_elements[container_id].focus();          // return focus back to editing field
-        }, false);
-        
-        formatTools["toggle-color-menu"]    .addEventListener("touchmove", function() {
-            console.log("touch move");
-            
-        }, false);
+        new FastClick(formatTools["toggle-italic"]);
 
-        formatTools["toggle-color-menu"]    .addEventListener("touchcancel", function() {
-            console.log("touch cancel");
-        }, false);
-
+        formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
+        new FastClick(formatTools["toggle-color-menu"]);
         
-        // formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
-        formatTools["back-to-main"]         .addEventListener("touchend", toggleColorMenu, false);
+        formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
 
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
