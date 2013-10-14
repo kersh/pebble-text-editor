@@ -468,11 +468,7 @@
             console.log("I'm in focus");
             timer = setInterval(positionTools, 150);
 
-            if(sel_type==="Range"){
-                console.log("focus > if range");
-                showTools();
-            }
-
+            if(sel_type==="Range"){ showTools(); }
         }, false);
         
         // Saves all data into textarea.
@@ -484,9 +480,7 @@
             
             var selection = window.getSelection();
             sel_type = checkSelectionType(selection);      // defines whether user selected text or not
-            if(sel_type === "None" || sel_type === "Caret") { 
-                hideTools();
-            }
+            if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
         }, false);
 
         // Place formatting tools
