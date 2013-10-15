@@ -98,6 +98,19 @@
 
 .buttons-wrapper > .color-menu > .color-menu { margin: 24px 0 0 -52px; }
 
+.buttons-wrapper > .paragraph-menu .sub-menu-container {
+    > button {
+        width: 94px;
+        display: block;
+        border: 2px solid #555;
+        margin: 2px 2px 0 0;
+        background-color: #fff;
+
+        // transition: opacity .15s ease-in-out;
+        // -moz-transition: opacity .15s ease-in-out;
+        // -webkit-transition: opacity .15s ease-in-out;
+    }
+}
 .buttons-wrapper > .color-menu .sub-menu-container {
     > button {
         float: left;
@@ -156,19 +169,36 @@
 .no-touch .buttons-wrapper > .paragraph-menu {
     margin: -1px 0 0 89px;
     width: 106px;
-    display: none;
+    height: 0;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    z-index: -999;
 
     > button.back-to-main {
         display: none;
     }
 }
+.no-touch .buttons-wrapper > .paragraph-menu {
+    margin: -1px 0 0 140px;
+}
+
 .no-touch .buttons-wrapper > .color-menu.located-reverse {
     margin: -130px 0 0 89px;
+}
+.no-touch .buttons-wrapper > .paragraph-menu.located-reverse {
+    margin: -84px 0 0 140px;
 }
 
 .no-touch .buttons-wrapper > .color-menu.show-menu,
 .no-touch .buttons-wrapper > .paragraph-menu.show-menu {
-    display: block;
+    // display: block;
+    visibility: visible;
+    height: 110px;
+    
+    transition: height .2s ease-in-out;
+    -moz-transition: height .2s ease-in-out;
+    -webkit-transition: height .2s ease-in-out;
 }
 
 .touch .buttons-wrapper > .color-menu,

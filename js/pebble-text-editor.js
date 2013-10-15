@@ -248,8 +248,9 @@
 
             // Show tools normally before user riches bottom side of the browser
             if (current_bottom_distance > min_bottom_distance) {
-                format_tools_div.insertBefore(arrow_pointer, buttons_wrapper);
+                format_tools_div.insertBefore(arrow_pointer, buttons_wrapper); // put arrow pointer on top
                 removeClass(color_menu, "located-reverse");
+                removeClass(paragraph_menu, "located-reverse");
                 removeClass(arrow_pointer, "arrow-pointer-bottom");
 
                 showTools(oRect.top + sel_height, oRect.left); // place tools below selection
@@ -258,6 +259,7 @@
             else {
                 format_tools_div.appendChild(arrow_pointer);
                 addClass(color_menu, "located-reverse");
+                addClass(paragraph_menu, "located-reverse");
                 addClass(arrow_pointer, "arrow-pointer-bottom");
                 
                 showTools(oRect.top - tools_height, oRect.left); // place tools above selection
@@ -286,7 +288,7 @@
         hideAllContextMenus();
 
         document.execCommand("bold", false, null);
-        
+
         content_elements[container_id].focus();         // return focus back to editing field
     }
 
