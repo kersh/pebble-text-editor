@@ -56,7 +56,7 @@
     // Checks if element has particular class
     //
     function hasClass(element, class_name) {
-        return element.className.match(new RegExp('(\\s|^)' + class_name + '(\\s|$)'));
+        return element.className.match(new RegExp('(\\s|^)' + class_name + '(?!\S)'));
     }
 
     //
