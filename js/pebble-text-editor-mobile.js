@@ -495,44 +495,36 @@
 
         // Touch events
         content_elements[i].addEventListener("touchstart", function() {
-            // console.log("touchstart");
+            console.log("touchstart");
             positionTools;
         }, false);
         
         content_elements[i].addEventListener("touchmove", function() {
-            // document.getElementById('debug-info').innerText = 'touchmove';
-            // console.log("touchmove");
+            console.log("touchmove");
             positionTools;
         }, false); // React on mouse move. Remove this if performance will be low.
         content_elements[i].addEventListener("touchend",   function() {
-            // document.getElementById('debug-info').innerText = 'touchend';
-            // console.log("touchend");
+            console.log("touchend");
             positionTools;
 
         }, false); // Show formatting tools when SELECTED with MOUSE
     }
 
     function setFormatTools() {
-        var fastClickButtons = document.getElementsByClassName('.fastclick');
-        console.log("tools_btns:", fastClickButtons);
-        new FastClick(fastClickButtons);
+        var fastClickButtons = document.getElementsByClassName('fastclick');
+
+        for (var n=0; n < fastClickButtons.length; n++) {
+            new FastClick(fastClickButtons[n]);
+        }
 
         // Formatting tools
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
-        // new FastClick(formatTools["toggle-bold"]);
-
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
-        // new FastClick(formatTools["toggle-italic"]);
-
         formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        // new FastClick(formatTools["toggle-color-menu"]);
-        
-        formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
-        // new FastClick(formatTools["back-to-main"]);
-
-        formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
-        formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
-        formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
+            formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
+            formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
+            formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
+            formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
 
         formatTools["toggle-paragraph-menu"].addEventListener("click", toggleParagraphMenu, false);
         // formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);

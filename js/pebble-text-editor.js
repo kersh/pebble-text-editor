@@ -71,7 +71,7 @@
     //
     function removeClass(element, class_name) {
         if (hasClass(element, class_name)) {
-            var regexp = new RegExp('(\\s|^)' + class_name + '(\\s|$)');
+            var regexp = new RegExp('(\\s|^)' + class_name + '(?!\S)');
             element.className = element.className.replace(regexp, '');
         }
     }
@@ -260,8 +260,8 @@
 
             else {
                 format_tools_div.appendChild(arrow_pointer);
-                addClass(arrow_pointer, "arrow-pointer-bottom");
                 addClass(color_menu, "located-reverse");
+                addClass(arrow_pointer, "arrow-pointer-bottom");
                 
                 // Place tools above selection
                 showTools(oRect.top - tools_height, oRect.left);
@@ -286,8 +286,9 @@
             removeClass(color_menu, show_menu_class);
         } else {
             addClass(color_menu, show_menu_class);
-            content_elements[container_id].focus(); // return focus back to editing field
         }
+        
+        content_elements[container_id].focus(); // return focus back to editing field
 
         // Close other menus
         // hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
@@ -342,20 +343,14 @@
     function toggleBold() {
         // hideAllContextMenus();
         document.execCommand("bold", false, null);
-
-        console.log("container_id:", container_id);
-        console.log("content_elements[container_id]", content_elements[container_id]);
-        
         content_elements[container_id].focus();         // return focus back to editing field
-
-        console.log("I'm in focus again!");
     }
 
     /*
      * Make text italic and backwards
      */
     function toggleItalic() {
-        hideAllContextMenus();
+        // hideAllContextMenus();
         document.execCommand("italic", false, null);
         content_elements[container_id].focus();         // return focus back to editing field
     }
@@ -364,7 +359,7 @@
      * Make Web link and backwards
      */
     function toggleWebLink() {
-        hideAllContextMenus();
+        // hideAllContextMenus();
         document.execCommand("unlink", false, null);    // removes previously existing link
 
         var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)","http://");
@@ -380,7 +375,7 @@
      * Make email link and backwards
      */
     function toggleEmailLink() {
-        hideAllContextMenus();
+        // hideAllContextMenus();
         document.execCommand("unlink", false, null);    // removes previously existing link
 
         var email = prompt("Please enter email link (e.g.: name@domain.co.uk)","");
@@ -423,7 +418,7 @@
     }
 
     function removeFormatting() {
-        hideAllContextMenus();
+        // hideAllContextMenus();
         document.execCommand("removeFormat", false, null);
         document.execCommand("unlink", false, null);
 
