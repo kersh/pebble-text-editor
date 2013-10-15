@@ -1,32 +1,19 @@
-.arrow-pointer {
-    position: relative;
-    display: block;
-    margin-left: 0px;
-    width: 0;
-    height: 0;
-    border-left: 5px solid transparent;
-    border-right: 5px solid transparent;
-    border-bottom: 5px solid black;
-}
-
-.arrow-pointer-bottom {
-    border-bottom: none;
-    border-top: 5px solid black;
-}
-
-.editor-tools-wrapper {
+// Main toolbar styles
+.toolbar {
     position: fixed;
-    /*top: 0;*/
-    /*left: 0;*/
     visibility: hidden;
     opacity: 0;
     transition: opacity .15s ease-in-out;
     -moz-transition: opacity .15s ease-in-out;
     -webkit-transition: opacity .15s ease-in-out;
-
     z-index: $zEditingTools;
 
-    .editor-tools-container {
+    > .buttons-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .main-menu-buttons {
         list-style-type: none;
         margin: 0;
         padding: 0;
@@ -50,25 +37,36 @@
     }
 }
 
-.editor-tools-wrapper > .buttons-wrapper {
+.arrow-pointer {
     position: relative;
-    // background-color: yellow;
-    width: 100%;
+    display: block;
+    margin-left: 0px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid black;
 }
 
-.editor-tools-container > li:first-child > button { border-left: 1px solid #999; }
-.editor-tools-container > li > button:hover,
-.editor-tools-container > li > button.is-selected {
+.arrow-pointer-bottom {
+    border-bottom: none;
+    border-top: 5px solid black;
+}
+
+
+.main-menu-buttons > li:first-child > button { border-left: 1px solid #999; }
+.main-menu-buttons > li > button:hover,
+.main-menu-buttons > li > button.is-selected {
     color: #000;
     background-color: #ccc;
 }
-.editor-tools-container > li > button:active {
+.main-menu-buttons > li > button:active {
     color: #000;
     background-color: #bbb;
 }
 
-.buttons-wrapper .color-menu,
-.buttons-wrapper .paragraph-menu {
+.buttons-container .color-menu,
+.buttons-container .paragraph-menu {
     position: absolute;
     margin: 0;
     padding: 4px;
@@ -82,23 +80,23 @@
     // -webkit-transition: opacity .15s ease-in-out;
 }
 
-.buttons-wrapper > .color-menu .sub-menu-container {
+.buttons-container > .color-menu .sub-menu-container {
     // background-color: magenta;
     padding: 2px;
     -webkit-overflow-scrolling: touch;
 }
-.buttons-wrapper > .color-menu .sub-menu-container:before,
-.buttons-wrapper > .color-menu .sub-menu-container:after {
+.buttons-container > .color-menu .sub-menu-container:before,
+.buttons-container > .color-menu .sub-menu-container:after {
     content: "";
     display: table;
 }
-.buttons-wrapper > .color-menu .sub-menu-container:after {
+.buttons-container > .color-menu .sub-menu-container:after {
     clear: both;
 }
 
-.buttons-wrapper > .color-menu > .color-menu { margin: 24px 0 0 -52px; }
+.buttons-container > .color-menu > .color-menu { margin: 24px 0 0 -52px; }
 
-.buttons-wrapper > .paragraph-menu .sub-menu-container {
+.buttons-container > .paragraph-menu .sub-menu-container {
     > button {
         width: 94px;
         display: block;
@@ -111,7 +109,7 @@
         // -webkit-transition: opacity .15s ease-in-out;
     }
 }
-.buttons-wrapper > .color-menu .sub-menu-container {
+.buttons-container > .color-menu .sub-menu-container {
     > button {
         float: left;
         width: 21px;
@@ -128,7 +126,7 @@
     > button#color-blue { background-color: blue; }
 }
 
-.editor-tools-container > li > .paragraph-menu {
+.main-menu-buttons > li > .paragraph-menu {
     > button {
         border: 1px solid #aaa;
         display: block;
@@ -147,12 +145,12 @@
     opacity: 1;
 }
 
-.buttons-wrapper .color-menu.show-menu {
+.buttons-container .color-menu.show-menu {
     margin-top: 0;
 }
 
-.buttons-wrapper > .color-menu,
-.buttons-wrapper > .paragraph-menu {
+.buttons-container > .color-menu,
+.buttons-container > .paragraph-menu {
     
     > button.back-to-main {
         position: relative;
@@ -165,8 +163,8 @@
     }
 }
 
-.no-touch .buttons-wrapper > .color-menu,
-.no-touch .buttons-wrapper > .paragraph-menu {
+.no-touch .buttons-container > .color-menu,
+.no-touch .buttons-container > .paragraph-menu {
     margin: -1px 0 0 89px;
     width: 106px;
     height: 0;
@@ -179,19 +177,19 @@
         display: none;
     }
 }
-.no-touch .buttons-wrapper > .paragraph-menu {
+.no-touch .buttons-container > .paragraph-menu {
     margin: -1px 0 0 140px;
 }
 
-.no-touch .buttons-wrapper > .color-menu.located-reverse {
+.no-touch .buttons-container > .color-menu.located-reverse {
     margin: -130px 0 0 89px;
 }
-.no-touch .buttons-wrapper > .paragraph-menu.located-reverse {
+.no-touch .buttons-container > .paragraph-menu.located-reverse {
     margin: -84px 0 0 140px;
 }
 
-.no-touch .buttons-wrapper > .color-menu.show-menu,
-.no-touch .buttons-wrapper > .paragraph-menu.show-menu {
+.no-touch .buttons-container > .color-menu.show-menu,
+.no-touch .buttons-container > .paragraph-menu.show-menu {
     // display: block;
     visibility: visible;
     height: 110px;
@@ -201,14 +199,17 @@
     -webkit-transition: height .2s ease-in-out;
 }
 
-.touch .buttons-wrapper > .color-menu,
-.touch .buttons-wrapper > .paragraph-menu {
+.touch .buttons-container > .color-menu,
+.touch .buttons-container > .paragraph-menu {
     
     > button.back-to-main {
         display: inline-block;
     }
 }
-.touch .buttons-wrapper > .color-menu.show-menu,
-.touch .buttons-wrapper > .paragraph-menu.show-menu {
+.touch .buttons-container > .color-menu.show-menu,
+.touch .buttons-container > .paragraph-menu.show-menu {
 
 }
+
+@import "no-touch/toolbar";
+@import "touch/toolbar";

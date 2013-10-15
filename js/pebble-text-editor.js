@@ -19,31 +19,35 @@
     var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
 
     // All core elements
-    var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
-    var buttons_wrapper   = document.getElementById("buttons-wrapper");              // all button holder
-    var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
     var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
-    var format_tools_div  = document.getElementById("tools");                        // div with formatting tools
-    var format_tools_div_reverse  = document.getElementById("tools");                // div with formatting tools reverse
+    var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
+    
+    var format_tools_div  = document.getElementById("toolbar");                      // div with formatting tool
+    var buttons_wrapper   = document.getElementById("buttons-container");            // all button holder
+    var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
     var main_menu         = document.getElementById("main-menu");                    // main menu
     var color_menu        = document.getElementById("color-menu");                   // context menu that holds color pallete
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
 
     // List of tools for rich editing
     var formatTools = [];
-    formatTools['toggle-bold']           = document.getElementById("toggle-bold");
-    formatTools['toggle-italic']         = document.getElementById("toggle-italic");
-    formatTools['toggle-color-menu']     = document.getElementById("toggle-color-menu");
-        formatTools['color-red']         = document.getElementById("color-red");
-        formatTools['color-green']       = document.getElementById("color-green");
-        formatTools['color-blue']        = document.getElementById("color-blue");
-    formatTools['back-to-main']          = document.getElementById("back-to-main");
-    formatTools['toggle-paragraph-menu'] = document.getElementById("toggle-paragraph-menu");
-        formatTools['toggle-heading-h1'] = document.getElementById("toggle-heading-h1");
-        formatTools["toggle-heading-h2"] = document.getElementById("toggle-heading-h2");
-    formatTools['toggle-web-link']       = document.getElementById("toggle-web-link");
-    formatTools['toggle-email-link']     = document.getElementById("toggle-email-link");
-    formatTools["remove-formatting"]     = document.getElementById("remove-formatting");
+    formatTools['toggle-bold']                   = document.getElementById("toggle-bold");
+    formatTools['toggle-italic']                 = document.getElementById("toggle-italic");
+
+    formatTools['toggle-color-menu']             = document.getElementById("toggle-color-menu");
+        formatTools['color-red']                 = document.getElementById("color-red");
+        formatTools['color-green']               = document.getElementById("color-green");
+        formatTools['color-blue']                = document.getElementById("color-blue");
+        formatTools['back-main-from-color']      = document.getElementById("back-main-from-color");
+    
+    formatTools['toggle-paragraph-menu']         = document.getElementById("toggle-paragraph-menu");
+        formatTools['toggle-heading-h1']         = document.getElementById("toggle-heading-h1");
+        formatTools["toggle-heading-h2"]         = document.getElementById("toggle-heading-h2");
+        formatTools['back-main-from-paragraph']  = document.getElementById("back-main-from-paragraph");
+    
+    formatTools['toggle-web-link']               = document.getElementById("toggle-web-link");
+    formatTools['toggle-email-link']             = document.getElementById("toggle-email-link");
+    formatTools["remove-formatting"]             = document.getElementById("remove-formatting");
 
 
 
@@ -507,7 +511,7 @@
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
         formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
+        formatTools["back-main-from-color"] .addEventListener("click", toggleColorMenu, false);
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
         formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);

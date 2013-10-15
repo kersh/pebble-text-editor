@@ -104,7 +104,7 @@ ul.random-text {
     display: none;
 }
 
-@import "editor-tools";
+@import "toolbar";
 
 #main-content {
     height: 100%;
@@ -118,5 +118,4 @@ ul.random-text {
         width: 100%;
     }
 
-    @import "small/editor-tools";
 }

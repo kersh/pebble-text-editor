@@ -40,12 +40,12 @@
 
 	<div class="content" id="main-content">
 
-		<div id="tools" class="editor-tools-wrapper group">
+		<div id="toolbar" class="toolbar group">
 			<div id="arrow-pointer" class="arrow-pointer"></div>
 			
-			<div id="buttons-wrapper" class="buttons-wrapper group">
-				<div id="main-menu" class="editor-tools-container-wrapper group">				
-					<ul id="tools-btns" class="editor-tools-container group">
+			<div id="buttons-container" class="buttons-container group">
+				<div id="main-menu" class="main-menu group">
+					<ul id="main-menu-buttons" class="main-menu-buttons group">
 						<li><button id="toggle-bold" class="fastclick">Bold</button></li>
 						<li><button id="toggle-italic" class="fastclick">Italic</button></li>
 						<li>
@@ -59,11 +59,12 @@
 						<li><button id="toggle-web-link" class="fastclick">Web Link</button></li>
 						<li><button id="toggle-email-link" class="fastclick">Email Link</button></li>
 						<li><button id="remove-formatting" class="fastclick">Plain</button></li>
-					</ul><!-- /#tools-btns -->
-				</div><!-- /.editor-tools-container-wrapper -->
+					</ul><!-- /#main-menu-buttons -->
+				</div><!-- /.main-menu -->
+
 
 				<div id="color-menu" class="color-menu group">
-					<button id="back-to-main" class="back-to-main fastclick">\/ Go back</button>
+					<button id="back-main-from-color" class="back-to-main fastclick">\/ Go back</button>
 					
 					<div class="sub-menu-holder">
 						<div class="sub-menu-container">
@@ -83,18 +84,23 @@
 							<button class="color-pick fastclick"></button>
 						</div><!-- /.sub-menu-container -->
 					</div><!-- /.sub-menu-holder -->
-				</div><!-- /.color-menu -->
+				</div><!-- /#color-menu -->
 
-				<div id="paragraph-menu" class="group paragraph-menu">
-					<div class="sub-menu-container">
-						<button id="toggle-heading-h1">Heading 1</button>
-						<button id="toggle-heading-h2">Heading 2</button>
-						<button id="toggle-heading-h3">Fake 3</button>
-					</div><!-- /.sub-menu-container -->
-				</div>
-			</div><!-- /.buttons-wrapper -->
 
-		</div><!-- /#tools -->
+				<div id="paragraph-menu" class="paragraph-menu group">
+					<button id="back-main-from-paragraph" class="back-to-main fastclick">\/ Go back</button>
+					
+					<div class="sub-menu-holder">
+						<div class="sub-menu-container">
+							<button id="toggle-heading-h1">Heading 1</button>
+							<button id="toggle-heading-h2">Heading 2</button>
+							<button id="toggle-heading-h3">Fake 3</button>
+						</div><!-- /.sub-menu-container -->
+					</div><!-- /.sub-menu-holder -->
+				</div><!-- #paragraph-menu -->
+
+			</div><!-- /#buttons-container -->
+		</div><!-- /#toolbar -->
 
 
 		<div style="color:red">Some <em>rich</em> <span style="font-size:2em">HTML</span></div>

@@ -2,17 +2,17 @@
     /*display: none;*/
 }
 
-.editor-tools-wrapper {
+.tools {
     left: 0;
     bottom: 0;
     width: 100%;
     /*background-color: cyan;*/
 
-    > .buttons-wrapper {
+    > .buttons-container {
         height: 51px;
         overflow: hidden;
         
-        > .editor-tools-container-wrapper {
+        > .main-menu {
             margin-top: 0px;
             transition: margin .15s ease-in-out;
             -moz-transition: margin .15s ease-in-out;
@@ -24,7 +24,7 @@
             overflow-y: hidden;
             -webkit-overflow-scrolling: touch;
 
-            > .editor-tools-container {
+            > .main-menu-buttons {
                 position: absolute;
                 left: 0;
                 bottom: 0;
@@ -41,7 +41,7 @@
                 }
             }
         }
-        > .editor-tools-container-wrapper.hide-main-menu {
+        > .main-menu.hide-main-menu {
             margin-top: -51px;
             transition: margin .15s ease-in-out;
             -moz-transition: margin .15s ease-in-out;
@@ -52,15 +52,15 @@
 
 }
 
-.buttons-wrapper > .color-menu,
-.buttons-wrapper > .paragraph-menu {
+.buttons-container > .color-menu,
+.buttons-container > .paragraph-menu {
     /*position: fixed;*/
     left: 0;
     height: 51px;
     width: 100%;
 }
 
-.buttons-wrapper > .color-menu > .sub-menu-holder {
+.buttons-container > .color-menu > .sub-menu-holder {
     position: relative;
     width: 84%;
     /*height: 41px;*/
@@ -68,12 +68,12 @@
     overflow-y: hidden;
     display: inline-block;
 }
-.buttons-wrapper > .color-menu .sub-menu-container {
+.buttons-container > .color-menu .sub-menu-container {
     width: 600px;
 }
 
-.buttons-wrapper > .color-menu,
-.buttons-wrapper > .paragraph-menu {
+.buttons-container > .color-menu,
+.buttons-container > .paragraph-menu {
 
     > button.back-to-main {
         position: relative;
@@ -86,7 +86,7 @@
         margin: 0 2px 0 0;
     }
 }
-.buttons-wrapper > .color-menu .sub-menu-container {
+.buttons-container > .color-menu .sub-menu-container {
     > button {
         /*float: left;*/
         width: 37px;
@@ -98,5 +98,5 @@
     > button:hover { border: 2px solid #aaa; }
 }
 
-/*.editor-tools-container > li > .color-menu { margin: -44px 0 0 0; }*/
-/*.editor-tools-container > li > .paragraph-menu { margin: 24px 0 0 -88px; }*/
+/*.main-menu-buttons > li > .color-menu { margin: -44px 0 0 0; }*/
+/*.main-menu-buttons > li > .paragraph-menu { margin: 24px 0 0 -88px; }*/
