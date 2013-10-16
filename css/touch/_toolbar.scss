@@ -1,81 +1,95 @@
 // All these style will be applied to the touch device users
 .touch .toolbar {
-    .arrow-pointer {
-        /*display: none;*/
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    
+    // Main buttons container
+    .buttons-container {
+        height: 51px;
+        overflow: hidden;
     }
 
-    .tools {
-        left: 0;
-        bottom: 0;
+    // Main menu holder
+    .main-menu {
+        margin-top: 0px;
+        position: relative;
         width: 100%;
-        /*background-color: cyan;*/
+        height: 100%;
+        overflow: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        transition: margin .15s ease-in-out;
+        -moz-transition: margin .15s ease-in-out;
+        -webkit-transition: margin .15s ease-in-out;
 
-        > .buttons-container {
-            height: 51px;
-            overflow: hidden;
-            
-            > .main-menu {
-                margin-top: 0px;
-                transition: margin .15s ease-in-out;
-                -moz-transition: margin .15s ease-in-out;
-                -webkit-transition: margin .15s ease-in-out;
-                position: relative;
-                width: 100%;
-                height: 100%;
-                overflow: auto;
-                overflow-y: hidden;
-                -webkit-overflow-scrolling: touch;
+        .main-menu-buttons {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 787px;
 
-                > .main-menu-buttons {
-                    position: absolute;
-                    left: 0;
-                    bottom: 0;
-                    width: 787px;                
 
-                    > li {
-                        float: none;
-                        white-space: nowrap;
-                        display: inline;
+            > li {
+                float: none;
+                white-space: nowrap;
+                display: inline;
 
-                        > button {
-                            padding: 15px 30px;
-                        }
-                    }
+                > button {
+                    margin: 0;
+                    padding: 15px 30px;
+                    float: left;
+                    font-size: 1em;
+                    border: none;
+                    border-top: 1px solid #999;
+                    border-right: 1px solid #999;
+                    border-bottom: 1px solid #999;
+                    color: #000;
+                    background-color: #eee;
                 }
             }
-            > .main-menu.hide-main-menu {
-                margin-top: -51px;
-                transition: margin .15s ease-in-out;
-                -moz-transition: margin .15s ease-in-out;
-                -webkit-transition: margin .15s ease-in-out;
+
+            > li:first-child > button { border-left: 1px solid #999; }
+
+            > li > button:hover,
+            > li > button.is-selected {
+                color: #000;
+                background-color: #ccc;
             }
+            > li > button:active {
+                color: #000;
+                background-color: #bbb;
+            }
+        } //.main-menu-buttons
+    } //.main-menu
 
-        }
-
+    // When main menu is hidden
+    .main-menu.hide-main-menu {
+        margin-top: -51px;
+        transition: margin .15s ease-in-out;
+        -moz-transition: margin .15s ease-in-out;
+        -webkit-transition: margin .15s ease-in-out;
     }
 
-    .buttons-container > .color-menu,
-    .buttons-container > .paragraph-menu {
-        /*position: fixed;*/
+    // Context menu holder
+    .context-menu {
         left: 0;
         height: 51px;
         width: 100%;
-    }
+        border: 1px solid #aaa;
+        background-color: white;
 
-    .buttons-container > .color-menu > .sub-menu-holder {
-        position: relative;
-        width: 84%;
-        /*height: 41px;*/
-        overflow: auto;
-        overflow-y: hidden;
-        display: inline-block;
-    }
-    .buttons-container > .color-menu .sub-menu-container {
-        width: 600px;
-    }
-
-    .buttons-container > .color-menu,
-    .buttons-container > .paragraph-menu {
+        .sub-menu-holder {
+            position: relative;
+            width: 84%;
+            // height: 41px;
+            overflow: auto;
+            overflow-y: hidden;
+            display: inline-block;
+        }
 
         > button.back-to-main {
             position: relative;
@@ -88,18 +102,37 @@
             margin: 0 2px 0 0;
         }
     }
-    .buttons-container > .color-menu .sub-menu-container {
-        > button {
-            /*float: left;*/
-            width: 37px;
-            height: 37px;
-            display: inline-block;
-            border: 2px solid #555;
-            margin: 0 2px 0 0;
+
+    // Color context menu holder
+    .color-menu {
+        @extend .context-menu;
+
+        .sub-menu-container {
+            width: 600px;
+            
+            > button {
+                width: 37px;
+                height: 37px;
+                display: inline-block;
+                border: 2px solid #555;
+                margin: 0 2px 0 0;
+            }
+            > button:hover { border: 2px solid #aaa; }
+            > button#color-red { background-color: red; }
+            > button#color-green { background-color: green; }
+            > button#color-blue { background-color: blue; }
         }
-        > button:hover { border: 2px solid #aaa; }
+    }
+    .color-menu.show-menu {
+        margin-top: 0;
+    }
+    
+    // Paragraph context menu holder
+    .paragraph-menu {
+        @extend .context-menu;
+        display: none;
+
+        .sub-menu-container { width: 500px; }
     }
 
-    /*.main-menu-buttons > li > .color-menu { margin: -44px 0 0 0; }*/
-    /*.main-menu-buttons > li > .paragraph-menu { margin: 24px 0 0 -88px; }*/
 } //.touch .toolbar

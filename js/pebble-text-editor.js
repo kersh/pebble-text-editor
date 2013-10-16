@@ -38,12 +38,10 @@
         formatTools['color-red']                 = document.getElementById("color-red");
         formatTools['color-green']               = document.getElementById("color-green");
         formatTools['color-blue']                = document.getElementById("color-blue");
-        formatTools['back-main-from-color']      = document.getElementById("back-main-from-color");
     
     formatTools['toggle-paragraph-menu']         = document.getElementById("toggle-paragraph-menu");
         formatTools['toggle-heading-h1']         = document.getElementById("toggle-heading-h1");
         formatTools["toggle-heading-h2"]         = document.getElementById("toggle-heading-h2");
-        formatTools['back-main-from-paragraph']  = document.getElementById("back-main-from-paragraph");
     
     formatTools['toggle-web-link']               = document.getElementById("toggle-web-link");
     formatTools['toggle-email-link']             = document.getElementById("toggle-email-link");
@@ -511,7 +509,6 @@
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
         formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
         formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        formatTools["back-main-from-color"] .addEventListener("click", toggleColorMenu, false);
         formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
         formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
         formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);

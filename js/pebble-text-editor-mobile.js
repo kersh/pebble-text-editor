@@ -32,19 +32,23 @@
 
     // List of tools for rich editing
     var formatTools = [];
-    formatTools['toggle-bold']           = document.getElementById("toggle-bold");
-    formatTools['toggle-italic']         = document.getElementById("toggle-italic");
-    formatTools['toggle-color-menu']     = document.getElementById("toggle-color-menu");
-        formatTools['color-red']         = document.getElementById("color-red");
-        formatTools['color-green']       = document.getElementById("color-green");
-        formatTools['color-blue']        = document.getElementById("color-blue");
-    formatTools['back-to-main']          = document.getElementById("back-to-main");
-    formatTools['toggle-paragraph-menu'] = document.getElementById("toggle-paragraph-menu");
-        formatTools['toggle-heading-h1'] = document.getElementById("toggle-heading-h1");
-        formatTools["toggle-heading-h2"] = document.getElementById("toggle-heading-h2");
-    formatTools['toggle-web-link']       = document.getElementById("toggle-web-link");
-    formatTools['toggle-email-link']     = document.getElementById("toggle-email-link");
-    formatTools["remove-formatting"]     = document.getElementById("remove-formatting");
+    formatTools['toggle-bold']                   = document.getElementById("toggle-bold");
+    formatTools['toggle-italic']                 = document.getElementById("toggle-italic");
+
+    formatTools['toggle-color-menu']             = document.getElementById("toggle-color-menu");
+        formatTools['color-red']                 = document.getElementById("color-red");
+        formatTools['color-green']               = document.getElementById("color-green");
+        formatTools['color-blue']                = document.getElementById("color-blue");
+        formatTools['back-main-from-color']      = document.getElementById("back-main-from-color");
+    
+    formatTools['toggle-paragraph-menu']         = document.getElementById("toggle-paragraph-menu");
+        formatTools['toggle-heading-h1']         = document.getElementById("toggle-heading-h1");
+        formatTools["toggle-heading-h2"]         = document.getElementById("toggle-heading-h2");
+        formatTools['back-main-from-paragraph']  = document.getElementById("back-main-from-paragraph");
+    
+    formatTools['toggle-web-link']               = document.getElementById("toggle-web-link");
+    formatTools['toggle-email-link']             = document.getElementById("toggle-email-link");
+    formatTools["remove-formatting"]             = document.getElementById("remove-formatting");
 
 
 
@@ -518,21 +522,21 @@
         }
 
         // Formatting tools
-        formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
-        formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
-        formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-            formatTools["back-to-main"]         .addEventListener("click", toggleColorMenu, false);
+        formatTools["toggle-bold"]              .addEventListener("click", toggleBold,   false);
+        formatTools["toggle-italic"]            .addEventListener("click", toggleItalic, false);
+        formatTools["toggle-color-menu"]        .addEventListener("click", toggleColorMenu, false);
             formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
             formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
             formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
+            formatTools["back-main-from-color"] .addEventListener("click", toggleColorMenu, false);
 
-        formatTools["toggle-paragraph-menu"].addEventListener("click", toggleParagraphMenu, false);
+        formatTools["toggle-paragraph-menu"]    .addEventListener("click", toggleParagraphMenu, false);
         // formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
         // formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
         
-        formatTools["toggle-web-link"]      .addEventListener("click", function(){ toggleWebLink(); }, false);
-        formatTools["toggle-email-link"]    .addEventListener("click", function(){ toggleEmailLink(); }, false);
-        formatTools["remove-formatting"]    .addEventListener("click", function(){ removeFormatting(); }, false);
+        formatTools["toggle-web-link"]          .addEventListener("click", function(){ toggleWebLink(); }, false);
+        formatTools["toggle-email-link"]        .addEventListener("click", function(){ toggleEmailLink(); }, false);
+        formatTools["remove-formatting"]        .addEventListener("click", function(){ removeFormatting(); }, false);
     }
 
     // Loop through each 'text editor content' element and add event listeners
