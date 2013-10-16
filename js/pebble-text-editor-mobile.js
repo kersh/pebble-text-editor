@@ -515,7 +515,7 @@
     }
 
     function setFormatTools() {
-        var fastClickButtons = document.getElementsByClassName('fastclick');
+        var fastClickButtons = format_tools_div.getElementsByTagName("button");
 
         for (var n=0; n < fastClickButtons.length; n++) {
             new FastClick(fastClickButtons[n]);
