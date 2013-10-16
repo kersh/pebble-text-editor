@@ -1,102 +1,105 @@
-.arrow-pointer {
-    /*display: none;*/
-}
+// All these style will be applied to the touch device users
+.touch .toolbar {
+    .arrow-pointer {
+        /*display: none;*/
+    }
 
-.tools {
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    /*background-color: cyan;*/
+    .tools {
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        /*background-color: cyan;*/
 
-    > .buttons-container {
-        height: 51px;
-        overflow: hidden;
-        
-        > .main-menu {
-            margin-top: 0px;
-            transition: margin .15s ease-in-out;
-            -moz-transition: margin .15s ease-in-out;
-            -webkit-transition: margin .15s ease-in-out;
-            position: relative;
-            width: 100%;
-            height: 100%;
-            overflow: auto;
-            overflow-y: hidden;
-            -webkit-overflow-scrolling: touch;
+        > .buttons-container {
+            height: 51px;
+            overflow: hidden;
+            
+            > .main-menu {
+                margin-top: 0px;
+                transition: margin .15s ease-in-out;
+                -moz-transition: margin .15s ease-in-out;
+                -webkit-transition: margin .15s ease-in-out;
+                position: relative;
+                width: 100%;
+                height: 100%;
+                overflow: auto;
+                overflow-y: hidden;
+                -webkit-overflow-scrolling: touch;
 
-            > .main-menu-buttons {
-                position: absolute;
-                left: 0;
-                bottom: 0;
-                width: 787px;                
+                > .main-menu-buttons {
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    width: 787px;                
 
-                > li {
-                    float: none;
-                    white-space: nowrap;
-                    display: inline;
+                    > li {
+                        float: none;
+                        white-space: nowrap;
+                        display: inline;
 
-                    > button {
-                        padding: 15px 30px;
+                        > button {
+                            padding: 15px 30px;
+                        }
                     }
                 }
             }
-        }
-        > .main-menu.hide-main-menu {
-            margin-top: -51px;
-            transition: margin .15s ease-in-out;
-            -moz-transition: margin .15s ease-in-out;
-            -webkit-transition: margin .15s ease-in-out;
+            > .main-menu.hide-main-menu {
+                margin-top: -51px;
+                transition: margin .15s ease-in-out;
+                -moz-transition: margin .15s ease-in-out;
+                -webkit-transition: margin .15s ease-in-out;
+            }
+
         }
 
     }
 
-}
+    .buttons-container > .color-menu,
+    .buttons-container > .paragraph-menu {
+        /*position: fixed;*/
+        left: 0;
+        height: 51px;
+        width: 100%;
+    }
 
-.buttons-container > .color-menu,
-.buttons-container > .paragraph-menu {
-    /*position: fixed;*/
-    left: 0;
-    height: 51px;
-    width: 100%;
-}
-
-.buttons-container > .color-menu > .sub-menu-holder {
-    position: relative;
-    width: 84%;
-    /*height: 41px;*/
-    overflow: auto;
-    overflow-y: hidden;
-    display: inline-block;
-}
-.buttons-container > .color-menu .sub-menu-container {
-    width: 600px;
-}
-
-.buttons-container > .color-menu,
-.buttons-container > .paragraph-menu {
-
-    > button.back-to-main {
+    .buttons-container > .color-menu > .sub-menu-holder {
         position: relative;
-        font-size: .7em;
-        float: left;
+        width: 84%;
+        /*height: 41px;*/
+        overflow: auto;
+        overflow-y: hidden;
         display: inline-block;
-        height: 41px;
-        width: 15%;
-        border: 1px solid #555;
-        margin: 0 2px 0 0;
     }
-}
-.buttons-container > .color-menu .sub-menu-container {
-    > button {
-        /*float: left;*/
-        width: 37px;
-        height: 37px;
-        display: inline-block;
-        border: 2px solid #555;
-        margin: 0 2px 0 0;
+    .buttons-container > .color-menu .sub-menu-container {
+        width: 600px;
     }
-    > button:hover { border: 2px solid #aaa; }
-}
 
-/*.main-menu-buttons > li > .color-menu { margin: -44px 0 0 0; }*/
-/*.main-menu-buttons > li > .paragraph-menu { margin: 24px 0 0 -88px; }*/
+    .buttons-container > .color-menu,
+    .buttons-container > .paragraph-menu {
+
+        > button.back-to-main {
+            position: relative;
+            font-size: .7em;
+            float: left;
+            display: inline-block;
+            height: 41px;
+            width: 15%;
+            border: 1px solid #555;
+            margin: 0 2px 0 0;
+        }
+    }
+    .buttons-container > .color-menu .sub-menu-container {
+        > button {
+            /*float: left;*/
+            width: 37px;
+            height: 37px;
+            display: inline-block;
+            border: 2px solid #555;
+            margin: 0 2px 0 0;
+        }
+        > button:hover { border: 2px solid #aaa; }
+    }
+
+    /*.main-menu-buttons > li > .color-menu { margin: -44px 0 0 0; }*/
+    /*.main-menu-buttons > li > .paragraph-menu { margin: 24px 0 0 -88px; }*/
+} //.touch .toolbar

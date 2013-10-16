@@ -1,0 +1,128 @@
+// All these style will be applied to desktop users
+.no-touch .toolbar {
+
+    // Main menu holder
+    .main-menu-buttons {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+
+        > li {
+            float: left;
+
+            > button {
+                margin: 0;
+                padding: 2px 6px;
+                float: left;
+                font-size: 1em;
+                border: none;
+                border-top: 1px solid #999;
+                border-right: 1px solid #999;
+                border-bottom: 1px solid #999;
+                color: #000;
+                background-color: #eee;
+            }
+        }
+
+        > li:first-child > button { border-left: 1px solid #999; }
+
+        > li > button:hover,
+        > li > button.is-selected {
+            color: #000;
+            background-color: #ccc;
+        }
+        > li > button:active {
+            color: #000;
+            background-color: #bbb;
+        }
+    } //.main-menu-buttons
+    
+    // Context menu holder
+    .context-menu {
+        position: absolute;
+        padding: 4px;
+        height: 0;
+        width: 106px;
+        border: 1px solid #aaa;
+        background-color: white;
+        overflow: hidden;
+        display: block;
+        visibility: hidden;
+        z-index: -999;
+
+        > button.back-to-main {
+            display: none;
+            font-size: .7em;
+            float: left;
+            height: 31px;
+            width: 15%;
+            border: 1px solid #555;
+            margin: 0 2px 0 0;
+        }
+
+        .sub-menu-container {
+            padding: 2px;
+        }
+        .sub-menu-container:before,
+        .sub-menu-container:after {
+            content: "";
+            display: table;
+        }
+        .sub-menu-container:after {
+            clear: both;
+        }
+    }
+
+    // Color context menu holder
+    .color-menu {
+        margin: -1px 0 0 89px;
+        @extend .context-menu;
+
+        button {
+            float: left;
+            width: 21px;
+            height: 21px;
+            display: block;
+            border: 2px solid #555;
+            margin: 2px 2px 0 0;
+            background-color: #fff;
+        }
+        button:hover { border: 2px solid #aaa; }
+        button#color-red { background-color: red; }
+        button#color-green { background-color: green; }
+        button#color-blue { background-color: blue; }
+    }
+    .color-menu.located-reverse { margin: -130px 0 0 89px; }
+    .color-menu.show-menu {
+        visibility: visible;
+        height: 110px;
+        
+        transition: height .2s ease-in-out;
+        -moz-transition: height .2s ease-in-out;
+        -webkit-transition: height .2s ease-in-out;
+    }
+
+    // Paragraph context menu holder
+    .paragraph-menu {
+        margin: -1px 0 0 140px;
+        @extend .context-menu;
+
+        button {
+            width: 94px;
+            display: block;
+            border: 2px solid #555;
+            margin: 2px 2px 0 0;
+            background-color: #fff;
+        }
+    }
+    .paragraph-menu.located-reverse { margin: -130px 0 0 140px; }
+    .paragraph-menu.show-menu {
+        visibility: visible;
+        height: 110px;
+        
+        transition: height .2s ease-in-out;
+        -moz-transition: height .2s ease-in-out;
+        -webkit-transition: height .2s ease-in-out;
+    }
+    
+} //.no-touch .toolbar
