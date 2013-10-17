@@ -8,7 +8,6 @@
 
 
 (function(window, document, undefined){ // ============ MOBILE
-
 //------------------------------------------
 // All Variables defined here
 //------------------------------------------
@@ -17,6 +16,7 @@
     var sel_type          = "Caret";     // variable to store type of selection: caret or range
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
+    var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
 
     var timer = null;  // Timer for mobile and tablet devices
     var selectedRange; // Selected range for mobile and tablet devices
@@ -57,23 +57,23 @@
 // Helper functions
 //------------------------------------------
 
-    //
-    // Checks if element has particular class
-    //
+    /*
+     * Checks if element has particular class
+     */
     function hasClass(element, class_name) {
         return element.className.match(new RegExp('(\\s|^)' + class_name + '(?!\S)'));
     }
 
-    //
-    // Adds class/classes to an element
-    //
+    /*
+     * Adds class/classes to an element
+     */
     function addClass(element, class_name) {
         if (!hasClass(element, class_name)) { element.className += " " + class_name; }
     }
 
-    //
-    // Removes class/classes from an element
-    //
+    /*
+     * Removes class/classes from an element
+     */
     function removeClass(element, class_name) {
         if (hasClass(element, class_name)) {
             var regexp = new RegExp('(\\s|^)' + class_name + '(?!\S)');
@@ -81,68 +81,31 @@
         }
     }
 
-    //
-    // Saves user's text selection // NOT USED YET
-    //
-    function saveSelection() {
-        if (window.getSelection) {
-            sel = window.getSelection();
-            if (sel.getRangeAt && sel.rangeCount) {
-                var ranges = [];
-                for (var i = 0, len = sel.rangeCount; i < len; ++i) {
-                    ranges.push(sel.getRangeAt(i));
-                }
-                return ranges;
-            }
-        } else if (document.selection && document.selection.createRange) {
-            return document.selection.createRange();
-        }
-        return null;
+    /*
+     * Validates email address
+     * @email - is a variable that you want to check
+     * @return - true/false
+     */
+    function validateEmail(email) {
+        var regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return regExp.test(email);
     }
 
-    //
-    // Restores saved user's text selection // NOT USED YET
-    //
-    function restoreSelection(savedSel) {
-        if (savedSel) {
-            if (window.getSelection) {
-                sel = window.getSelection();
-                sel.removeAllRanges();
-                for (var i = 0, len = savedSel.length; i < len; ++i) {
-                    sel.addRange(savedSel[i]);
-                }
-            } else if (document.selection && savedSel.select) {
-                savedSel.select();
-            }
-        }
-    }
-
-    //
-    // Hide context menu
-    // @name_of_menu this is element which should be hidden (e.g. color_menu, paragraph_menu)
-    // @button_id this is id of button that toggles this context menu (e.g. toggle-color-menu, toggle-paragraph-menu)
-    //
-    function hideContextMenu(name_of_menu, button_id) {
-        removeClass(name_of_menu, show_menu_class);
-        removeClass(button_id, "is-selected");
-    }
-
-    //
-    // Show context menu
-    // @name_of_menu this is element which should be visible (e.g. color_menu, paragraph_menu)
-    // @button_id this is id of button that toggles this context menu (e.g. toggle-color-menu, toggle-paragraph-menu)
-    //
-    function showContextMenu(name_of_menu, button_id) {
-        addClass(name_of_menu, show_menu_class);
-        addClass(button_id, "is-selected");
-    }
-
-    //
-    // Hide all open context menus at the same time
-    //
+    /*
+     * Hide all open context menus at the same time
+     */
     function hideAllContextMenus() {
-        hideContextMenu(color_menu, formatTools["toggle-color-menu"]);          // hide color menu
-        hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);  // hide paragraph menu
+        if(hasClass(main_menu, "hide-main-menu")) {
+            removeClass(main_menu, "hide-main-menu");
+        }
+
+        if(hasClass(color_menu, "hide-menu")) {
+            removeClass(color_menu, "hide-menu");
+        }
+
+        if(hasClass(paragraph_menu, "hide-menu")) {
+            removeClass(paragraph_menu, "hide-menu");
+        }
     }
 
 
@@ -154,47 +117,47 @@
 // Editor core functions
 //------------------------------------------
 
-    //
-    // Update textarea.
-    // This function saves everything from editable div into <textarea> to make it easy to submit data to back-end.
-    // 
-    // @evt event object
-    // @id the id of editable div in a DOM tree
-    //
+    /*
+     * Update textarea.
+     * This function saves everything from editable div into <textarea> to make it easy to submit data to back-end.
+     * 
+     * @evt event object
+     * @id the id of editable div in a DOM tree
+     */
     function updateTextarea(evt, id) {
         container_id = id;
         var div_content = evt.target.innerHTML;        // save contents from current editable div to a variable
         textarea_elements[id].value = div_content;     // copy content from editable div into right textarea
     }
 
-    //
-    // Show formatting tools
-    //
-    // @top defines coordinates of bottom line of selection
-    // @left defines starting point of selection from left side
-    //
+    /*
+     * Show formatting tools
+     *
+     * @top defines coordinates of bottom line of selection
+     * @left defines starting point of selection from left side
+     */
     function showTools(top, left) {
         format_tools_div.style.top = top + "px";       // Locate tools
         format_tools_div.style.left = left + "px";     // below the selection
         addClass(format_tools_div, "show-tools");      // Adding class to make tools visible
     }
 
-    //
-    // Hide formatting tools
-    //
+    /*
+     * Hide formatting tools
+     */
     function hideTools() {
         removeClass(format_tools_div, "show-tools");   // Removes class to hide tools
         
         // Hide all context menus
-        // hideAllContextMenus();
+        hideAllContextMenus();
     }
 
-    //
-    // Checks if user selected something or not.
-    //
-    // @selection
-    // @return "Caret" or "Range" accordingly
-    //
+    /*
+     * Checks if user selected something or not.
+     *
+     * @selection
+     * @return "Caret" or "Range" accordingly
+     */
     function checkSelectionType(selection) {
         var selection_type;
         // for normal browsers
@@ -214,13 +177,11 @@
         return selection_type;
     }
 
-    //
-    // Function that defines position of formatting tools on the screen.
-    // It finds the position of selected range and places toolbox next to that.
-    //
+    /*
+     * Function that defines position of formatting tools on the screen.
+     * It finds the position of selected range and places toolbox next to that.
+     */
     var positionTools = function(){
-        console.log("positionTools");
-
         var oRange, oRect, selection, sel_width, sel_height;
 
         selection = window.getSelection();
@@ -245,6 +206,7 @@
                 arrow_pointer.style.marginLeft = "0px";
             }
 
+            // FIX LATER
             var width_em = 28.688;
             var mobile_width = width_em * 16;
 
@@ -261,11 +223,11 @@
         }
     }
 
-    //
-    // Show/Hide color menu
-    //
+    /*
+     * Show/Hide color menu
+     */
     function toggleColorMenu() {
-        console.log("Inside toggleColorMenu");
+        // console.log("Inside toggleColorMenu");
         // Close other menus
         // hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
 
@@ -276,7 +238,8 @@
         }
         
         content_elements[container_id].focus();         // return focus back to editing field
-        console.log("after focus set");
+        
+        // console.log("after focus set");
 
         // console.log("container_id:", container_id);
         // console.log("content_elements[container_id]", content_elements[container_id]);
@@ -295,15 +258,28 @@
     //
     function toggleParagraphMenu() {
         // close other menus
-        hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
 
-        // Toggle menu with heading/paragraph styles
-        if(hasClass(paragraph_menu, show_menu_class)) {
-            hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
+
+        if(hasClass(main_menu, "hide-main-menu")) {
+            removeClass(main_menu, "hide-main-menu");
+            setTimeout(function() {
+                removeClass(color_menu, "hide-menu");
+            }, 150);
         } else {
-            showContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
-            content_elements[container_id].focus(); // return focus back to editing field
+            addClass(color_menu, "hide-menu");
+            addClass(main_menu, "hide-main-menu");
         }
+
+
+        // hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
+
+        // // Toggle menu with heading/paragraph styles
+        // if(hasClass(paragraph_menu, show_menu_class)) {
+        //     hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
+        // } else {
+        //     showContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
+        //     content_elements[container_id].focus(); // return focus back to editing field
+        // }
     }
 
 
@@ -522,21 +498,22 @@
         }
 
         // Formatting tools
-        formatTools["toggle-bold"]              .addEventListener("click", toggleBold,   false);
-        formatTools["toggle-italic"]            .addEventListener("click", toggleItalic, false);
-        formatTools["toggle-color-menu"]        .addEventListener("click", toggleColorMenu, false);
-            formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
-            formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
-            formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
-            formatTools["back-main-from-color"] .addEventListener("click", toggleColorMenu, false);
+        formatTools["toggle-bold"]                 .addEventListener("click", toggleBold,   false);
+        formatTools["toggle-italic"]               .addEventListener("click", toggleItalic, false);
+        formatTools["toggle-color-menu"]           .addEventListener("click", toggleColorMenu, false);
+            formatTools["color-red"]               .addEventListener("click", function(){ setColor("red") }, false);
+            formatTools["color-green"]             .addEventListener("click", function(){ setColor("green") }, false);
+            formatTools["color-blue"]              .addEventListener("click", function(){ setColor("blue") }, false);
+            formatTools["back-main-from-color"]    .addEventListener("click", toggleColorMenu, false);
 
-        formatTools["toggle-paragraph-menu"]    .addEventListener("click", toggleParagraphMenu, false);
+        formatTools["toggle-paragraph-menu"]       .addEventListener("click", toggleParagraphMenu, false);
+            formatTools["back-main-from-paragraph"].addEventListener("click", toggleParagraphMenu, false);
         // formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
         // formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
         
-        formatTools["toggle-web-link"]          .addEventListener("click", function(){ toggleWebLink(); }, false);
-        formatTools["toggle-email-link"]        .addEventListener("click", function(){ toggleEmailLink(); }, false);
-        formatTools["remove-formatting"]        .addEventListener("click", function(){ removeFormatting(); }, false);
+        formatTools["toggle-web-link"]             .addEventListener("click", function(){ toggleWebLink(); }, false);
+        formatTools["toggle-email-link"]           .addEventListener("click", function(){ toggleEmailLink(); }, false);
+        formatTools["remove-formatting"]           .addEventListener("click", function(){ removeFormatting(); }, false);
     }
 
     // Loop through each 'text editor content' element and add event listeners

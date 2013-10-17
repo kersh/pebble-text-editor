@@ -20,15 +20,15 @@
     var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
 
     // All core elements
-    var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
-    var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
-    
-    var format_tools_div  = document.getElementById("toolbar");                      // div with formatting tool
-    var buttons_wrapper   = document.getElementById("buttons-container");            // all button holder
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
+    var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
+    var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
+    var format_tools_div  = document.getElementById("toolbar");                      // div with formatting tool
     var main_menu         = document.getElementById("main-menu");                    // main menu
     var color_menu        = document.getElementById("color-menu");                   // context menu that holds color pallete
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
+    
+    var buttons_wrapper   = document.getElementById("buttons-container");            // all button holder
 
     // List of tools for rich editing
     var formatTools = [];
