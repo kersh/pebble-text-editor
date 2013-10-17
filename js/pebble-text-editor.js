@@ -17,6 +17,7 @@
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
     var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
+    var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
 
     // All core elements
     var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
@@ -76,6 +77,16 @@
             var regexp = new RegExp('(\\s|^)' + class_name + '(?!\S)');
             element.className = element.className.replace(regexp, '');
         }
+    }
+
+    /*
+     * Validates email address
+     * @email - is a variable that you want to check
+     * @return - true/false
+     */
+    function validateEmail(email) {
+        var regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return regExp.test(email);
     }
 
     /*
@@ -344,13 +355,15 @@
     function toggleWebLink() {
         hideAllContextMenus();
 
-        document.execCommand("unlink", false, null);    // removes previously existing link
-
         var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)","http://");
-        if(!!url && url.substring(0,7) !== "http://") {
-            url = "http://" + url;
+        // If NOT null and NOT empty
+        if(!!url && url !== "" && url !== "http://") {
+            if (url.substring(0,7) !== "http://") {
+                url = "http://" + url;
+            }
+            document.execCommand("unlink", false, null);    // removes previously existing link
+            document.execCommand("createLink", false, url);
         }
-        document.execCommand("createLink", false, url);
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
@@ -361,11 +374,13 @@
     function toggleEmailLink() {
         hideAllContextMenus();
 
-        document.execCommand("unlink", false, null);    // removes previously existing link
-
         var email = prompt("Please enter email link (e.g.: name@domain.co.uk)","");
-        email = "mailto:" + email;
-        document.execCommand("createLink", false, email);
+        // If NOT null and NOT valid
+        if(validateEmail(email)) {
+            document.execCommand("unlink", false, null);    // removes previously existing link
+            email = "mailto:" + email;
+            document.execCommand("createLink", false, email);
+        }
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
@@ -386,12 +401,21 @@
         switch(heading_type)
         {
             case "h1":
+                // Remove all previous formatting before apply new
+                if (is_italic) {
+                    document.execCommand("italic", false, null);
+                    is_italic = false;
+                }
+
                 document.execCommand("fontSize", false, "5");
                 break;
 
             case "h2":
+                // Remove all previous formatting before apply new
+
                 document.execCommand("fontSize", false, "5");
                 document.execCommand("italic", false, null);
+                is_italic = true;
                 break;
 
             default:
