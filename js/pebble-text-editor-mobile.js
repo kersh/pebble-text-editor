@@ -223,65 +223,6 @@
         }
     }
 
-    /*
-     * Show/Hide color menu
-     */
-    function toggleColorMenu() {
-        // console.log("Inside toggleColorMenu");
-        // Close other menus
-        // hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
-
-        if(hasClass(main_menu, "hide-main-menu")) {
-            removeClass(main_menu, "hide-main-menu");
-        } else {
-            addClass(main_menu, "hide-main-menu");
-        }
-        
-        content_elements[container_id].focus();         // return focus back to editing field
-        
-        // console.log("after focus set");
-
-        // console.log("container_id:", container_id);
-        // console.log("content_elements[container_id]", content_elements[container_id]);
-
-        // Toggle menu with colors
-        // if(hasClass(color_menu, show_menu_class)) {
-        //     hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
-        // } else {
-        //     showContextMenu(color_menu, formatTools["toggle-color-menu"]);
-        //     content_elements[container_id].focus(); // return focus back to editing field
-        // }
-    }
-
-    //
-    // Show/Hide color menu
-    //
-    function toggleParagraphMenu() {
-        // close other menus
-
-
-        if(hasClass(main_menu, "hide-main-menu")) {
-            removeClass(main_menu, "hide-main-menu");
-            setTimeout(function() {
-                removeClass(color_menu, "hide-menu");
-            }, 150);
-        } else {
-            addClass(color_menu, "hide-menu");
-            addClass(main_menu, "hide-main-menu");
-        }
-
-
-        // hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
-
-        // // Toggle menu with heading/paragraph styles
-        // if(hasClass(paragraph_menu, show_menu_class)) {
-        //     hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
-        // } else {
-        //     showContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
-        //     content_elements[container_id].focus(); // return focus back to editing field
-        // }
-    }
-
 
 
 
@@ -291,42 +232,68 @@
 // Formatting tools functions
 //------------------------------------------
 
-    //
-    // Make text bold and backwards
-    //
+    /*
+     * Make text bold and backwards
+     */
     function toggleBold() {
-        // hideAllContextMenus();
         document.execCommand("bold", false, null);
 
-        // console.log("container_id:", container_id);
-        // console.log("content_elements[container_id]", content_elements[container_id]);
-        
         content_elements[container_id].focus();         // return focus back to editing field
-
-        // console.log("I'm in focus again!");
     }
 
-    //
-    // Make text italic and backwards
-    //
+    /*
+     * Make text italic and backwards
+     */
     function toggleItalic() {
-        hideAllContextMenus();
         document.execCommand("italic", false, null);
+
         content_elements[container_id].focus();         // return focus back to editing field
+    }
+
+    /*
+     * Show/Hide color menu
+     */
+    function toggleColorMenu() {
+        // Remove or add class from main menu
+        if(hasClass(main_menu, "hide-main-menu")) {
+            removeClass(main_menu, "hide-main-menu");
+        } else {
+            addClass(main_menu, "hide-main-menu");
+        }
+        
+        content_elements[container_id].focus();         // return focus back to editing field
+    }
+
+    /*
+     * Show/Hide color menu
+     */
+    function toggleParagraphMenu() {
+        // Add or remove class from main menu
+        // Remove color menu if needed
+        if(hasClass(main_menu, "hide-main-menu")) {
+            removeClass(main_menu, "hide-main-menu");
+            setTimeout(function() { // Need timeout same long as CSS3 transition
+                removeClass(color_menu, "hide-menu");
+            }, 150);
+        } else {
+            addClass(color_menu, "hide-menu");
+            addClass(main_menu, "hide-main-menu");
+        }
     }
 
     /*
      * Make Web link and backwards
      */
     function toggleWebLink() {
-        hideAllContextMenus();
-        document.execCommand("unlink", false, null);    // removes previously existing link
-
         var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)","http://");
-        if(!!url && url.substring(0,7) !== "http://") {
-            url = "http://" + url;
+        // If NOT null and NOT empty
+        if(!!url && url !== "" && url !== "http://") {
+            if (url.substring(0,7) !== "http://") {
+                url = "http://" + url;
+            }
+            document.execCommand("unlink", false, null);    // removes previously existing link
+            document.execCommand("createLink", false, url);
         }
-        document.execCommand("createLink", false, url);
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
@@ -335,50 +302,63 @@
      * Make email link and backwards
      */
     function toggleEmailLink() {
-        hideAllContextMenus();
-        document.execCommand("unlink", false, null);    // removes previously existing link
-
         var email = prompt("Please enter email link (e.g.: name@domain.co.uk)","");
-        email = "mailto:" + email;
-        document.execCommand("createLink", false, email);
+        // If NOT null and NOT valid
+        if(validateEmail(email)) {
+            document.execCommand("unlink", false, null);    // removes previously existing link
+            email = "mailto:" + email;
+            document.execCommand("createLink", false, email);
+        }
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
 
-    //
-    // Accordingly changes color of selected text
-    // @color defines color that will be applied
-    //
+    /*
+     * Accordingly changes color of selected text
+     * @color defines color that will be applied
+     */
     function setColor(color) {
         document.execCommand("foreColor", false, color);
-        // hideContextMenu(color_menu, formatTools["toggle-color-menu"]); // close color menu when done
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
 
-
+    /*
+     * Applies heading type for selection.
+     * @heading_type - can be any type of heading (format: h1, h2...)
+     */
     function toggleHeading(heading_type) {
         switch(heading_type)
         {
             case "h1":
+                // Remove all previous formatting before apply new
+                if (is_italic) {
+                    document.execCommand("italic", false, null);
+                    is_italic = false;
+                }
+
                 document.execCommand("fontSize", false, "5");
                 break;
 
             case "h2":
+                // Remove all previous formatting before apply new
+
                 document.execCommand("fontSize", false, "5");
                 document.execCommand("italic", false, null);
+                is_italic = true;
                 break;
 
             default:
                 console.log("Heading type undefined");
         }
-        hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]); // close color menu when done
 
         content_elements[container_id].focus();          // return focus back to editing field
     }
 
+    /*
+     * Removes all the formatting. Convert everything into plain text.
+     */
     function removeFormatting() {
-        hideAllContextMenus();
         document.execCommand("removeFormat", false, null);
         document.execCommand("unlink", false, null);
 
@@ -417,21 +397,6 @@
 
 
 //------------------------------------------
-// Mobile functionality
-//------------------------------------------
-
-    /*
-     * Paste everything into editable div without HTML formatting.
-     */
-    function getSelectedRange() {
-        selectedRange = window.getSelection().type;
-    }
-
-
-
-
-
-//------------------------------------------
 // App.Init
 //------------------------------------------
 
@@ -445,59 +410,47 @@
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
         content_elements[i].addEventListener("focus",     function(){
-            console.log("I'm in focus");
+            // Ability to get selection. Fix for touch devices.
             timer = setInterval(positionTools, 150);
 
             if(sel_type==="Range"){ showTools(); }
         }, false);
         
         // Saves all data into textarea.
-        // Hides editing tools when out of editing element focus
+        // Hides editing tools when out of editing element focus.
         content_elements[i].addEventListener("blur",      function(e){ 
-            console.log("I'm out of focus");
-            clearInterval(timer);
+            clearInterval(timer); // Clears timer variable when not in use
+            
+            // Updates textarea for back-end submition
             updateTextarea(e, id);
             
-            var selection = window.getSelection();
-            sel_type = checkSelectionType(selection);      // defines whether user selected text or not
+            // Defines whether user selected text or not
+            sel_type = checkSelectionType(window.getSelection());
+            
             if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
         }, false);
 
         // Place formatting tools
-        // content_elements[i].addEventListener("mousemove", positionTools, false); // React on mouse move. Remove this if performance will be low.
-        // content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
-        // content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
-        document           .addEventListener("scroll",    function(){
-            if(sel_type === "Range") {
-                positionTools;
-            }
-        }, false); // Show formatting tools when Scroll
+        document           .addEventListener("scroll",    function(){ if(sel_type === "Range") { positionTools; } }, false); // Show formatting tools when Scroll
 
         // Touch events
-        content_elements[i].addEventListener("touchstart", function() {
-            console.log("touchstart");
-            positionTools;
-        }, false);
-        
-        content_elements[i].addEventListener("touchmove", function() {
-            console.log("touchmove");
-            positionTools;
-        }, false); // React on mouse move. Remove this if performance will be low.
-        content_elements[i].addEventListener("touchend",   function() {
-            console.log("touchend");
-            positionTools;
-
-        }, false); // Show formatting tools when SELECTED with MOUSE
+        content_elements[i].addEventListener("touchstart", function() { positionTools; }, false);
+        content_elements[i].addEventListener("touchmove", function() { positionTools; }, false);
+        content_elements[i].addEventListener("touchend",   function() { positionTools; }, false);
     }
 
+    /*
+     * Sets actions for all toolbar buttons
+     */
     function setFormatTools() {
-        var fastClickButtons = format_tools_div.getElementsByTagName("button");
-
-        for (var n=0; n < fastClickButtons.length; n++) {
+        // Fast click for all touch devices to fix 300ms delay on click
+        var fastClickButtons = format_tools_div.getElementsByTagName("button"); // Array with all toolbar buttons
+        
+        for (var n=0; n < fastClickButtons.length; n++) { // Loop through every button and add it to FastClick object
             new FastClick(fastClickButtons[n]);
         }
 
-        // Formatting tools
+        // Toolbar buttons and their actions
         formatTools["toggle-bold"]                 .addEventListener("click", toggleBold,   false);
         formatTools["toggle-italic"]               .addEventListener("click", toggleItalic, false);
         formatTools["toggle-color-menu"]           .addEventListener("click", toggleColorMenu, false);
@@ -507,10 +460,10 @@
             formatTools["back-main-from-color"]    .addEventListener("click", toggleColorMenu, false);
 
         formatTools["toggle-paragraph-menu"]       .addEventListener("click", toggleParagraphMenu, false);
+            formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
+            formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
             formatTools["back-main-from-paragraph"].addEventListener("click", toggleParagraphMenu, false);
-        // formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
-        // formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
-        
+
         formatTools["toggle-web-link"]             .addEventListener("click", function(){ toggleWebLink(); }, false);
         formatTools["toggle-email-link"]           .addEventListener("click", function(){ toggleEmailLink(); }, false);
         formatTools["remove-formatting"]           .addEventListener("click", function(){ removeFormatting(); }, false);

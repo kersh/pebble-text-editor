@@ -396,7 +396,10 @@
         content_elements[container_id].focus();         // return focus back to editing field
     }
 
-
+    /*
+     * Applies heading type for selection.
+     * @heading_type - can be any type of heading (format: h1, h2...)
+     */
     function toggleHeading(heading_type) {
         switch(heading_type)
         {
@@ -426,6 +429,9 @@
         content_elements[container_id].focus();          // return focus back to editing field
     }
 
+    /*
+     * Removes all the formatting. Convert everything into plain text.
+     */
     function removeFormatting() {
         hideAllContextMenus();
 
@@ -467,21 +473,6 @@
 
 
 //------------------------------------------
-// Mobile functionality
-//------------------------------------------
-
-    /*
-     * Paste everything into editable div without HTML formatting.
-     */
-    function getSelectedRange() {
-        selectedRange = window.getSelection().type;
-    }
-
-
-
-
-
-//------------------------------------------
 // App.Init
 //------------------------------------------
 
@@ -500,9 +491,10 @@
             if(sel_type==="Range"){ showTools(); }
         }, false);
         
-        // Saves all data into textarea. Hides editing tools when out of editing element focus
+        // Saves all data into textarea.
+        // Hides editing tools when out of editing element focus.
         content_elements[i].addEventListener("blur",      function(e){
-            is_in_focus = false; // lost the focus
+            is_in_focus = false; // Lost the focus
             
             // Updates textarea for back-end submition
             updateTextarea(e, id);
@@ -528,6 +520,9 @@
         }, false);
     }
 
+    /*
+     * Sets actions for all toolbar buttons
+     */
     function setFormatTools() {
         // Formatting tools
         formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
