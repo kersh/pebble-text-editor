@@ -355,7 +355,7 @@
     function toggleWebLink() {
         hideAllContextMenus();
         var placeholder = "http://";
-        
+
         var selection = window.getSelection();
         var selected_link = selection.anchorNode.parentNode.href;
         console.log("selection.anchorNode.parentNode.href:", selection.anchorNode.parentNode.href);
@@ -366,7 +366,7 @@
             document.selection.createRange().parentElement().href;
         }
 
-        if (selected_link !== "http://") {
+        if (!!selected_link) {
             placeholder = selected_link;
         }
 
