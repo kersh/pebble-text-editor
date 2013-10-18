@@ -354,8 +354,23 @@
      */
     function toggleWebLink() {
         hideAllContextMenus();
+        var placeholder = "http://";
+        
+        var selection = window.getSelection();
+        var selected_link = selection.anchorNode.parentNode.href;
+        console.log("selection.anchorNode.parentNode.href:", selection.anchorNode.parentNode.href);
+        console.log("selection.anchorNode.parentNode:", selection.anchorNode.parentNode);
+        console.log("selection.anchorNode:", selection.anchorNode);
 
-        var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)","http://");
+        if (isMSIE) {
+            document.selection.createRange().parentElement().href;
+        }
+
+        if (selected_link !== "http://") {
+            placeholder = selected_link;
+        }
+
+        var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)", placeholder);
         // If NOT null and NOT empty
         if(!!url && url !== "" && url !== "http://") {
             if (url.substring(0,7) !== "http://") {
