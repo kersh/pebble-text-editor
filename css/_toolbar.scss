@@ -31,6 +31,24 @@
         border-bottom: none;
         border-top: 5px solid black;
     }
+
+    // Main menu when link is selected
+    .main-menu {
+        #edit-link, #open-link {
+            display: none;
+        }
+    }
+
+    // Main menu when link is selected
+    .main-menu.is-link {
+        #toggle-web-link, #toggle-email-link {
+            display: none;
+        }
+
+        #edit-link, #open-link {
+            display: inline;
+        }
+    }
 }
 
 @import "no-touch/toolbar";

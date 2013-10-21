@@ -18,6 +18,7 @@
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
     var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
     var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
+    var placeholder       = "none";
 
     // All core elements
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
@@ -46,6 +47,9 @@
     
     formatTools['toggle-web-link']               = document.getElementById("toggle-web-link");
     formatTools['toggle-email-link']             = document.getElementById("toggle-email-link");
+        formatTools['edit-link']                 = document.getElementById("edit-link");
+        formatTools['open-link']                 = document.getElementById("open-link");
+
     formatTools["remove-formatting"]             = document.getElementById("remove-formatting");
 
 
@@ -225,6 +229,23 @@
         return selection_type;
     }
 
+    function checkExistingLink() {
+        var selection = window.getSelection();
+        var selected_link = selection.anchorNode.parentNode.href;
+
+        if (isMSIE) {
+            document.selection.createRange().parentElement().href;
+        }
+
+        if (!!selected_link) {
+            placeholder = selected_link;
+            addClass(main_menu, "is-link");
+        } else {
+            placeholder = "none";
+            removeClass(main_menu, "is-link");
+        }
+    }
+
     /*
      * Function that defines position of formatting tools on the screen.
      * It finds the position of selected range and places toolbox next to that.
@@ -258,6 +279,9 @@
             else {
                 arrow_pointer.style.marginLeft = "0px";
             }
+
+            // Check if web link or email link currently selected to show different menu
+            checkExistingLink();
 
             // Show tools normally before user riches bottom side of the browser
             if (current_bottom_distance > min_bottom_distance) {
@@ -354,20 +378,9 @@
      */
     function toggleWebLink() {
         hideAllContextMenus();
-        var placeholder = "http://";
 
-        var selection = window.getSelection();
-        var selected_link = selection.anchorNode.parentNode.href;
-        console.log("selection.anchorNode.parentNode.href:", selection.anchorNode.parentNode.href);
-        console.log("selection.anchorNode.parentNode:", selection.anchorNode.parentNode);
-        console.log("selection.anchorNode:", selection.anchorNode);
-
-        if (isMSIE) {
-            document.selection.createRange().parentElement().href;
-        }
-
-        if (!!selected_link) {
-            placeholder = selected_link;
+        if (placeholder == "none") {
+            placeholder = "http://";
         }
 
         var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)", placeholder);
@@ -380,6 +393,8 @@
             document.execCommand("createLink", false, url);
         }
 
+        checkExistingLink();
+
         content_elements[container_id].focus();         // return focus back to editing field
     }
 
@@ -389,15 +404,94 @@
     function toggleEmailLink() {
         hideAllContextMenus();
 
-        var email = prompt("Please enter email link (e.g.: name@domain.co.uk)","");
-        // If NOT null and NOT valid
-        if(validateEmail(email)) {
-            document.execCommand("unlink", false, null);    // removes previously existing link
-            email = "mailto:" + email;
-            document.execCommand("createLink", false, email);
+        var stop = true;
+
+        if (placeholder == "none") {
+            placeholder = "";
+        }
+
+        while(stop) {
+            var email = prompt("Please enter email link (e.g.: name@domain.co.uk)", placeholder);
+            // If NOT null and NOT valid
+            if(validateEmail(email)) {
+                stop = false;
+                document.execCommand("unlink", false, null);    // removes previously existing link
+                email = "mailto:" + email;
+                document.execCommand("createLink", false, email);
+                checkExistingLink();
+            }
+            if(!email && email !== "") {
+                stop = false;
+            }
+        }
+
+
+        content_elements[container_id].focus();         // return focus back to editing field
+    }
+
+    /*
+     * Make Web link and backwards
+     */
+    function editLink() {
+        hideAllContextMenus();
+
+        var stop = true;
+        
+        while(stop) {
+            var link = prompt("Please make changes to link:", placeholder);
+
+            // If NOT null and NOT empty
+            if(!!link && link !== "") {
+                // If link doesn't start with "http://" and "mailto:"
+                if ((link.substring(0,7) !== "http://") && (link.substring(0,7) !== "mailto:")) {
+                    if (validateEmail(link)) { // Check if it is an email link
+                        link = "mailto:" + link;
+                    } else {
+                        link = "http://" + link;
+                    }
+                    
+                    document.execCommand("unlink", false, null);    // removes previously existing link
+                    document.execCommand("createLink", false, link);
+
+                    stop = false; // exit close prompt
+                }
+
+                // If link is an email
+                if (link.substring(0,7) === "mailto:") {
+                    link = link.substring(7, link.length);
+
+                    if (validateEmail(link)) { // Check if it is an email link
+                        link = "mailto:" + link;
+                        document.execCommand("unlink", false, null);    // removes previously existing link
+                        document.execCommand("createLink", false, link);
+
+                        stop = false; // exit close prompt
+                    }
+                }
+
+                // If it is a link
+                if (link.substring(0,7) === "http://") {
+                    document.execCommand("unlink", false, null);    // removes previously existing link
+                    document.execCommand("createLink", false, link);
+
+                    stop = false; // exit close prompt
+                }
+            }
+            // Exit close prompt if CANCEL was pressed
+            else {
+                stop = false;
+            }
         }
 
         content_elements[container_id].focus();         // return focus back to editing field
+    }
+
+    /*
+     * Opens web link or email link
+     */
+    function openLink() {
+        window.open(placeholder);
+        return false;
     }
 
     /*
@@ -551,6 +645,9 @@
         formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
         
         formatTools["toggle-web-link"]      .addEventListener("click", function(){ toggleWebLink(); }, false);
+            formatTools["edit-link"]        .addEventListener("click", function(){ editLink(); }, false);
+            formatTools["open-link"]        .addEventListener("click", function(){ openLink(); }, false);
+
         formatTools["toggle-email-link"]    .addEventListener("click", function(){ toggleEmailLink(); }, false);
         formatTools["remove-formatting"]    .addEventListener("click", function(){ removeFormatting(); }, false);
     }
