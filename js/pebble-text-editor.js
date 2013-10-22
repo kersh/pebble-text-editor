@@ -558,6 +558,7 @@
      * Removes all the formatting. Convert everything into plain text.
      */
     function removeFormatting() {
+        console.log("removeFormatting");
         hideAllContextMenus();
 
         document.execCommand("removeFormat", false, null);
@@ -577,19 +578,43 @@
     /*
      * Paste everything into editable div without HTML formatting.
      */
-    var pastePlain = function(e) {
-        e.preventDefault();
-        
-        // For damn IE
-        if(isMSIE) {
-            var text = window.clipboardData.getData("Text");  // get data from clipboard as plain text
-            pasteHtmlAtCaret(text); // fix for unimplemented in IE 'execCommand("insertHTML")'
-                                    // pasteHtmlAtCaret() taken from 'ie-pebble-text-editor.js' that is loaded conditionally
+    var makePlain = function(e) {
+        if (e.type === "paste") { // if user pasted data
+            e.preventDefault();
+            
+            // For damn IE
+            if(isMSIE) {
+                var text = window.clipboardData.getData("Text");  // get data from clipboard as plain text
+                pasteHtmlAtCaret(text); // fix for unimplemented in IE 'execCommand("insertHTML")'
+                                        // pasteHtmlAtCaret() taken from 'ie-pebble-text-editor.js' that is loaded conditionally
+            }
+            // For the rest of browsers
+            else {
+                var text = e.clipboardData.getData("text/plain"); // get data from clipboard as plain text
+                document.execCommand("insertHTML", false, text);
+            }
         }
-        // For the rest of browsers
-        else {
-            var text = e.clipboardData.getData("text/plain"); // get data from clipboard as plain text
-            document.execCommand("insertHTML", false, text);
+
+        if (e.type === "drop") { // if data was dragged and then dropped
+            // For damn IE
+            if(isMSIE) {
+                var text = e.dataTransfer.getData("Text"); // get data from drag as plain text
+
+                setTimeout(function() { // actions after drop event need to be delayed
+                    pasteHtmlAtCaret(text); // fix for unimplemented in IE 'execCommand("insertHTML")'
+                                            // pasteHtmlAtCaret() taken from 'ie-pebble-text-editor.js' that is loaded conditionally
+                    hideTools();
+                }, 0);
+            }
+            // For the rest of browsers
+            else {
+                var text = e.dataTransfer.getData("text/plain"); // get data from drag as plain text
+
+                setTimeout(function() { // actions after drop event need to be delayed
+                    document.execCommand("insertHTML", false, text);
+                    hideTools();
+                }, 0);
+            }
         }
     }
 
@@ -608,7 +633,9 @@
         var id = i; // make local variable to use the closure in the loop
         
         // Adding event listeners
-        content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
+        content_elements[i].addEventListener("paste",     makePlain,    false); // Paste unformatted text
+
+        content_elements[i].addEventListener("drop",      makePlain,    false); // Drops unformatted text
 
         content_elements[i].addEventListener("focus",     function(){
             is_in_focus = true; // got the focus
