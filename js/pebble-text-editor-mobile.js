@@ -17,6 +17,7 @@
     var container_id      = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
     var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
+    var placeholder       = "none";      // Is a placeholder for input field when create a web/email link
 
     var timer = null;  // Timer for mobile and tablet devices
     var selectedRange; // Selected range for mobile and tablet devices
@@ -25,7 +26,7 @@
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
     var content_elements  = document.getElementsByClassName("text-editor-content");  // set of core editor elements (editable divs)
     var textarea_elements = document.getElementsByClassName("text-editor-textarea"); // set of core editor elements (editable divs)
-    var format_tools_div  = document.getElementById("toolbar");                        // div with formatting tools
+    var format_tools_div  = document.getElementById("toolbar");                      // div with formatting tools
     var main_menu         = document.getElementById("main-menu");                    // main menu
     var color_menu        = document.getElementById("color-menu");                   // context menu that holds color pallete
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
@@ -48,6 +49,9 @@
     
     formatTools['toggle-web-link']               = document.getElementById("toggle-web-link");
     formatTools['toggle-email-link']             = document.getElementById("toggle-email-link");
+        formatTools['edit-link']                 = document.getElementById("edit-link");
+        formatTools['open-link']                 = document.getElementById("open-link");
+
     formatTools["remove-formatting"]             = document.getElementById("remove-formatting");
 
 
@@ -107,6 +111,56 @@
             removeClass(paragraph_menu, "hide-menu");
         }
     }
+
+    /*
+     * Saves user's text selection
+     */
+    function saveSelection() {
+        if (window.getSelection) {
+            sel = window.getSelection();
+            if (sel.getRangeAt && sel.rangeCount) {
+                var ranges = [];
+                for (var i = 0, len = sel.rangeCount; i < len; ++i) {
+                    ranges.push(sel.getRangeAt(i));
+                }
+                return ranges;
+            }
+        } else if (document.selection && document.selection.createRange) {
+            return document.selection.createRange();
+        }
+        return null;
+    }
+
+    /*
+     * Restores saved user's text selection
+     */
+    function restoreSelection(savedSel) {
+        if (savedSel) {
+            if (window.getSelection) {
+                sel = window.getSelection();
+                sel.removeAllRanges();
+                for (var i = 0, len = savedSel.length; i < len; ++i) {
+                    sel.addRange(savedSel[i]);
+                }
+            } else if (document.selection && savedSel.select) {
+                savedSel.select();
+            }
+        }
+    }
+
+    /*
+     * 
+     */
+    function clearAllSelections() {
+        if (window.getSelection) { // All browsers
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+        }
+        else if (document.selection) { // Damn special IE
+            var range = document.selecion.createRange();
+            document.selecion.empty();
+        }
+    }    
 
 
 
@@ -178,6 +232,33 @@
     }
 
     /*
+     * Checks if selection contains link.
+     * If yes, then change button in a toolbar.
+     */
+    function checkExistingLink() {
+        
+        // Damn IE is special!
+        if (isMSIE) {
+            var selection = document.selection.createRange();
+            var selected_link = selection.parentElement().href;      // Get the selected link href
+        }
+        // All normal browsers
+        else {
+            var selection = window.getSelection();
+            var selected_link = selection.anchorNode.parentNode.href; // Get the selected link href
+        }
+
+        // If there is a link
+        if (!!selected_link) {
+            placeholder = selected_link;
+            addClass(main_menu, "is-link");
+        } else {
+            placeholder = "none";
+            removeClass(main_menu, "is-link");
+        }
+    }
+
+    /*
      * Function that defines position of formatting tools on the screen.
      * It finds the position of selected range and places toolbox next to that.
      */
@@ -205,6 +286,9 @@
             else {
                 arrow_pointer.style.marginLeft = "0px";
             }
+
+            // Check if web link or email link currently selected to show different menu
+            checkExistingLink();
 
             // FIX LATER
             var width_em = 28.688;
@@ -285,32 +369,135 @@
      * Make Web link and backwards
      */
     function toggleWebLink() {
-        var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)","http://");
+        hideAllContextMenus();
+
+        var saved_selection = saveSelection(); // Save selection for link. Fix for touch devices
+
+        if (placeholder == "none") {
+            placeholder = "http://";
+        }
+
+        var url = prompt("Please enter web link (e.g.: http://www.domain.co.uk)", placeholder);
         // If NOT null and NOT empty
         if(!!url && url !== "" && url !== "http://") {
             if (url.substring(0,7) !== "http://") {
                 url = "http://" + url;
             }
+            restoreSelection(saved_selection);              // restore selection and apply link to it
             document.execCommand("unlink", false, null);    // removes previously existing link
             document.execCommand("createLink", false, url);
+            clearAllSelections();
         }
 
-        content_elements[container_id].focus();         // return focus back to editing field
+        checkExistingLink();
     }
 
     /*
      * Make email link and backwards
      */
     function toggleEmailLink() {
-        var email = prompt("Please enter email link (e.g.: name@domain.co.uk)","");
-        // If NOT null and NOT valid
-        if(validateEmail(email)) {
-            document.execCommand("unlink", false, null);    // removes previously existing link
-            email = "mailto:" + email;
-            document.execCommand("createLink", false, email);
+        hideAllContextMenus();
+
+        var saved_selection = saveSelection(); // Save selection for link. Fix for touch devices
+
+        var stop = true;
+
+        if (placeholder == "none") {
+            placeholder = "";
         }
 
-        content_elements[container_id].focus();         // return focus back to editing field
+        while(stop) {
+            var email = prompt("Please enter email link (e.g.: name@domain.co.uk)", placeholder);
+            // If NOT null and NOT valid
+            if(validateEmail(email)) {
+                stop = false;
+                restoreSelection(saved_selection);              // restore selection and apply link to it
+                document.execCommand("unlink", false, null);    // removes previously existing link
+                email = "mailto:" + email;
+                document.execCommand("createLink", false, email);
+                checkExistingLink();
+                clearAllSelections();
+            }
+            if(!email && email !== "") {
+                stop = false;
+            }
+        }
+    }
+
+    /*
+     * Make Web link and backwards
+     */
+    function editLink() {
+        hideAllContextMenus();
+
+        var saved_selection = saveSelection(); // Save selection for link. Fix for touch devices
+        var stop = true;
+        
+        while(stop) {
+            var link = prompt("Please make changes to link:", placeholder);
+
+            // If NOT null and NOT empty
+            if(!!link && link !== "") {
+                
+                // If link doesn't start with "http://" and "mailto:"
+                if ((link.substring(0,7) !== "http://") && (link.substring(0,7) !== "mailto:")) {
+                    if (validateEmail(link)) { // Check if it is an email link
+                        link = "mailto:" + link;
+                    } else {
+                        link = "http://" + link;
+                    }
+                    restoreSelection(saved_selection);              // restore selection and apply link to it
+                    document.execCommand("unlink", false, null);    // removes previously existing link
+                    document.execCommand("createLink", false, link);
+
+                    stop = false; // exit close prompt
+                    clearAllSelections();
+                } else {
+                    placeholder = link;
+                }
+
+                // If link is an email
+                if (link.substring(0,7) === "mailto:") {
+                    link = link.substring(7, link.length);
+
+                    if (validateEmail(link)) { // Check if it is an email link
+                        link = "mailto:" + link;
+                        restoreSelection(saved_selection);              // restore selection and apply link to it
+                        document.execCommand("unlink", false, null);    // removes previously existing link
+                        document.execCommand("createLink", false, link);
+
+                        stop = false; // exit close prompt
+                        clearAllSelections();
+                    } else {
+                        link = "mailto:" + link;
+                        placeholder = link;
+                    }
+                }
+                // If it is a link
+                if (link.substring(0,7) === "http://") {
+                    restoreSelection(saved_selection);              // restore selection and apply link to it
+                    document.execCommand("unlink", false, null);    // removes previously existing link
+                    document.execCommand("createLink", false, link);
+
+                    stop = false; // exit close prompt
+                    clearAllSelections();
+                } else {
+                    placeholder = link;
+                }
+            }
+            // Exit close prompt if CANCEL was pressed
+            else {
+                stop = false;
+            }
+        }
+    }
+
+    /*
+     * Opens web link or email link
+     */
+    function openLink() {
+        window.open(placeholder);
+        return false;
     }
 
     /*
@@ -460,12 +647,14 @@
             formatTools["back-main-from-color"]    .addEventListener("click", toggleColorMenu, false);
 
         formatTools["toggle-paragraph-menu"]       .addEventListener("click", toggleParagraphMenu, false);
-            formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
-            formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
+            formatTools["toggle-heading-h1"]       .addEventListener("click", function(){ toggleHeading("h1"); }, false);
+            formatTools["toggle-heading-h2"]       .addEventListener("click", function(){ toggleHeading("h2"); }, false);
             formatTools["back-main-from-paragraph"].addEventListener("click", toggleParagraphMenu, false);
 
         formatTools["toggle-web-link"]             .addEventListener("click", function(){ toggleWebLink(); }, false);
         formatTools["toggle-email-link"]           .addEventListener("click", function(){ toggleEmailLink(); }, false);
+            formatTools["edit-link"]               .addEventListener("click", function(){ editLink(); }, false);
+            formatTools["open-link"]               .addEventListener("click", function(){ openLink(); }, false);
         formatTools["remove-formatting"]           .addEventListener("click", function(){ removeFormatting(); }, false);
     }
 

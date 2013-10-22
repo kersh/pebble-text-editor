@@ -18,7 +18,7 @@
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
     var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
     var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
-    var placeholder       = "none";
+    var placeholder       = "none";      // Is a placeholder for input field when create a web/email link
 
     // All core elements
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
@@ -28,7 +28,6 @@
     var main_menu         = document.getElementById("main-menu");                    // main menu
     var color_menu        = document.getElementById("color-menu");                   // context menu that holds color pallete
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
-    
     var buttons_wrapper   = document.getElementById("buttons-container");            // all button holder
 
     // List of tools for rich editing
@@ -229,14 +228,24 @@
         return selection_type;
     }
 
+    /*
+     * Checks if selection contains link.
+     * If yes, then change button in a toolbar.
+     */
     function checkExistingLink() {
-        var selection = window.getSelection();
-        var selected_link = selection.anchorNode.parentNode.href;
-
+        
+        // Damn IE is special!
         if (isMSIE) {
-            document.selection.createRange().parentElement().href;
+            var selection = document.selection.createRange();
+            var selected_link = selection.parentElement().href;      // Get the selected link href
+        }
+        // All normal browsers
+        else {
+            var selection = window.getSelection();
+            var selected_link = selection.anchorNode.parentNode.href; // Get the selected link href
         }
 
+        // If there is a link
         if (!!selected_link) {
             placeholder = selected_link;
             addClass(main_menu, "is-link");
@@ -442,6 +451,7 @@
 
             // If NOT null and NOT empty
             if(!!link && link !== "") {
+                
                 // If link doesn't start with "http://" and "mailto:"
                 if ((link.substring(0,7) !== "http://") && (link.substring(0,7) !== "mailto:")) {
                     if (validateEmail(link)) { // Check if it is an email link
@@ -454,6 +464,8 @@
                     document.execCommand("createLink", false, link);
 
                     stop = false; // exit close prompt
+                } else {
+                    placeholder = link;
                 }
 
                 // If link is an email
@@ -466,15 +478,19 @@
                         document.execCommand("createLink", false, link);
 
                         stop = false; // exit close prompt
+                    } else {
+                        link = "mailto:" + link;
+                        placeholder = link;
                     }
                 }
-
                 // If it is a link
                 if (link.substring(0,7) === "http://") {
                     document.execCommand("unlink", false, null);    // removes previously existing link
                     document.execCommand("createLink", false, link);
 
                     stop = false; // exit close prompt
+                } else {
+                    placeholder = link;
                 }
             }
             // Exit close prompt if CANCEL was pressed
@@ -645,10 +661,10 @@
         formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
         
         formatTools["toggle-web-link"]      .addEventListener("click", function(){ toggleWebLink(); }, false);
+        formatTools["toggle-email-link"]    .addEventListener("click", function(){ toggleEmailLink(); }, false);
             formatTools["edit-link"]        .addEventListener("click", function(){ editLink(); }, false);
             formatTools["open-link"]        .addEventListener("click", function(){ openLink(); }, false);
 
-        formatTools["toggle-email-link"]    .addEventListener("click", function(){ toggleEmailLink(); }, false);
         formatTools["remove-formatting"]    .addEventListener("click", function(){ removeFormatting(); }, false);
     }
 
