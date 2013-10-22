@@ -9,7 +9,7 @@
 
 (function(window, document, undefined){ // ============ DESKTOP
 //------------------------------------------
-// All Variables defined here
+// All variables defined here
 //------------------------------------------
 
     // Helpers

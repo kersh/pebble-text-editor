@@ -1,11 +1,19 @@
+// All variables defined here
+$heightOfMainMenu: 51px;
+$speedOfMenuTransition: .15s;
+
+
+
+
+
 // Main toolbar styles
 .toolbar {
     position: fixed;
     visibility: hidden;
     opacity: 0;
-    transition: opacity .15s ease-in-out;
-    -moz-transition: opacity .15s ease-in-out;
-    -webkit-transition: opacity .15s ease-in-out;
+    transition: opacity $speedOfMenuTransition ease-in-out;
+    -moz-transition: opacity $speedOfMenuTransition ease-in-out;
+    -webkit-transition: opacity $speedOfMenuTransition ease-in-out;
     z-index: $zEditingTools;
 
     // Container that holds all the buttons

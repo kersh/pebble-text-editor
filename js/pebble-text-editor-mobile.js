@@ -9,7 +9,7 @@
 
 (function(window, document, undefined){ // ============ MOBILE
 //------------------------------------------
-// All Variables defined here
+// All variables defined here
 //------------------------------------------
 
     // Helpers

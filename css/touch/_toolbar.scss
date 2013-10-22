@@ -6,7 +6,7 @@
     
     // Main buttons container
     .buttons-container {
-        height: 51px;
+        height: $heightOfMainMenu;
         overflow: hidden;
     }
 
@@ -19,9 +19,9 @@
         overflow: auto;
         overflow-y: hidden;
         -webkit-overflow-scrolling: touch;
-        transition: margin .15s ease-in-out;
-        -moz-transition: margin .15s ease-in-out;
-        -webkit-transition: margin .15s ease-in-out;
+        transition: margin $speedOfMenuTransition ease-in-out;
+        -moz-transition: margin $speedOfMenuTransition ease-in-out;
+        -webkit-transition: margin $speedOfMenuTransition ease-in-out;
 
         .main-menu-buttons {
             list-style-type: none;
@@ -64,16 +64,16 @@
 
     // When main menu is hidden
     .main-menu.hide-main-menu {
-        margin-top: -51px;
-        transition: margin .15s ease-in-out;
-        -moz-transition: margin .15s ease-in-out;
-        -webkit-transition: margin .15s ease-in-out;
+        margin-top: -$heightOfMainMenu;
+        transition: margin $speedOfMenuTransition ease-in-out;
+        -moz-transition: margin $speedOfMenuTransition ease-in-out;
+        -webkit-transition: margin $speedOfMenuTransition ease-in-out;
     }
 
     // Context menu holder
     .context-menu {
         left: 0;
-        height: 51px;
+        height: $heightOfMainMenu;
         width: 100%;
         border: 1px solid #aaa;
         background-color: white;
