@@ -1,10 +1,13 @@
 // All these style will be applied to the touch device users
 .touch .toolbar {
+    position: absolute;
     left: 0;
-    bottom: 0;
+    height: $heightOfMainMenu;
     width: 100%;
     
     .arrow-pointer {
+        margin-top: -20px;
+        position: absolute;
         border-left: 5px solid transparent;
         border-right: 5px solid transparent;
         border-bottom: 20px solid black;
@@ -12,6 +15,7 @@
 
     // Main buttons container
     .buttons-container {
+        position: relative;
         height: $heightOfMainMenu;
         overflow: hidden;
     }

@@ -44,10 +44,14 @@ body {
     zoom: 1; /* For IE 6/7 (trigger hasLayout) */
 }
 
+#nav.content {
+    text-align: center;
+}
+
 .content {
     position: relative;
     max-width: 850px;
-    width: 90%;
+    width: 100%;
     margin: 0 auto 10px auto;
     padding: 0 20px;
     border: 1px solid #a4a4a4;
@@ -65,7 +69,7 @@ ul.random-text {
 }
 
 .navigation {
-    width: 300px;
+    display: inline-block;
     margin: 0 auto;
 
     > ul {
@@ -107,8 +111,7 @@ ul.random-text {
 @import "toolbar";
 
 #main-content {
-    height: 100%;
-    -webkit-overflow-scrolling: touch;
+    
 }
 
 /* old Smartphones (portrait and landscape) ----------- */
@@ -116,5 +119,11 @@ ul.random-text {
     .text-editor-content,
     .text-editor-textarea {
         width: 100%;
+    }
+
+    .content {
+        border: none;
+        border-top: 1px solid #a4a4a4;
+        border-bottom: 1px solid #a4a4a4;
     }
 }

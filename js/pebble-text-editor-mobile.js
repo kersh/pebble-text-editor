@@ -19,6 +19,7 @@
     var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
     var placeholder       = "none";      // Is a placeholder for input field when create a web/email link
 
+    var iOS = /(iPad|iPhone|iPod)/g.test( navigator.userAgent ); // iOS detection. Will be either true or false. Need for position:fixed bug
     var timer = null;  // Timer for mobile and tablet devices
     var selectedRange; // Selected range for mobile and tablet devices
 
@@ -263,7 +264,7 @@
      * It finds the position of selected range and places toolbox next to that.
      */
     var positionTools = function(){
-        var oRange, oRect, selection, sel_width, sel_height;
+        var oRange, oRect, selection, sel_width, sel_height, dist_to_top, dist_to_left;
 
         selection = window.getSelection();
         sel_type = checkSelectionType(selection); // defines whether user selected text or not
@@ -281,10 +282,10 @@
             // Should move arrow pointer in the middle of selection
             if(sel_width > 10){
                 sel_width = (sel_width - 10) / 2;
-                arrow_pointer.style.marginLeft = sel_width + "px";
+                arrow_pointer.style.left = oRect.left + sel_width + "px";
             }
             else {
-                arrow_pointer.style.marginLeft = "0px";
+                arrow_pointer.style.left = "0px";
             }
 
             // Check if web link or email link currently selected to show different menu
@@ -294,11 +295,26 @@
             var width_em = 28.688;
             var mobile_width = width_em * 16;
 
-            if (window.innerWidth < mobile_width) {
-                showTools(oRect.top + sel_height, 0);
+            // position:fixed iOS bug when keyboard is on the screen
+            if (iOS) {
+                console.log("iOS");
+                dist_to_top = oRect.top + sel_height; // works on iOS
             } else {
-                // Place tools in right place
-                showTools(oRect.top + sel_height, oRect.left);
+                console.log("Rest OS");
+                dist_to_top = oRect.top + window.pageYOffset + sel_height; // should work everywhere else
+            }
+
+            dist_to_top = dist_to_top + 20;
+            
+            dist_to_left = 0;
+
+            console.log("dist_to_top:", dist_to_top);
+
+            // Place tools in right place
+            if (window.innerWidth < mobile_width) {
+                showTools(dist_to_top, 0);
+            } else {
+                showTools(dist_to_top, dist_to_left);
             }
         }
         // Hide tools when not used
@@ -596,18 +612,19 @@
         // Adding event listeners
         content_elements[i].addEventListener("paste",     pastePlain,    false); // Paste unformatted text
 
-        content_elements[i].addEventListener("focus",     function(){
-            // Ability to get selection. Fix for touch devices.
-            timer = setInterval(positionTools, 150);
+        content_elements[i].addEventListener("focus",     function(e){
+            // Updates textarea for back-end submition
+            updateTextarea(e, id);
 
             if(sel_type==="Range"){ showTools(); }
+
+            // Ability to get selection. Fix for touch devices.
+            timer = setInterval(positionTools, 150);
         }, false);
         
         // Saves all data into textarea.
         // Hides editing tools when out of editing element focus.
         content_elements[i].addEventListener("blur",      function(e){ 
-            clearInterval(timer); // Clears timer variable when not in use
-            
             // Updates textarea for back-end submition
             updateTextarea(e, id);
             
@@ -615,6 +632,9 @@
             sel_type = checkSelectionType(window.getSelection());
             
             if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
+
+            clearInterval(timer); // Clears timer variable when not in use
+            
         }, false);
 
         // Place formatting tools
