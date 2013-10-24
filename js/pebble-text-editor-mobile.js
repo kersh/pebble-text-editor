@@ -251,12 +251,17 @@
 
         // If there is a link
         if (!!selected_link) {
+            if (selected_link.substring(0,24) === "javascript:window.open('") {
+                selected_link = selected_link.substring(24, selected_link.length-2);
+            }
             placeholder = selected_link;
             addClass(main_menu, "is-link");
         } else {
             placeholder = "none";
             removeClass(main_menu, "is-link");
         }
+
+        return selected_link;
     }
 
     /*
@@ -399,7 +404,7 @@
     /*
      * Make Web link and backwards
      */
-    function toggleWebLink() {
+    function createWebLink() {
         hideAllContextMenus();
 
         var saved_selection = saveSelection(); // Save selection for link. Fix for touch devices
@@ -414,6 +419,7 @@
             if (url.substring(0,7) !== "http://") {
                 url = "http://" + url;
             }
+            url = "javascript:window.open('" + url + "')";
             restoreSelection(saved_selection);              // restore selection and apply link to it
             document.execCommand("unlink", false, null);    // removes previously existing link
             document.execCommand("createLink", false, url);
@@ -426,7 +432,7 @@
     /*
      * Make email link and backwards
      */
-    function toggleEmailLink() {
+    function createEmailLink() {
         hideAllContextMenus();
 
         var saved_selection = saveSelection(); // Save selection for link. Fix for touch devices
@@ -445,6 +451,7 @@
                 restoreSelection(saved_selection);              // restore selection and apply link to it
                 document.execCommand("unlink", false, null);    // removes previously existing link
                 email = "mailto:" + email;
+                email = "javascript:window.open('" + email + "')";
                 document.execCommand("createLink", false, email);
                 checkExistingLink();
                 clearAllSelections();
@@ -686,8 +693,8 @@
             formatTools["toggle-heading-h2"]       .addEventListener("click", function(){ toggleHeading("h2"); }, false);
             formatTools["back-main-from-paragraph"].addEventListener("click", toggleParagraphMenu, false);
 
-        formatTools["toggle-web-link"]             .addEventListener("click", function(){ toggleWebLink(); }, false);
-        formatTools["toggle-email-link"]           .addEventListener("click", function(){ toggleEmailLink(); }, false);
+        formatTools["toggle-web-link"]             .addEventListener("click", function(){ createWebLink(); }, false);
+        formatTools["toggle-email-link"]           .addEventListener("click", function(){ createEmailLink(); }, false);
             formatTools["edit-link"]               .addEventListener("click", function(){ editLink(); }, false);
             formatTools["open-link"]               .addEventListener("click", function(){ openLink(); }, false);
         formatTools["remove-formatting"]           .addEventListener("click", function(){ removeFormatting(); }, false);

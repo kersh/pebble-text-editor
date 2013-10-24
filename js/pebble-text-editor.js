@@ -247,6 +247,9 @@
 
         // If there is a link
         if (!!selected_link) {
+            if (selected_link.substring(0,24) === "javascript:window.open('") {
+                selected_link = selected_link.substring(24, selected_link.length-2);
+            }
             placeholder = selected_link;
             addClass(main_menu, "is-link");
         } else {
@@ -403,7 +406,7 @@
     /*
      * Make Web link and backwards
      */
-    function toggleWebLink() {
+    function createWebLink() {
         hideAllContextMenus();
 
         if (placeholder == "none") {
@@ -416,11 +419,11 @@
             if (url.substring(0,7) !== "http://") {
                 url = "http://" + url;
             }
+            url = "javascript:window.open('" + url + "')";
             document.execCommand("unlink", false, null);    // removes previously existing link
             document.execCommand("createLink", false, url);
+            checkExistingLink();
         }
-
-        checkExistingLink();
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
@@ -428,7 +431,7 @@
     /*
      * Make email link and backwards
      */
-    function toggleEmailLink() {
+    function createEmailLink() {
         hideAllContextMenus();
 
         var stop = true;
@@ -444,6 +447,7 @@
                 stop = false;
                 document.execCommand("unlink", false, null);    // removes previously existing link
                 email = "mailto:" + email;
+                email = "javascript:window.open('" + email + "')";
                 document.execCommand("createLink", false, email);
                 checkExistingLink();
             }
@@ -451,7 +455,6 @@
                 stop = false;
             }
         }
-
 
         content_elements[container_id].focus();         // return focus back to editing field
     }
@@ -469,7 +472,15 @@
 
             // If NOT null and NOT empty
             if(!!link && link !== "") {
-                
+
+                // if (link.substring(0,24) === "javascript:window.open('") {
+                //     console.log("true for js:window");
+                // } else {
+                //     console.log("false js:window");
+                // }
+                // javascript:window.open('http://google.com')
+
+
                 // If link doesn't start with "http://" and "mailto:"
                 if ((link.substring(0,7) !== "http://") && (link.substring(0,7) !== "mailto:")) {
                     if (validateEmail(link)) { // Check if it is an email link
@@ -709,8 +720,8 @@
         formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
         formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
         
-        formatTools["toggle-web-link"]      .addEventListener("click", function(){ toggleWebLink(); }, false);
-        formatTools["toggle-email-link"]    .addEventListener("click", function(){ toggleEmailLink(); }, false);
+        formatTools["toggle-web-link"]      .addEventListener("click", function(){ createWebLink(); }, false);
+        formatTools["toggle-email-link"]    .addEventListener("click", function(){ createEmailLink(); }, false);
             formatTools["edit-link"]        .addEventListener("click", function(){ editLink(); }, false);
             formatTools["open-link"]        .addEventListener("click", function(){ openLink(); }, false);
 
