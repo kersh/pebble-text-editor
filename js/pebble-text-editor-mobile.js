@@ -275,6 +275,8 @@
             oRange = selection.getRangeAt(0);
             oRect = oRange.getBoundingClientRect();
 
+            removeUnderline(selection);
+
             // Height and width of selecion
             sel_height = oRect.bottom - oRect.top;
             sel_width = oRect.right - oRect.left;
@@ -331,6 +333,19 @@
 //------------------------------------------
 // Formatting tools functions
 //------------------------------------------
+
+    /*
+     * Removes underline because we doesn't allow underline in our project
+     */
+    function removeUnderline(selection) {
+        if (document.queryCommandState) {
+            if (!checkExistingLink()) {
+                if (document.queryCommandState("underline")) {
+                    document.execCommand("underline", false, null);
+                } // END if selection underlined
+            } // END if selection is not a link
+        } // END if queryCommandState is supported
+    }
 
     /*
      * Make text bold and backwards

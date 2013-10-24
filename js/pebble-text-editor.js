@@ -253,6 +253,8 @@
             placeholder = "none";
             removeClass(main_menu, "is-link");
         }
+
+        return selected_link;
     }
 
     /*
@@ -273,6 +275,8 @@
             oRange = selection.getRangeAt(0);
             oRect = oRange.getBoundingClientRect();
 
+            removeUnderline(selection);
+
             // Height and width of selecion
             sel_height = oRect.bottom - oRect.top;
             sel_width = oRect.right - oRect.left;
@@ -291,6 +295,7 @@
 
             // Check if web link or email link currently selected to show different menu
             checkExistingLink();
+
 
             // Show tools normally before user riches bottom side of the browser
             if (current_bottom_distance > min_bottom_distance) {
@@ -326,6 +331,19 @@
 //------------------------------------------
 // Formatting tools functions
 //------------------------------------------
+
+    /*
+     * Removes underline because we doesn't allow underline in our project
+     */
+    function removeUnderline(selection) {
+        if (document.queryCommandState) {
+            if (!checkExistingLink()) {
+                if (document.queryCommandState("underline")) {
+                    document.execCommand("underline", false, null);
+                } // END if selection underlined
+            } // END if selection is not a link
+        } // END if queryCommandState is supported
+    }
 
     /*
      * Make text bold and backwards
@@ -596,25 +614,29 @@
         }
 
         if (e.type === "drop") { // if data was dragged and then dropped
+            /*
+             * FIX THAT LATER. DOES WORK ONLY IN CHROME THUS I SWITCHED DRAG'n'DROP OFF.
+             */
+            e.preventDefault();
+
             // For damn IE
-            if(isMSIE) {
-                var text = e.dataTransfer.getData("Text"); // get data from drag as plain text
+            // if(isMSIE) {
+            //     var text = e.dataTransfer.getData("Text"); // get data from drag as plain text
 
-                setTimeout(function() { // actions after drop event need to be delayed
-                    pasteHtmlAtCaret(text); // fix for unimplemented in IE 'execCommand("insertHTML")'
-                                            // pasteHtmlAtCaret() taken from 'ie-pebble-text-editor.js' that is loaded conditionally
-                    hideTools();
-                }, 0);
-            }
-            // For the rest of browsers
-            else {
-                var text = e.dataTransfer.getData("text/plain"); // get data from drag as plain text
-
-                setTimeout(function() { // actions after drop event need to be delayed
-                    document.execCommand("insertHTML", false, text);
-                    hideTools();
-                }, 0);
-            }
+            //     setTimeout(function() { // actions after drop event need to be delayed
+            //         pasteHtmlAtCaret(text); // fix for unimplemented in IE 'execCommand("insertHTML")'
+            //                                 // pasteHtmlAtCaret() taken from 'ie-pebble-text-editor.js' that is loaded conditionally
+            //         hideTools();
+            //     }, 0);
+            // }
+            // // For the rest of browsers
+            // else {
+            //     var text = e.dataTransfer.getData("text/plain"); // get data from drag as plain text
+            //     setTimeout(function() { // actions after drop event need to be delayed
+            //         document.execCommand("insertHTML", false, text);
+            //         hideTools();
+            //     }, 0);
+            // }
         }
     }
 
