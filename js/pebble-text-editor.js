@@ -673,6 +673,8 @@
         content_elements[i].addEventListener("focus",     function(){
             is_in_focus = true; // got the focus
 
+            addClass(this.parentNode.parentNode, "hover"); // add .hover for main container when in focus
+
             if(sel_type==="Range"){ showTools(); }
         }, false);
         
@@ -681,6 +683,8 @@
         content_elements[i].addEventListener("blur",      function(e){
             is_in_focus = false; // Lost the focus
             
+            removeClass(this.parentNode.parentNode, "hover"); // remove .hover for main container when in blur
+
             // Updates textarea for back-end submition
             updateTextarea(e, id);
 
