@@ -1,0 +1,211 @@
+/* Core variables */
+$main_color: #00aeff;
+
+/* Plus (+) button core style */
+.add-btn {
+    color: $main_color;
+    display: block;
+    margin: 0 auto 5px auto;
+    padding-left: 0;
+    font-size: 1.2em;
+    height: .8em;
+    line-height: 0;
+    visibility: hidden;
+    position: relative;
+}
+.add-btn:hover {
+    color: #008aca;
+}
+
+.add-inline-media {
+    position: absolute;
+    display: block;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 3%;
+    height: 100%;
+    background-color: #f2f2f2;
+    visibility: hidden;
+    cursor: pointer;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    > div {
+        display: table;
+        height: 100%;
+        width: 100%;
+        
+        > p {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+        }
+    }
+}
+
+.media-right-dropzone {
+    position: absolute;
+    visibility: visible;
+    display: block;
+    top: 0;
+    bottom: 0;
+    width: 0%;
+    height: 100%;
+    cursor: context-menu;
+    background-image: url("../img/NoPic.png");
+    background-repeat: no-repeat;
+    background-position: center center;
+
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Main holder of whole set */
+.text-area-holder {
+    height: 100%;
+    background-color: #fff;
+    
+    /* Set defaults for all buttons */
+    button {
+        background: none;
+        border: none;
+        outline: none;
+    }
+
+    /* Main field with content */
+    .editable-container {
+        display: inline-block;
+        /*border: 1px solid rgba(0,0,0,0);*/
+        height: 100%;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Main field with content */
+    .text-editor-content {
+        display: inline-block;
+        outline: none;
+        border: 1px solid rgba(0,0,0,0);
+        height: 100%;
+        width: 100%;
+        padding: 4px;
+        margin: 0;
+    }
+
+    .add-left-media {
+        @extend .add-inline-media;
+        left: -3%;
+    }
+    .add-right-media {
+        @extend .add-inline-media;
+        right: -3%;
+    }
+
+    .media-right-dropzone {
+        @extend .media-dropzone;
+        right: 0;
+    }
+    .media-left-dropzone {
+        @extend .media-dropzone;
+        left: 0;
+    }
+
+    .text-editor-textarea {
+        display: none;
+    }
+
+    /* Container with options for current section */
+    .section-options {
+        position: relative;
+        visibility: hidden;
+        
+        /* Additional holder for core buttons */
+        .core-options-holder {
+            display: inline-block;
+            border: 1px solid $main_color;
+            border-top: none;
+            border-right: none;
+            
+            /* Style for "Remove" "Move Up" "Move Down" buttons */
+            > button {
+                color: $main_color;
+                font-size: 1em;
+                margin: 0;
+                padding-left: 3px;
+                display: inline-block;
+                border-right: 1px solid $main_color;
+            }
+
+            > button:hover {
+                color: darken($main_color, 25);
+            }
+        }
+
+        /* Style for plus on the bottom */
+        > button.add-below {
+            border: none;
+            margin-top: -20px;
+        }
+    }
+}
+
+.hover, .text-area-holder:hover {
+    /* Show border when on hover */
+    .editable-container .text-editor-content {
+        border: 1px solid $main_color;
+    }
+    
+    /* Show option buttons when on hover */
+    .section-options {
+        visibility: visible;
+    }
+    
+    /* Show plus(+) buttons when on hover */
+    .add-btn {
+        visibility: visible;
+    }
+
+    .editable-container .add-left-media,
+    .editable-container .add-right-media {
+        visibility: visible;
+    }
+}
+
+.right-media-active {
+    
+    .add-right-media {
+        background-color: #ff7373;
+        /*width: 10%;*/
+        -webkit-transition: background-color 200ms ease-out;
+           -moz-transition: background-color 200ms ease-out;
+                transition: background-color 200ms ease-out;
+    }
+
+    .media-right-dropzone {
+        border-top: 1px solid #ccc;
+        border-bottom: 1px solid #ccc;
+        width: 25%;
+        -webkit-transition: width 200ms ease-out;
+           -moz-transition: width 200ms ease-out;
+                transition: width 200ms ease-out;
+    }
+
+    .text-editor-content {
+        width: 75%;
+        -webkit-transition: width 200ms ease-out;
+           -moz-transition: width 200ms ease-out;
+                transition: width 200ms ease-out;
+    }
+}
+
+@import "no-touch/text-area";
+@import "touch/text-area";
