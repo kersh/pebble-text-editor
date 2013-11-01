@@ -99,6 +99,15 @@ $main_color: #00aeff;
         width: 100%;
         padding: 4px;
         margin: 0;
+
+        .media-container {
+            margin: 4px;
+            width: 25%;
+
+            img {
+                width: 100%;
+            }
+        }
     }
 
     .add-left-media {
