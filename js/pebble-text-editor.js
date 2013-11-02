@@ -51,9 +51,6 @@
 
     formatTools["remove-formatting"]             = document.getElementById("remove-formatting");
 
-
-
-
 //------------------------------------------
 // Helper functions
 //------------------------------------------
@@ -233,7 +230,7 @@
      * If yes, then change button in a toolbar.
      */
     function checkExistingLink() {
-        
+
         // Damn IE is special!
         if (isMSIE) {
             var selection = document.selection.createRange();
