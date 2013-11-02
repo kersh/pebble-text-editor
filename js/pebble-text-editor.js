@@ -30,6 +30,10 @@
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
     var buttons_wrapper   = document.getElementById("buttons-container");            // all button holder
 
+    var add_left_media    = document.getElementsByClassName("add-left-media");
+    var add_right_media   = document.getElementsByClassName("add-right-media");
+
+
     // List of tools for rich editing
     var formatTools = [];
     formatTools['toggle-bold']                   = document.getElementById("toggle-bold");
@@ -670,6 +674,8 @@
         content_elements[i].addEventListener("focus",     function(){
             is_in_focus = true; // got the focus
 
+            addClass(this.parentNode.parentNode, "hover"); // add .hover for main container when in focus
+
             if(sel_type==="Range"){ showTools(); }
         }, false);
         
@@ -678,6 +684,8 @@
         content_elements[i].addEventListener("blur",      function(e){
             is_in_focus = false; // Lost the focus
             
+            removeClass(this.parentNode.parentNode, "hover"); // remove .hover for main container when in blur
+
             // Updates textarea for back-end submition
             updateTextarea(e, id);
 
@@ -699,6 +707,11 @@
         content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
         document           .addEventListener("scroll",    function() {           // Show formatting tools when Scroll and move with the content
             if(sel_type === "Range") { positionTools(); }
+        }, false);
+
+        add_right_media[i].addEventListener("click", function() {
+            console.log("Clicked:", this.parentNode.parentNode);
+            addClass(this.parentNode.parentNode, "right-media-active")
         }, false);
     }
 

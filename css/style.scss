@@ -49,8 +49,9 @@ body {
 }
 
 .content {
+    overflow: hidden;
     position: relative;
-    max-width: 850px;
+    max-width: 700px;
     width: 100%;
     margin: 0 auto 10px auto;
     padding: 0 20px;
@@ -88,15 +89,6 @@ ul.random-text {
     }
 }
 
-.text-editor-content,
-.text-editor-textarea {
-    float: left;
-    border: 1px solid #a4a4a4;
-    height:200px;
-    width: 49%;
-    overflow: hidden;
-}
-
 .touch #debugging-info {
     margin: 10px auto;
     width: 150px;
@@ -104,15 +96,13 @@ ul.random-text {
     background-color: cyan;
     display: block;
 }
+
 .no-touch #debugging-info {
     display: none;
 }
 
+@import "text-area";
 @import "toolbar";
-
-#main-content {
-    
-}
 
 /* old Smartphones (portrait and landscape) ----------- */
 @media screen and (max-width: 28.688em) {
