@@ -5,10 +5,11 @@ $main_color: #00aeff;
 .add-btn {
     color: $main_color;
     display: block;
-    margin: 0 auto 5px auto;
+    margin: 0 auto;
     padding-left: 0;
     font-size: 1.2em;
-    height: .8em;
+    height: 16px;
+    background-color: yellow;
     line-height: 0;
     visibility: hidden;
     position: relative;
@@ -17,60 +18,9 @@ $main_color: #00aeff;
     color: #008aca;
 }
 
-.add-inline-media {
-    position: absolute;
-    display: block;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    width: 3%;
-    height: 100%;
-    background-color: #f2f2f2;
-    visibility: hidden;
-    cursor: pointer;
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-
-    > div {
-        display: table;
-        height: 100%;
-        width: 100%;
-        
-        > p {
-            display: table-cell;
-            vertical-align: middle;
-            text-align: center;
-        }
-    }
-}
-
-.media-right-dropzone {
-    position: absolute;
-    visibility: visible;
-    display: block;
-    top: 0;
-    bottom: 0;
-    width: 0%;
-    height: 100%;
-    cursor: context-menu;
-    background-image: url("../img/NoPic.png");
-    background-repeat: no-repeat;
-    background-position: center center;
-
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
 /* Main holder of whole set */
 .text-area-holder {
+    margin: -16px 0 0 0;
     height: 100%;
     background-color: #fff;
     
@@ -79,15 +29,6 @@ $main_color: #00aeff;
         background: none;
         border: none;
         outline: none;
-    }
-
-    /* Main field with content */
-    .editable-container {
-        display: inline-block;
-        /*border: 1px solid rgba(0,0,0,0);*/
-        height: 100%;
-        width: 100%;
-        position: relative;
     }
 
     /* Main field with content */
@@ -101,35 +42,77 @@ $main_color: #00aeff;
         margin: 0;
 
         .media-container {
+            position: relative;
             margin: 4px;
             width: 25%;
+            cursor: default;
+            -webkit-transition: width .15s ease-out;
+               -moz-transition: width .15s ease-out;
+                 -o-transition: width .15s ease-out;
+                    transition: width .15s ease-out;
+
+            .media-options {
+                background-color: rgba(0, 0, 0, 0);
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                text-align: center;
+
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                -khtml-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+
+                -webkit-transition: opacity .15s ease-out;
+                   -moz-transition: opacity .15s ease-out;
+                     -o-transition: opacity .15s ease-out;
+                        transition: opacity .15s ease-out;
+
+                > button {
+                    color: #F3FFE2;
+                    border: 1px solid #F3FFE2;
+                    border-radius: 3px;
+                    margin: 2px;
+                    margin-right: 0;
+                    padding: 2px 6px;
+                    font-size: .65em;
+                }
+                > button:hover {
+                    text-decoration: underline;
+                }
+            }
 
             img {
                 width: 100%;
+                display: block;
+            }
+        }
+
+        .media-container:hover {
+            .media-options {
+                opacity: 1;
+                background-color: rgba(0, 0, 0, 0.6);
+                -webkit-transition: opacity .15s ease-out;
+                   -moz-transition: opacity .15s ease-out;
+                     -o-transition: opacity .15s ease-out;
+                        transition: opacity .15s ease-out;
             }
         }
     }
 
-    .add-left-media {
-        @extend .add-inline-media;
-        left: -3%;
-    }
-    .add-right-media {
-        @extend .add-inline-media;
-        right: -3%;
-    }
-
-    .media-right-dropzone {
-        @extend .media-dropzone;
-        right: 0;
-    }
-    .media-left-dropzone {
-        @extend .media-dropzone;
-        left: 0;
-    }
-
     .text-editor-textarea {
         display: none;
+    }
+
+    /* Style for plus on the top */
+    button.add-above {
+        border: none;
+        margin-bottom: 5px;
     }
 
     /* Container with options for current section */
@@ -149,8 +132,11 @@ $main_color: #00aeff;
                 color: $main_color;
                 font-size: 1em;
                 margin: 0;
-                padding-left: 3px;
-                display: inline-block;
+                padding: 0 4px;
+                height: 20px;
+                line-height: 1em;
+                display: block;
+                float: left;
                 border-right: 1px solid $main_color;
             }
 
@@ -162,14 +148,14 @@ $main_color: #00aeff;
         /* Style for plus on the bottom */
         > button.add-below {
             border: none;
-            margin-top: -20px;
+            margin-top: -24px;
         }
     }
 }
 
 .hover, .text-area-holder:hover {
     /* Show border when on hover */
-    .editable-container .text-editor-content {
+    .text-editor-content {
         border: 1px solid $main_color;
     }
     
@@ -181,38 +167,6 @@ $main_color: #00aeff;
     /* Show plus(+) buttons when on hover */
     .add-btn {
         visibility: visible;
-    }
-
-    .editable-container .add-left-media,
-    .editable-container .add-right-media {
-        visibility: visible;
-    }
-}
-
-.right-media-active {
-    
-    .add-right-media {
-        background-color: #ff7373;
-        /*width: 10%;*/
-        -webkit-transition: background-color 200ms ease-out;
-           -moz-transition: background-color 200ms ease-out;
-                transition: background-color 200ms ease-out;
-    }
-
-    .media-right-dropzone {
-        border-top: 1px solid #ccc;
-        border-bottom: 1px solid #ccc;
-        width: 25%;
-        -webkit-transition: width 200ms ease-out;
-           -moz-transition: width 200ms ease-out;
-                transition: width 200ms ease-out;
-    }
-
-    .text-editor-content {
-        width: 75%;
-        -webkit-transition: width 200ms ease-out;
-           -moz-transition: width 200ms ease-out;
-                transition: width 200ms ease-out;
     }
 }
 

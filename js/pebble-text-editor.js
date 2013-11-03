@@ -30,8 +30,9 @@
     var paragraph_menu    = document.getElementById("paragraph-menu");               // context menu that holds heading/paragraph styles
     var buttons_wrapper   = document.getElementById("buttons-container");            // all button holder
 
-    var add_left_media    = document.getElementsByClassName("add-left-media");
-    var add_right_media   = document.getElementsByClassName("add-right-media");
+    var remove_media      = document.getElementsByClassName("remove-media");
+    var align_media       = document.getElementsByClassName("align-media");
+    var remove_section    = document.getElementsByClassName("remove-section");
 
 
     // List of tools for rich editing
@@ -474,14 +475,6 @@
             // If NOT null and NOT empty
             if(!!link && link !== "") {
 
-                // if (link.substring(0,24) === "javascript:window.open('") {
-                //     console.log("true for js:window");
-                // } else {
-                //     console.log("false js:window");
-                // }
-                // javascript:window.open('http://google.com')
-
-
                 // If link doesn't start with "http://" and "mailto:"
                 if ((link.substring(0,7) !== "http://") && (link.substring(0,7) !== "mailto:")) {
                     if (validateEmail(link)) { // Check if it is an email link
@@ -674,9 +667,10 @@
         content_elements[i].addEventListener("focus",     function(){
             is_in_focus = true; // got the focus
 
-            addClass(this.parentNode.parentNode, "hover"); // add .hover for main container when in focus
+            addClass(this.parentNode, "hover"); // add .hover for main container when in focus
 
             if(sel_type==="Range"){ showTools(); }
+
         }, false);
         
         // Saves all data into textarea.
@@ -684,7 +678,7 @@
         content_elements[i].addEventListener("blur",      function(e){
             is_in_focus = false; // Lost the focus
             
-            removeClass(this.parentNode.parentNode, "hover"); // remove .hover for main container when in blur
+            removeClass(this.parentNode, "hover"); // remove .hover for main container when in blur
 
             // Updates textarea for back-end submition
             updateTextarea(e, id);
@@ -709,12 +703,43 @@
             if(sel_type === "Range") { positionTools(); }
         }, false);
 
-        add_right_media[i].addEventListener("click", function() {
-            console.log("Clicked:", this.parentNode.parentNode);
-            addClass(this.parentNode.parentNode, "right-media-active")
+        // console.log("remove_media:", remove_media);
+        remove_media[i].addEventListener("click", function() {
+            // console.log("this:", this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode));
+            this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
         }, false);
-    }
 
+        align_media[i].addEventListener("click", function() {
+            var elem = this.parentNode.parentNode;
+            var value = window.getComputedStyle(elem, null).getPropertyValue("float");
+
+            if (value == "right") {
+                elem.style.display = "none";
+                elem.style.float = "left";
+                this.innerHTML = "Right";
+
+                setTimeout( function(){
+                    elem.style.display = "";
+                }, 150);
+            } else {
+                elem.style.display = "none";
+                elem.style.float = "right";
+                this.innerHTML = "Left";
+
+                setTimeout( function(){
+                    elem.style.display = "";
+                }, 150);
+            }
+        }, false);
+
+        remove_section[i].addEventListener("click", function() {
+            var elem = this.parentNode.parentNode.parentNode;
+            // console.log("clicked:", this.parentNode.parentNode.parentNode);
+            elem.parentNode.removeChild(elem);
+        }, false);
+
+    }
+    
     /*
      * Sets actions for all toolbar buttons
      */
