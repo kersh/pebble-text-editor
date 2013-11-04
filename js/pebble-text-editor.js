@@ -32,13 +32,9 @@
 
     var section_container = document.getElementsByClassName("text-area-holder");     // section container
     var media_container   = document.getElementsByClassName("media-container");      // media container
-    
-    // var remove_media      = document.getElementsByClassName("remove-media");
-    // var align_media       = document.getElementsByClassName("align-media");
-    var remove_section    = document.getElementsByClassName("remove-section");
-    var add_media         = document.getElementsByClassName("add-media");
-    var add_media_left    = document.getElementsByClassName("add-media-left");
-    var add_media_right   = document.getElementsByClassName("add-media-right");
+    var add_section_above = document.getElementsByClassName("add-above");
+    var add_section_below = document.getElementsByClassName("add-below");
+
 
 
     // List of tools for rich editing
@@ -761,7 +757,7 @@
         if (float == "left") {
             btn_value = "Right";
         }
-        media_div.innerHTML = '<div class="media-options"><button class="align-media">'+btn_value+'</button><button class="replace-media">Replace</button><button class="remove-media">Remove</button></div><!-- /.media-options --><img src="img/no-pic.png" alt="cat"/>';
+        media_div.innerHTML = '<div class="media-options"><button class="align-media">'+btn_value+'</button><button class="replace-media">Replace</button><button class="remove-media">Remove</button></div><!-- /.media-options --><img src="img/cat2.jpg" alt="cat"/>';
 
         parent_el.insertBefore(media_div, first_child_el); // insert new created container into section
         setEventsForMediaContainer(media_div);             // add all necessary event listeners
@@ -792,6 +788,14 @@
             el[i].getElementsByClassName("add-media-left")[0].onclick = function(e) { addMedia(e, "left"); }
             el[i].getElementsByClassName("add-media-right")[0].onclick = function(e) { addMedia(e, "right"); }
         }
+    }
+
+    /*
+     * Sets event listener for "Add new section" buttons
+     */
+    function addSection(e, location) {
+        console.log("addSection:", location);
+        console.log("this:", e.target);
     }
 
 
@@ -885,5 +889,11 @@
         setEventListener(content_elements, i);
     }
     setFormatTools();
+
+    // Set event listeners for "Add new section"
+    for(var i = 0; i < add_section_above.length; i++) {
+        add_section_above[i].onclick = function(e) { addSection(e, "above"); }
+        add_section_below[i].onclick = function(e) { addSection(e, "below"); }
+    }
 
 })(window, document);

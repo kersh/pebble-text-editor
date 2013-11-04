@@ -187,9 +187,13 @@ $main_color: #00aeff;
     display: block;
     position: relative;
     text-align: center;
-    margin: 20px 0;
+    margin: 10px auto 20px auto;
     padding: 10px 0;
     @include border-radius(2px);
+    width: 0%;
+    height: 0px;
+    overflow: hidden;
+    @include transition(all, .1s, ease-out);
 
     button {
         margin: 8px 8px 8px 0;
@@ -213,6 +217,11 @@ $main_color: #00aeff;
         background-color: darken($main_color, 10);
         border: 1px solid darken($main_color, 20);
     }
+}
+.add-new-section-menu.show {
+    width: 100%;
+    height: 100%;
+    @include transition(all, .1s, ease-out);
 }
 
 @import "no-touch/text-area";
