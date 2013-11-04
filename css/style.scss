@@ -19,6 +19,13 @@
 $zEditingTools: 1000;
 $zInterface: 0;
 
+@mixin transition($property, $duration, $trans-type) {
+    -webkit-transition: $property $duration $trans-type;
+       -moz-transition: $property $duration $trans-type;
+         -o-transition: $property $duration $trans-type;
+            transition: $property $duration $trans-type;
+}
+
 body {
     // -webkit-user-select: none;
     -webkit-touch-callout: none !important;

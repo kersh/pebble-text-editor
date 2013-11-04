@@ -98,24 +98,17 @@
 
 	<div class="content" id="main-content">
 		<div style="color:red">Some <em>rich</em> <span style="font-size:2em">HTML</span></div>
-		
-		<!-- <div style="float: left; border: 1px solid #a4a4a4; height:200px; width: 50%;" contenteditable></div> -->
+
 
 		<div class="text-area-holder group">
 			<button class="add-btn add-above">+</button>
 
-			<div class="text-editor-content" contenteditable>
-				<div class="media-container" style="float: left;">
-					<div class="media-options">
-						<button class="align-media">Right</button>
-						<button class="replace-media">Replace</button>
-						<button class="remove-media">Remove</button>
-					</div><!-- /.media-options -->
-					<img src="img/cat.jpg" alt="cat"/>
-				</div><!-- /.media-container -->
-				<div>Helllo world!<a href="javascript:window.open('http://google.com')">Looo ooo ooo ooo ooo ooo ooo ooo ooo ong link here</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. When an unknown printer took a galley of type and scrambled it to make a ...</div>
-			</div>
-			
+			<div class="editor-content-wrapper">
+				<div class="text-editor-content" contenteditable>
+					<div>Helllo world!<a href="javascript:window.open('http://google.com')">Looo ooo ooo ooo ooo ooo ooo ooo ooo ong link here</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</div>
+				</div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+
 			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
 
 			<div class="section-options">
@@ -124,6 +117,10 @@
 					<button class="move-sec-up">Up</button>
 					<button class="move-sec-down">Dw</button>
 					<button class="add-media">Add Media</button>
+					<div class="align-media-choice">
+						<button class="add-media-left">Left</button>
+						<button class="add-media-right">Right</button>
+					</div>
 				</div><!-- /.core-options-holder -->
 
 				<button class="add-btn add-below">+</button>
@@ -133,7 +130,7 @@
 		<div class="text-area-holder group">
 			<button class="add-btn add-above">+</button>
 
-			<div class="text-editor-content" contenteditable>
+			<div class="editor-content-wrapper">
 				<div class="media-container" style="float: right;">
 					<div class="media-options">
 						<button class="align-media">Left</button>
@@ -142,9 +139,12 @@
 					</div><!-- /.media-options -->
 					<img src="img/cat.jpg" alt="cat"/>
 				</div><!-- /.media-container -->
-				<div>Helllo world!<a href="javascript:window.open('http://google.com')">Looo ooo ooo ooo ooo ooo ooo ooo ooo ong link here</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. When an unknown printer took a galley of type and scrambled it to make a ...</div>
-			</div>
-			
+				
+				<div class="text-editor-content" contenteditable>
+					<div>Helllo world!<a href="javascript:window.open('http://google.com')">Looo ooo ooo ooo ooo ooo ooo ooo ooo ong link here</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. When an unknown printer took a galley of type and scrambled it to make a cake. Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+				</div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+
 			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
 
 			<div class="section-options">
@@ -162,10 +162,21 @@
 		<div class="text-area-holder group">
 			<button class="add-btn add-above">+</button>
 
-			<div class="text-editor-content" contenteditable>
-				<div>Helllo world!<a href="javascript:window.open('http://google.com')">Looo ooo ooo ooo ooo ooo ooo ooo ooo ong link here</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. When an unknown printer took a galley of type and scrambled it to make a ...</div>
-			</div>
-			
+			<div class="editor-content-wrapper">
+				<div class="media-container" style="float: left;">
+					<div class="media-options">
+						<button class="align-media">Right</button>
+						<button class="replace-media">Replace</button>
+						<button class="remove-media">Remove</button>
+					</div><!-- /.media-options -->
+					<img src="img/cat.jpg" alt="cat"/>
+				</div><!-- /.media-container -->
+
+				<div class="text-editor-content" contenteditable>
+					<div>Helllo world!<a href="javascript:window.open('http://google.com')">Looo ooo ooo ooo ooo ooo ooo ooo ooo ong link here</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. When an unknown printer took a galley of type and scrambled it to...</div>
+				</div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+
 			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
 
 			<div class="section-options">
