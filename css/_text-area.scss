@@ -180,5 +180,40 @@ $main_color: #00aeff;
     }
 }
 
+/* Add New Section */
+.add-new-section-menu {
+    border: 1px solid #bbb;
+    background-color: #eee;
+    display: block;
+    position: relative;
+    text-align: center;
+    margin: 20px 0;
+    padding: 10px 0;
+    @include border-radius(2px);
+
+    button {
+        margin: 8px 8px 8px 0;
+        padding: 10px;
+        border: 1px solid darken($main_color, 10);
+        background-color: $main_color;
+        color: #fff;
+        @include border-radius(3px);
+
+        .icon {
+            font-size: 2em;
+            line-height: .5em;
+        }
+
+        .lbl {
+            font-size: 1.1em;
+            margin-top: 5px;
+        }
+    }
+    button:hover {
+        background-color: darken($main_color, 10);
+        border: 1px solid darken($main_color, 20);
+    }
+}
+
 @import "no-touch/text-area";
 @import "touch/text-area";

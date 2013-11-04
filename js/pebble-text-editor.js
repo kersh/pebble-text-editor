@@ -710,12 +710,87 @@
             el = elem;
         }
 
-        for(var i=0; el[i] !== undefined; i++) {
+        for (var i=0; el[i] !== undefined; i++) {
             // Add event listener for "Align media" button
             el[i].getElementsByClassName("align-media")[0].onclick = alignMedia;
 
             // Add event listener for "Remove media" button
             el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
+        }
+    }
+
+    /*
+     * Event for removing section
+     */
+    function removeSection() {
+        var elem = this.parentNode.parentNode.parentNode;
+        var result = confirm("Are sure? Do you want to section?");
+
+        if (result == true) {
+            elem.parentNode.removeChild(elem);
+        } else {
+            false;
+        }
+    }
+
+    /*
+     * Event to toggle "Add media" menu
+     */
+    function toggleMediaMenu() {
+        var el = this.parentNode.getElementsByClassName("align-media-choice")[0];
+
+        if (hasClass(el, "show")) {
+            removeClass(el, "show");
+        } else {
+            addClass(el, "show");
+        }
+    }
+
+    /*
+     * Event for adding new media into section
+     * float - can be "left"/"right"
+     */
+    function addMedia(e, float) {
+        var btn_value = "Left";
+        var parent_el = e.target.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("editor-content-wrapper")[0]; // parent element
+        var first_child_el = parent_el.firstChild; // first child element
+
+        var media_div = document.createElement("div"); // main media container
+        media_div.className = "media-container";
+        media_div.style.float = float;
+        if (float == "left") {
+            btn_value = "Right";
+        }
+        media_div.innerHTML = '<div class="media-options"><button class="align-media">'+btn_value+'</button><button class="replace-media">Replace</button><button class="remove-media">Remove</button></div><!-- /.media-options --><img src="img/no-pic.png" alt="cat"/>';
+
+        parent_el.insertBefore(media_div, first_child_el); // insert new created container into section
+        setEventsForMediaContainer(media_div);             // add all necessary event listeners
+
+        removeClass(e.target.parentNode, "show");
+    }
+    
+    /*
+     * Sets all event listeners for section elements and section itself
+     * el - elements or set of elements
+     */
+    function setEventsForSection(el) {
+        // Check if it's single element and convert it to array
+        if (!el.length) {
+            var elem = {};
+            Array.prototype.push.call(elem, el);
+            el = elem;
+        }
+
+        for (var i = 0; el[i] !== undefined; i++) {
+            // Event listener to remove section
+            el[i].getElementsByClassName("remove-section")[0].onclick = removeSection;
+
+            // Event to toggle "Add media" menu
+            el[i].getElementsByClassName("add-media")[0].onclick = toggleMediaMenu;
+
+            // Event to insert media into section
+            el[i].getElementsByClassName("add-media-left")[0].onclick = function(e) { addMedia(e, "left"); }
+            el[i].getElementsByClassName("add-media-right")[0].onclick = function(e) { addMedia(e, "right"); }
         }
     }
 
@@ -776,52 +851,11 @@
         document           .addEventListener("scroll",    function() {           // Show formatting tools when Scroll and move with the content
             if(sel_type === "Range") { positionTools(); }
         }, false);
-
-
-
-        remove_section[i].addEventListener("click", function() {
-            var elem = this.parentNode.parentNode.parentNode;
-            var result = confirm("Are sure? Do you want to section?");
-
-            if (result == true) {
-                elem.parentNode.removeChild(elem);
-            } else {
-                false;
-            }
-        }, false);
-
-        add_media[i].addEventListener("click", function() {
-            var el = this.parentNode.getElementsByClassName("align-media-choice")[0];
-
-            if (hasClass(el, "show")) {
-                removeClass(el, "show");
-            } else {
-                addClass(el, "show");
-            }
-        }, false);
-
-        add_media_left[i].addEventListener("click", function() {
-            var parent_el = this.parentNode.parentNode.parentNode.parentNode.getElementsByClassName("editor-content-wrapper")[0];
-            var first_child_el = parent_el.firstChild;
-
-            var media_div = document.createElement("div");
-            media_div.className = "media-container";
-            media_div.style.float = "left";
-            media_div.innerHTML = '<div class="media-options"><button class="align-media">Right</button><button class="replace-media">Replace</button><button class="remove-media">Remove</button></div><!-- /.media-options --><img src="img/cat.jpg" alt="cat"/>';
-
-            parent_el.insertBefore(media_div, first_child_el);
-
-            setEventsForMediaContainer(media_div);
-        }, false);
-
-        add_media_right[i].addEventListener("click", function() {
-            console.log("right");
-        }, false);
     }
 
     // Add all events after initiall run
     setEventsForMediaContainer(media_container);
-    // setEventsForSection(section_container);
+    setEventsForSection(section_container);
 
     /*
      * Sets actions for all toolbar buttons

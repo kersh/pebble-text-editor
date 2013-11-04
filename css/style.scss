@@ -26,6 +26,12 @@ $zInterface: 0;
             transition: $property $duration $trans-type;
 }
 
+@mixin border-radius($value) {
+    -webkit-border-radius: $value;
+       -moz-border-radius: $value;
+            border-radius: $value;
+}
+
 body {
     // -webkit-user-select: none;
     -webkit-touch-callout: none !important;
