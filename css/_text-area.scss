@@ -217,6 +217,10 @@ $main_color: #00aeff;
         background-color: darken($main_color, 10);
         border: 1px solid darken($main_color, 20);
     }
+
+    button#remove-add-section-menu {
+        background-color: transparent;
+    }
 }
 .add-new-section-menu.show {
     width: 100%;
