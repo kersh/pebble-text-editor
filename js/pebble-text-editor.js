@@ -734,6 +734,96 @@
     }
 
     /*
+     * Move section up or down
+     */
+    function moveSection(e, direction) {
+        var el = e.target.parentNode.parentNode.parentNode,
+            par_el = el.parentNode,
+            ref_el;
+        
+        if (direction == "up") {
+            console.log("up was hit");
+            ref_el = prev(el);
+
+            if (ref_el !== null) {
+                par_el.insertBefore(el, ref_el);
+            }
+        }
+        else {
+            console.log("down was hit");
+            ref_el = next(el);
+
+            if (ref_el !== null) {
+                console.log("ref_el:", ref_el);
+                par_el.insertBefore(ref_el, el);
+            }
+        }
+        
+    }
+
+    /*
+     *  Finds previous element of same kind in a DOM
+     */
+    function prev(el) {
+        var prev_el = el.previousSibling,
+            check   = true;
+
+        while(check) {
+            // If object exists do below
+            if (!!prev_el) {
+                if (prev_el.nodeType == 1) { // if node type match to <div> then check for class
+                    if (!hasClass(prev_el, el.className)) { // check if class matches to section class
+                        prev_el = prev_el.previousSibling;
+                    }
+                    else { // previous sibling was found, Exit loop
+                        check = false;
+                    }
+                }
+                else { // shift to next element if previous wasn't <div>
+                    prev_el = prev_el.previousSibling;
+                }
+            }
+            // Exit loop if object is undefined
+            else {
+                check = false;
+            }
+        } // end while
+
+        return prev_el;
+    }
+
+    /*
+     *  Finds next element of same kind in a DOM
+     */
+    function next(el) {
+        var next_el = el.nextSibling,
+            check   = true;
+
+        while(check) {
+            // If object exists do below
+            if (!!next_el) {
+                if (next_el.nodeType == 1) { // if node type match to <div> then check for class
+                    if (!hasClass(next_el, el.className)) { // check if class matches to section class
+                        next_el = next_el.nextSibling;
+                    }
+                    else { // previous sibling was found, Exit loop
+                        check = false;
+                    }
+                }
+                else { // shift to next element if previous wasn't <div>
+                    next_el = next_el.nextSibling;
+                }
+            }
+            // Exit loop if object is undefined
+            else {
+                check = false;
+            }
+        } // end while
+
+        return next_el;
+    }
+
+    /*
      * Event to toggle "Add media" menu
      */
     function toggleMediaMenu() {
@@ -830,7 +920,6 @@
 
         // Add event listeners for new "Add new section" menu.
         setEventsForAddNewSection();
-
     }
 
     /*
@@ -986,7 +1075,8 @@
             add_section_above.onclick = function(e) { addNewSectionMenu(e, "above"); }
             add_section_below.onclick = function(e) { addNewSectionMenu(e, "below"); }
 
-            
+            move_sec_up.onclick       = function(e) { moveSection(e, "up"); }
+            move_sec_down.onclick     = function(e) { moveSection(e, "down"); }
             
             setEventsForSection(el[i]);
         }
