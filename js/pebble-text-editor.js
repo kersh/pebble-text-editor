@@ -32,8 +32,12 @@
 
     var section_container = document.getElementsByClassName("text-area-holder");     // section container
     var media_container   = document.getElementsByClassName("media-container");      // media container
-    var add_section_above = document.getElementsByClassName("add-above");
-    var add_section_below = document.getElementsByClassName("add-below");
+
+    var rmv_add_section_menu,
+        add_new_section_menu,
+        btn_add_txt_sect,
+        btn_add_media_sect,
+        btn_add_tbl_sect;
 
 
 
@@ -178,9 +182,9 @@
      * @evt event object
      * @id the id of editable div in a DOM tree
      */
-    function updateTextarea(evt, id) {
+    function updateTextarea(cur_el, id) {
         container_id = id;
-        var div_content = evt.target.innerHTML;        // save contents from current editable div to a variable
+        var div_content = cur_el.innerHTML;        // save contents from current editable div to a variable
         textarea_elements[id].value = div_content;     // copy content from editable div into right textarea
     }
 
@@ -583,12 +587,12 @@
      * Removes all the formatting. Convert everything into plain text.
      */
     function removeFormatting() {
-        console.log("removeFormatting");
         hideAllContextMenus();
 
         document.execCommand("removeFormat", false, null);
         document.execCommand("unlink", false, null);
 
+        console.log("id:", container_id);
         content_elements[container_id].focus();          // return focus back to editing field
     }
 
@@ -791,11 +795,119 @@
     }
 
     /*
-     * Sets event listener for "Add new section" buttons
+     * "Add new section" buttons aka "Pluses"(+)
      */
-    function addSection(e, location) {
-        console.log("addSection:", location);
-        console.log("this:", e.target);
+    function addNewSectionMenu(e, location) {
+        var par_el, ref_el,
+            add_new_el = document.createElement("div");
+            add_new_el.id = "add-new-section-menu";
+            add_new_el.className = "add-new-section-menu";
+            add_new_el.innerHTML = '<button id="add-text-section"><div class="icon">+</div><div class="lbl">Text Section</div></button>'
+                                 + '<button id="add-media-section"><div class="icon">+</div><div class="lbl">Media Section</div></button>'
+                                 + '<button id="add-tbl-section"><div class="icon">+</div><div class="lbl">Table Section</div></button>'
+                                 + '<button id="remove-add-section-menu">✖</button>';
+        
+        add_new_section_menu = document.getElementById("add-new-section-menu");
+
+        // Remove menu if it already exists
+        if (!!add_new_section_menu) { removeAddSectionMenu(); }
+
+        if (location === "above") {
+            par_el = e.target.parentNode.parentNode;
+            ref_el = e.target.parentNode;
+            par_el.insertBefore(add_new_el, ref_el);
+        } else {
+            par_el = e.target.parentNode.parentNode.parentNode;
+            ref_el = e.target.parentNode.parentNode;
+            par_el.insertBefore(add_new_el, ref_el.nextSibling);
+        }
+
+        setTimeout(function() {
+            addClass(add_new_el, "show");
+        }, 0);
+        // Set focus
+        document.getElementById("add-text-section").focus();
+
+        // Add event listeners for new "Add new section" menu.
+        setEventsForAddNewSection();
+
+    }
+
+    /*
+     * Add txt section to DOM
+     */
+    function addTxtSection() {
+        var par_el = add_new_section_menu.parentNode,
+            ref_el = add_new_section_menu,
+            section_el = document.createElement("div");
+            section_el.className = "text-area-holder group";
+            section_el.innerHTML = '<button class="add-btn add-above">+</button>'
+                                 + '<div class="editor-content-wrapper">'
+                                 + '<div class="text-editor-content" contenteditable></div><!-- /.text-editor-content -->'
+                                 + '</div><!-- /.editor-content-wrapper -->'
+                                 + '<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>'
+                                 + '<div class="section-options">'
+                                 + '<div class="core-options-holder">'
+                                 + '<button class="remove-section">✖ Remove</button>'
+                                 + '<button class="move-sec-up">Up</button>'
+                                 + '<button class="move-sec-down">Dw</button>'
+                                 + '<button class="add-media">Add Media</button>'
+                                 + '<div class="align-media-choice">'
+                                 + '<button class="add-media-left">Left</button>'
+                                 + '<button class="add-media-right">Right</button>'
+                                 + '</div><!-- /.align-media-choice -->'
+                                 + '</div><!-- /.core-options-holder -->'
+                                 + '<button class="add-btn add-below">+</button>'
+                                 + '</div><!-- /.section-options -->';
+        
+        ref_el.style.display = "none";
+
+        par_el.insertBefore(section_el, ref_el);
+        setEventListener(section_el); // add event listeners
+        section_el.getElementsByClassName("text-editor-content")[0].focus();
+        
+        removeAddSectionMenu();
+    }
+
+    /*
+     * Add media only section to DOM
+     */
+    function addMediaSection() {
+        console.log("add media section");
+    }
+
+    /*
+     * Add table section to DOM
+     */
+    function addTblSection() {
+        console.log("add tbl section");
+    }
+
+    /*
+     * Removes "Add new section" menu from DOM
+     */
+    function removeAddSectionMenu() {
+        removeClass(add_new_section_menu, "show");
+        add_new_section_menu.parentNode.removeChild(add_new_section_menu);
+    }
+
+    /*
+     * Sets all events for "Add new section" menu
+     */
+    function setEventsForAddNewSection() {
+        add_new_section_menu = document.getElementById("add-new-section-menu");
+        
+        if (!!add_new_section_menu) {
+            btn_add_txt_sect     = document.getElementById("add-text-section");
+            btn_add_media_sect   = document.getElementById("add-media-section");
+            btn_add_tbl_sect     = document.getElementById("add-tbl-section");
+            rmv_add_section_menu = document.getElementById("remove-add-section-menu");
+
+            btn_add_txt_sect.onclick     = addTxtSection;
+            btn_add_media_sect.onclick   = addMediaSection;
+            btn_add_tbl_sect.onclick     = addTblSection;
+            rmv_add_section_menu.onclick = removeAddSectionMenu;
+        }
     }
 
 
@@ -809,57 +921,80 @@
     /*
      * This function was created due to the closure inside the loops
      */
-    function setEventListener(content_elements, i) {
-        var id = i; // make local variable to use the closure in the loop
+    function setEventListener(el) {
+        // console.log("el:", el[0].getElementsByClassName("add-below")[0]);
+        // Check if it's single element and convert it to array
+        if (!el.length && !!el) {
+            var elem = {};
+            Array.prototype.push.call(elem, el);
+            el = elem;
+        }
         
-        // Adding event listeners
-        content_elements[i].addEventListener("paste",     makePlain,    false); // Paste unformatted text
+        // Loop through each 'text editor content' element and add event listeners
+        for(var i = 0; el[i] !== undefined; i++) {
+            var content_div       = el[i].getElementsByClassName("text-editor-content")[0],
+                add_section_above = el[i].getElementsByClassName("add-above")[0],
+                add_section_below = el[i].getElementsByClassName("add-below")[0],
+                move_sec_up       = el[i].getElementsByClassName("move-sec-up")[0],
+                move_sec_down     = el[i].getElementsByClassName("move-sec-down")[0];
 
-        content_elements[i].addEventListener("drop",      makePlain,    false); // Drops unformatted text
+            // Adding event listeners
+            content_div.addEventListener("paste",     makePlain,    false); // Paste unformatted text
+            content_div.addEventListener("drop",      makePlain,    false); // Drops unformatted text
 
-        content_elements[i].addEventListener("focus",     function(){
-            is_in_focus = true; // got the focus
+            content_div.addEventListener("focus",     function(){
+                is_in_focus = true; // got the focus
 
-            addClass(this.parentNode.parentNode, "hover"); // add .hover for main container when in focus
+                addClass(this.parentNode.parentNode, "hover"); // add .hover for main container when in focus
 
-            if(sel_type==="Range"){ showTools(); }
-
-        }, false);
-        
-        // Saves all data into textarea.
-        // Hides editing tools when out of editing element focus.
-        content_elements[i].addEventListener("blur",      function(e){
-            is_in_focus = false; // Lost the focus
+                if(sel_type==="Range"){ showTools(); }
+            }, false);
             
-            removeClass(this.parentNode.parentNode, "hover"); // remove .hover for main container when in blur
+            // Saves all data into textarea.
+            // Hides editing tools when out of editing element focus.
+            content_div.addEventListener("blur",      function(e, i) {
+                return function() {
+                    is_in_focus = false; // Lost the focus
+                    
+                    removeClass(this.parentNode.parentNode, "hover"); // remove .hover for main container when in blur
 
-            // Updates textarea for back-end submition
-            updateTextarea(e, id);
+                    // Updates textarea for back-end submition
+                    updateTextarea(e, i);
 
-            // Defines whether user selected text or not
-            sel_type = checkSelectionType(window.getSelection());
+                    // Defines whether user selected text or not
+                    sel_type = checkSelectionType(window.getSelection());
+                    if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
+                };
+            }(content_div, i), false);
 
-            if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
-        }, false);
+            // Place formatting tools
+            content_div.addEventListener("mousemove", function() {          // React on mouse move. Remove this if performance will be low
+                if(is_in_focus === true) { positionTools(); }
+            }, false);
 
-        // Place formatting tools
-        content_elements[i].addEventListener("mousemove", function() {           // React on mouse move. Remove this if performance will be low
-            if(is_in_focus === true) { positionTools(); }
-        }, false);
-        format_tools_div.addEventListener("mousemove", function() {           // React on mouse move. Remove this if performance will be low
-            if(is_in_focus === true) { positionTools(); }
-        }, false);
+            format_tools_div.addEventListener("mousemove", function() {// React on mouse move. Remove this if performance will be low
+                if(is_in_focus === true) { positionTools(); }
+            }, false);
 
-        content_elements[i].addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
-        content_elements[i].addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
-        document           .addEventListener("scroll",    function() {           // Show formatting tools when Scroll and move with the content
-            if(sel_type === "Range") { positionTools(); }
-        }, false);
+            content_div.addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
+            content_div.addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
+            document.addEventListener("scroll",    function() {        // Show formatting tools when Scroll and move with the content
+                if(sel_type === "Range") { positionTools(); }
+            }, false);
+
+            // Sets event listener for "Add new section" buttons aka "Pluses"(+)
+            add_section_above.onclick = function(e) { addNewSectionMenu(e, "above"); }
+            add_section_below.onclick = function(e) { addNewSectionMenu(e, "below"); }
+
+            
+            
+            setEventsForSection(el[i]);
+        }
     }
 
     // Add all events after initiall run
+    setEventListener(section_container);
     setEventsForMediaContainer(media_container);
-    setEventsForSection(section_container);
 
     /*
      * Sets actions for all toolbar buttons
@@ -884,16 +1019,6 @@
         formatTools["remove-formatting"]    .addEventListener("click", function(){ removeFormatting(); }, false);
     }
 
-    // Loop through each 'text editor content' element and add event listeners
-    for(var i = 0; i < content_elements.length; i++) {
-        setEventListener(content_elements, i);
-    }
     setFormatTools();
-
-    // Set event listeners for "Add new section"
-    for(var i = 0; i < add_section_above.length; i++) {
-        add_section_above[i].onclick = function(e) { addSection(e, "above"); }
-        add_section_below[i].onclick = function(e) { addSection(e, "below"); }
-    }
 
 })(window, document);
