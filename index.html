@@ -32,6 +32,7 @@
 				<li><a href="#">Link 3</a></li>
 				<li><a href="#">Link 4</a></li>
 				<li><a href="#">Link 5</a></li>
+				<li id="show-elem-amount">Show element amount</li>
 			</ul>
 		</div>
 	</div>
@@ -99,6 +100,31 @@
 	<div class="content" id="main-content">
 		<div style="color:red">Some <em>rich</em> <span style="font-size:2em">HTML</span></div>
 
+		<div class="text-area-holder group hover">
+			<button class="add-btn add-above">+</button>
+
+			<div class="editor-content-wrapper">
+				<div class="placeholder">Start typing here...</div>
+				<div class="text-editor-content" contenteditable></div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+
+			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+			<div class="section-options">
+				<div class="core-options-holder">
+					<button class="remove-section">✖ Remove</button>
+					<button class="move-sec-up">Up</button>
+					<button class="move-sec-down">Dw</button>
+					<button class="add-media">Add Media</button>
+					<div class="align-media-choice">
+						<button class="add-media-left">Left</button>
+						<button class="add-media-right">Right</button>
+					</div>
+				</div><!-- /.core-options-holder -->
+
+				<button class="add-btn add-below">+</button>
+			</div><!-- /.section-options -->
+		</div><!-- /.text-area-holder -->
 
 		<div class="text-area-holder group">
 			<button class="add-btn add-above">+</button>

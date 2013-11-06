@@ -2,10 +2,10 @@
 $main_color: #00aeff;
 
 .ne-resize {
-    cursor: ne-resize;
+    cursor: ne-resize !important;
 }
 .nw-resize {
-    cursor: nw-resize;
+    cursor: nw-resize !important;
 }
 
 /* Plus (+) button core style */
@@ -36,6 +36,20 @@ $main_color: #00aeff;
 .text-area-holder {
     margin: -16px 0 0 0;
     height: 100%;
+
+    .placeholder {
+        color: #bbb;
+        position: absolute;
+        margin: 4px 0;
+        z-index: -999;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
     
     /* Set defaults for all buttons */
     button {
@@ -130,6 +144,8 @@ $main_color: #00aeff;
 
     .text-editor-textarea {
         display: none;
+        width: 100%;
+        height: 250px;
     }
 
     /* Style for plus on the top */

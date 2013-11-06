@@ -13,8 +13,9 @@
 //------------------------------------------
 
     // Helpers
+    var elem_amount       = 0;           // Amount of core elemnts on the page
     var sel_type          = "Caret";     // Variable to store type of selection: caret or range
-    var container_id      = 0;           // Needs to detect which container currently is edited
+    var current_el_id     = 0;           // Needs to detect which container currently is edited
     var show_menu_class   = "show-menu"; // Class for making visible the context menus
     var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
     var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
@@ -176,6 +177,13 @@
 //------------------------------------------
 // Editor core functions
 //------------------------------------------
+    
+    /*
+     * Sets unique id for every element
+     */
+    function setID(id) {
+        current_el_id = id;
+    }
 
     /*
      * Update textarea.
@@ -184,10 +192,10 @@
      * @evt event object
      * @id the id of editable div in a DOM tree
      */
-    function updateTextarea(cur_el, id) {
-        container_id = id;
+    function updateTextarea(cur_el) {
         var div_content = cur_el.innerHTML;        // save contents from current editable div to a variable
-        textarea_elements[id].value = div_content;     // copy content from editable div into right textarea
+        textarea_elements[current_el_id].value = div_content;     // copy content from editable div into right textarea
+        console.log("current_el_id:", current_el_id);
     }
 
     /*
@@ -366,7 +374,7 @@
 
         document.execCommand("bold", false, null);
 
-        content_elements[container_id].focus();         // return focus back to editing field
+        content_elements[current_el_id].focus();         // return focus back to editing field
     }
 
     /*
@@ -377,7 +385,7 @@
 
         document.execCommand("italic", false, null);
         
-        content_elements[container_id].focus();         // return focus back to editing field
+        content_elements[current_el_id].focus();         // return focus back to editing field
     }
 
     /*
@@ -393,7 +401,7 @@
             showContextMenu(color_menu, formatTools["toggle-color-menu"]);
         }
         
-        content_elements[container_id].focus(); // return focus back to editing field
+        content_elements[current_el_id].focus(); // return focus back to editing field
     }
 
     /*
@@ -410,7 +418,7 @@
             showContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
         }
         
-        content_elements[container_id].focus(); // return focus back to editing field
+        content_elements[current_el_id].focus(); // return focus back to editing field
     }
 
     /*
@@ -435,7 +443,7 @@
             checkExistingLink();
         }
 
-        content_elements[container_id].focus();         // return focus back to editing field
+        content_elements[current_el_id].focus();         // return focus back to editing field
     }
 
     /*
@@ -466,7 +474,7 @@
             }
         }
 
-        content_elements[container_id].focus();         // return focus back to editing field
+        content_elements[current_el_id].focus();         // return focus back to editing field
     }
 
     /*
@@ -530,7 +538,7 @@
             }
         }
 
-        content_elements[container_id].focus();         // return focus back to editing field
+        content_elements[current_el_id].focus();         // return focus back to editing field
     }
 
     /*
@@ -549,7 +557,7 @@
         document.execCommand("foreColor", false, color);
         hideContextMenu(color_menu, formatTools["toggle-color-menu"]); // close color menu when done
 
-        content_elements[container_id].focus();         // return focus back to editing field
+        content_elements[current_el_id].focus();         // return focus back to editing field
     }
 
     /*
@@ -582,7 +590,7 @@
         }
         hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]); // close color menu when done
 
-        content_elements[container_id].focus();          // return focus back to editing field
+        content_elements[current_el_id].focus();          // return focus back to editing field
     }
 
     /*
@@ -594,8 +602,8 @@
         document.execCommand("removeFormat", false, null);
         document.execCommand("unlink", false, null);
 
-        console.log("id:", container_id);
-        content_elements[container_id].focus();          // return focus back to editing field
+        console.log("id:", current_el_id);
+        content_elements[current_el_id].focus();          // return focus back to editing field
     }
 
 
@@ -729,13 +737,17 @@
         ratio = diagonal * 0.2;
         // make image smaller
         if (sum > 0) {
-            cur_width = cur_width - ratio;
-            media_el.style.width = cur_width + "%";
+            if (cur_width > 20) { // set minimum limit
+                cur_width = cur_width - ratio;
+                media_el.style.width = cur_width + "%";
+            }
         }
         // make image bigger
         else {
-            cur_width = cur_width + ratio;
-            media_el.style.width = cur_width + "%";
+            if (cur_width < 99) { // set maximum limit
+                cur_width = cur_width + ratio;
+                media_el.style.width = cur_width + "%";
+            }
         }
 
         cur_mouse_x = e.x;
@@ -748,6 +760,8 @@
      * Resize image width in % accordingly to user actions
      */
     function resizeImg(e, this_el, media_el, direction) {
+        var cur_width;
+
         // disable selestion on drag
         document.onselectstart = function(){ return false; }
         
@@ -769,12 +783,23 @@
         document.onmouseup  = function() {
             removeClass(document.body, "ne-resize");
             removeClass(document.body, "nw-resize");
-            
+
+            cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
+            // Check if image is oversized
+            if (cur_width > 99) {
+                media_el.style.width = 99 + "%";
+            }
+            // Check if media is smaller than minimum limit
+            if (cur_width < 20) {
+                media_el.style.width = 20 + "%";
+            }
             document.onmousemove = function() {
                 // Reset all values
                 cur_mouse_x = 0;
                 cur_mouse_y = 0;
             };
+
+            document.onselectstart = function(){ return true; }
         }
     }
     
@@ -827,7 +852,7 @@
             ref_el;
         
         if (direction == "up") {
-            console.log("up was hit");
+            // console.log("up was hit");
             ref_el = prev(el);
 
             if (ref_el !== null) {
@@ -835,11 +860,11 @@
             }
         }
         else {
-            console.log("down was hit");
+            // console.log("down was hit");
             ref_el = next(el);
 
             if (ref_el !== null) {
-                console.log("ref_el:", ref_el);
+                // console.log("ref_el:", ref_el);
                 par_el.insertBefore(ref_el, el);
             }
         }
@@ -1038,7 +1063,7 @@
         ref_el.style.display = "none";
 
         par_el.insertBefore(section_el, ref_el);
-        setEventListener(section_el); // add event listeners
+        setCoreElementEventListener(section_el); // add event listeners
         section_el.getElementsByClassName("text-editor-content")[0].focus();
         
         removeAddSectionMenu();
@@ -1085,6 +1110,10 @@
         }
     }
 
+    function divPlaceholder() {
+        console.log("placeholder:", current_el_id);
+    }
+
 
 
 
@@ -1096,17 +1125,20 @@
     /*
      * This function was created due to the closure inside the loops
      */
-    function setEventListener(el) {
-        // console.log("el:", el[0].getElementsByClassName("add-below")[0]);
+    function setCoreElementEventListener(el) {
+        var is_new_elem = false; // If element added dinamically this turns into "true"
+
         // Check if it's single element and convert it to array
         if (!el.length && !!el) {
             var elem = {};
             Array.prototype.push.call(elem, el);
             el = elem;
+            is_new_elem = true;
         }
         
         // Loop through each 'text editor content' element and add event listeners
         for(var i = 0; el[i] !== undefined; i++) {
+
             var content_div       = el[i].getElementsByClassName("text-editor-content")[0],
                 add_section_above = el[i].getElementsByClassName("add-above")[0],
                 add_section_below = el[i].getElementsByClassName("add-below")[0],
@@ -1133,8 +1165,11 @@
                     
                     removeClass(this.parentNode.parentNode, "hover"); // remove .hover for main container when in blur
 
+                    // Set unique ID for every element
+                    is_new_elem ? setID(elem_amount-1) : setID(i);
+
                     // Updates textarea for back-end submition
-                    updateTextarea(e, i);
+                    updateTextarea(e);
 
                     // Defines whether user selected text or not
                     sel_type = checkSelectionType(window.getSelection());
@@ -1152,7 +1187,10 @@
             }, false);
 
             content_div.addEventListener("mouseup",   positionTools, false); // Show formatting tools when SELECTED with MOUSE
-            content_div.addEventListener("keyup",     positionTools, false); // Show formatting tools when SELECTED with KEYBOARD
+            content_div.addEventListener("keyup",     function() {
+                divPlaceholder();
+                positionTools();
+            }, false); // Show formatting tools when SELECTED with KEYBOARD
             document.addEventListener("scroll",    function() {        // Show formatting tools when Scroll and move with the content
                 if(sel_type === "Range") { positionTools(); }
             }, false);
@@ -1165,11 +1203,14 @@
             move_sec_down.onclick     = function(e) { moveSection(e, "down"); }
             
             setEventsForSection(el[i]);
+            
+            // Inscrease overall amount of elements
+            elem_amount++;
         }
     }
 
     // Add all events after initiall run
-    setEventListener(section_container);
+    setCoreElementEventListener(section_container);
     setEventsForMediaContainer(media_container);
 
     /*
@@ -1196,5 +1237,9 @@
     }
 
     setFormatTools();
+
+    document.getElementById("show-elem-amount").onclick = function() {
+        console.log("elem_amount:", elem_amount);
+    };
 
 })(window, document);
