@@ -1,6 +1,13 @@
 /* Core variables */
 $main_color: #00aeff;
 
+.ne-resize {
+    cursor: ne-resize;
+}
+.nw-resize {
+    cursor: nw-resize;
+}
+
 /* Plus (+) button core style */
 .add-btn {
     color: $main_color;
@@ -16,6 +23,13 @@ $main_color: #00aeff;
 }
 .add-btn:hover {
     color: #008aca;
+}
+
+.resize-img {
+    /*background-color: cyan;*/
+    width: 30px;
+    height: 30px;
+    position: absolute;
 }
 
 /* Main holder of whole set */
@@ -50,8 +64,7 @@ $main_color: #00aeff;
         .media-container {
             position: relative;
             margin: 4px;
-            width: 30%;
-            cursor: default;
+            /*cursor: default;*/
             @include transition(width, .15s, ease-out);
 
             .media-options {
@@ -84,6 +97,21 @@ $main_color: #00aeff;
                 > button:hover {
                     text-decoration: underline;
                 }
+
+                .resize-img-left-bot {
+                    @extend .resize-img;
+                    bottom: 0;
+                    left: 0;
+                    margin: 0 0 -5px -5px;
+                    cursor: ne-resize;
+                }
+                .resize-img-right-bot {
+                    @extend .resize-img;
+                    bottom: 0;
+                    right: 0;
+                    margin: 0 -5px -5px 0;
+                    cursor: nw-resize;
+                }
             }
 
             img {
@@ -96,7 +124,6 @@ $main_color: #00aeff;
             .media-options {
                 opacity: 1;
                 background-color: rgba(0, 0, 0, 0.6);
-                @include transition(opacity, .15s, ease-out);
             }
         }
     } /* /.editor-content-wrapper */

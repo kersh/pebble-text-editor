@@ -39,6 +39,8 @@
         btn_add_media_sect,
         btn_add_tbl_sect;
 
+    var cur_mouse_x, cur_mouse_y;
+
 
 
     // List of tools for rich editing
@@ -697,6 +699,84 @@
             false;
         }
     }
+
+    function calculateResize(e, direction, media_el) {
+        var dist_x, dist_y, sum, cur_width, pows, diagonal,
+            ratio = 0.05;
+
+        cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
+
+        // Direction: to top right corner (-> ^)
+        if (direction == "left") {
+            dist_x   = e.x - cur_mouse_x;
+            dist_y   = cur_mouse_y - e.y;
+            sum      = dist_x + dist_y;
+            pows     = Math.pow(dist_x, 2) + Math.pow(dist_y, 2);
+            diagonal = Math.sqrt(pows);
+        }
+        // Direction: left top corner
+        else {
+            dist_x   = cur_mouse_x - e.x;
+            dist_y   = cur_mouse_y - e.y;
+            sum      = dist_x + dist_y;
+            pows     = Math.pow(dist_x, 2) + Math.pow(dist_y, 2);
+            diagonal = Math.sqrt(pows);
+            // console.log("sum:", sum);
+        }
+
+        // console.log("pows:", pows);
+        // console.log("sum:", sum);
+        ratio = diagonal * 0.2;
+        // make image smaller
+        if (sum > 0) {
+            cur_width = cur_width - ratio;
+            media_el.style.width = cur_width + "%";
+        }
+        // make image bigger
+        else {
+            cur_width = cur_width + ratio;
+            media_el.style.width = cur_width + "%";
+        }
+
+        cur_mouse_x = e.x;
+        cur_mouse_y = e.y;
+
+        return false;
+    }
+
+    /*
+     * Resize image width in % accordingly to user actions
+     */
+    function resizeImg(e, this_el, media_el, direction) {
+        // disable selestion on drag
+        document.onselectstart = function(){ return false; }
+        
+        // set current mouse location
+        cur_mouse_x = e.x;
+        cur_mouse_y = e.y;
+
+        // keep cursor changed
+        if (direction == "left") {
+            addClass(document.body, "ne-resize");
+        } else {
+            addClass(document.body, "nw-resize");
+        }
+
+        // run function to calculate and resize image
+        document.onmousemove = function(e) { calculateResize(e, direction, media_el) };
+
+        // remove event listener
+        document.onmouseup  = function() {
+            removeClass(document.body, "ne-resize");
+            removeClass(document.body, "nw-resize");
+            
+            document.onmousemove = function() {
+                // Reset all values
+                cur_mouse_x = 0;
+                cur_mouse_y = 0;
+            };
+        }
+    }
     
     /*
      * Sets all event listeners for media container elements
@@ -716,6 +796,11 @@
 
             // Add event listener for "Remove media" button
             el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
+
+            el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown  = function(e) { resizeImg(e, this, this.parentNode.parentNode, "left") };
+            // el[i].getElementsByClassName("resize-img-left-bot")[0].onmouseup    = function(e) { this.onmousemove = null; }; // remove event listener
+
+            el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this, this.parentNode.parentNode, "right") };
         }
     }
 
@@ -848,10 +933,11 @@
         var media_div = document.createElement("div"); // main media container
         media_div.className = "media-container";
         media_div.style.float = float;
+        media_div.style.width = "30%"; // default width
         if (float == "left") {
             btn_value = "Right";
         }
-        media_div.innerHTML = '<div class="media-options"><button class="align-media">'+btn_value+'</button><button class="replace-media">Replace</button><button class="remove-media">Remove</button></div><!-- /.media-options --><img src="img/cat2.jpg" alt="cat"/>';
+        media_div.innerHTML = '<div class="media-options"><button class="align-media">'+btn_value+'</button><button class="replace-media">Replace</button><button class="remove-media">Remove</button><div class="resize-img-left-bot"></div><div class="resize-img-right-bot"></div></div><!-- /.media-options --><img src="img/cat2.jpg" alt="cat"/>';
 
         parent_el.insertBefore(media_div, first_child_el); // insert new created container into section
         setEventsForMediaContainer(media_div);             // add all necessary event listeners
