@@ -42,6 +42,7 @@ $main_color: #00aeff;
         position: absolute;
         margin: 4px 0;
         z-index: -999;
+        display: none;
 
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -49,6 +50,9 @@ $main_color: #00aeff;
         -moz-user-select: none;
         -ms-user-select: none;
         user-select: none;
+    }
+    .placeholder.show {
+        display: block;
     }
     
     /* Set defaults for all buttons */
@@ -78,7 +82,6 @@ $main_color: #00aeff;
         .media-container {
             position: relative;
             margin: 4px;
-            /*cursor: default;*/
             @include transition(width, .15s, ease-out);
 
             .media-options {
