@@ -24,10 +24,10 @@
 
     // Helpers
     var sel_type          = "Caret";     // Variable to store type of selection: caret or range
-    var show_menu_class   = "show-menu"; // Class for making visible the context menus
-    var is_in_focus       = false;       // Make editing tools working only inside input that is in focus
-    var is_italic         = false;       // Variable for removing extra formatting from any of paragraphs
-    var link_placeholder  = "none";      // Is a placeholder for input field when create a web/email link
+        show_menu_class   = "show-menu", // Class for making visible the context menus
+        is_in_focus       = false,       // Make editing tools working only inside input that is in focus
+        is_italic         = false,       // Variable for removing extra formatting from any of paragraphs
+        link_placeholder  = "none";      // Is a placeholder for input field when create a web/email link
 
     // All core elements
     var arrow_pointer     = document.getElementById("arrow-pointer");                // arrow icon that pointing on selection
@@ -41,34 +41,37 @@
     var media_container   = document.getElementsByClassName(cls_media_container);      // media container
     var cur_contentdiv; // current section element
 
-    var rmv_add_section_menu,
-        add_new_section_menu,
-        btn_add_txt_sect,
-        btn_add_media_sect,
-        btn_add_tbl_sect;
+    // 'Add new section' menu elements
+    var add_new_section_menu, // Main container
+        cls_add_section_menu, // Close menu button
+        btn_add_txt_sect,     // Add new text section
+        btn_add_media_sect,   // Add new media section
+        btn_add_tbl_sect;     // Add new table section
 
+    // Image resizing data
     var cur_mouse_x, cur_mouse_y;
 
-    // List of tools for rich editing
-    var formatTools = [];
-    formatTools['toggle-bold']                   = document.getElementById("toggle-bold");
-    formatTools['toggle-italic']                 = document.getElementById("toggle-italic");
+    // All toolbar elements stored in this object
+    var toolbar = {
+        bold        : document.getElementById("toggle-bold"),
+        italic      : document.getElementById("toggle-italic"),
+        
+        color_menu  : document.getElementById("toggle-color-menu"),
+        color_red   : document.getElementById("color-red"),
+        color_green : document.getElementById("color-green"),
+        color_blue  : document.getElementById("color-blue"),
 
-    formatTools['toggle-color-menu']             = document.getElementById("toggle-color-menu");
-        formatTools['color-red']                 = document.getElementById("color-red");
-        formatTools['color-green']               = document.getElementById("color-green");
-        formatTools['color-blue']                = document.getElementById("color-blue");
-    
-    formatTools['toggle-paragraph-menu']         = document.getElementById("toggle-paragraph-menu");
-        formatTools['toggle-heading-h1']         = document.getElementById("toggle-heading-h1");
-        formatTools["toggle-heading-h2"]         = document.getElementById("toggle-heading-h2");
-    
-    formatTools['toggle-web-link']               = document.getElementById("toggle-web-link");
-    formatTools['toggle-email-link']             = document.getElementById("toggle-email-link");
-        formatTools['edit-link']                 = document.getElementById("edit-link");
-        formatTools['open-link']                 = document.getElementById("open-link");
+        paragraph   : document.getElementById("toggle-paragraph-menu"),
+        h1          : document.getElementById("toggle-heading-h1"),
+        h2          : document.getElementById("toggle-heading-h2"),
 
-    formatTools["remove-formatting"]             = document.getElementById("remove-formatting");
+        web_link    : document.getElementById("toggle-web-link"),
+        email_link  : document.getElementById("toggle-email-link"),
+        edit_link   : document.getElementById("edit-link"),
+        open_link   : document.getElementById("open-link"),
+
+        plain       : document.getElementById("remove-formatting")
+    }
 
 //------------------------------------------
 // Helper functions
@@ -234,8 +237,8 @@
      * Hide all open context menus at the same time
      */
     function hideAllContextMenus() {
-        hideContextMenu(color_menu, formatTools["toggle-color-menu"]);          // hide color menu
-        hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);  // hide paragraph menu
+        hideContextMenu(color_menu, toolbar.color_menu);          // hide color menu
+        hideContextMenu(paragraph_menu, toolbar.paragraph);  // hide paragraph menu
     }
 
 
@@ -456,12 +459,12 @@
      */
     function toggleColorMenu() {
         // Close other menus.
-        hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]); // close paragraph menu
+        hideContextMenu(paragraph_menu, toolbar.paragraph); // close paragraph menu
 
         if(hasClass(color_menu, show_menu_class)) {
-            hideContextMenu(color_menu, formatTools["toggle-color-menu"]);
+            hideContextMenu(color_menu, toolbar.color_menu);
         } else {
-            showContextMenu(color_menu, formatTools["toggle-color-menu"]);
+            showContextMenu(color_menu, toolbar.color_menu);
         }
         
         cur_contentdiv.focus(); // return focus back to editing field
@@ -472,13 +475,13 @@
      */
     function toggleParagraphMenu() {
         // Close other menus
-        hideContextMenu(color_menu, formatTools["toggle-color-menu"]); // close color menu
+        hideContextMenu(color_menu, toolbar.color_menu); // close color menu
 
         // Toggle menu with heading/paragraph styles 
        if(hasClass(paragraph_menu, show_menu_class)) {
-            hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
+            hideContextMenu(paragraph_menu, toolbar.paragraph);
         } else {
-            showContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]);
+            showContextMenu(paragraph_menu, toolbar.paragraph);
         }
         
         cur_contentdiv.focus(); // return focus back to editing field
@@ -618,7 +621,7 @@
      */
     function setColor(color) {
         document.execCommand("foreColor", false, color);
-        hideContextMenu(color_menu, formatTools["toggle-color-menu"]); // close color menu when done
+        hideContextMenu(color_menu, toolbar.color_menu); // close color menu when done
 
         cur_contentdiv.focus(); // return focus back to editing field
     }
@@ -651,7 +654,7 @@
             default:
                 console.log("Heading type undefined");
         }
-        hideContextMenu(paragraph_menu, formatTools["toggle-paragraph-menu"]); // close color menu when done
+        hideContextMenu(paragraph_menu, toolbar.paragraph); // close paragraph menu when done
 
         cur_contentdiv.focus(); // return focus back to editing field
     }
@@ -877,32 +880,7 @@
             document.onselectstart = function(){ return true; }
         }
     }
-    
-    /*
-     * Sets all event listeners for media container elements
-     * @el - elements or set of elements
-     */
-    function setEventsForMediaContainer(el) {
-        // Check if it's single element and convert it to array
-        if (!el.length) {
-            var elem = {};
-            Array.prototype.push.call(elem, el);
-            el = elem;
-        }
 
-        for (var i=0; el[i] !== undefined; i++) {
-            // Add event listener for "Align media" button
-            el[i].getElementsByClassName("align-media")[0].onclick = alignMedia;
-
-            // Add event listener for "Remove media" button
-            el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
-
-            el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown  = function(e) { resizeImg(e, this.parentNode.parentNode, "left") };
-            // el[i].getElementsByClassName("resize-img-left-bot")[0].onmouseup    = function(e) { this.onmousemove = null; }; // remove event listener
-
-            el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "right") };
-        }
-    }
 
 
 
@@ -1003,6 +981,29 @@
     }
 
     /*
+     * Placeholder like native HTML5
+     */
+    function placeholder() {
+        var placeholder_el = cur_contentdiv.parentNode.getElementsByClassName("placeholder")[0];
+
+        setTimeout(function(){
+            if (cur_contentdiv.innerHTML.length > 0 && cur_contentdiv.innerHTML != "<br>") {
+                removeClass(placeholder_el, "show");
+            } else {
+                addClass(placeholder_el, "show");
+            }
+        }, 0);
+    }
+
+
+
+
+
+//------------------------------------------
+// Add New Section Menu functions
+//------------------------------------------
+
+    /*
      * "Add new section" buttons aka "Pluses"(+)
      */
     function addNewSectionMenu(e, location) {
@@ -1013,8 +1014,8 @@
             add_new_el.innerHTML = '<button id="add-text-section"><div class="icon">+</div><div class="lbl">Text Section</div></button>'
                                  + '<button id="add-media-section"><div class="icon">+</div><div class="lbl">Media Section</div></button>'
                                  + '<button id="add-tbl-section"><div class="icon">+</div><div class="lbl">Table Section</div></button>'
-                                 + '<button id="remove-add-section-menu">✖</button>';
-        
+                                 + '<button id="close-add-section-menu">✖</button>';
+
         add_new_section_menu = document.getElementById("add-new-section-menu");
 
         // Remove menu if it already exists
@@ -1033,6 +1034,7 @@
         setTimeout(function() {
             addClass(add_new_el, "show");
         }, 0);
+
         // Set focus
         document.getElementById("add-text-section").focus();
 
@@ -1071,7 +1073,7 @@
         ref_el.style.display = "none";
 
         par_el.insertBefore(section_el, ref_el);
-        setCoreElementEventListener(section_el); // add event listeners
+        setSectionEventListeners(section_el); // add event listeners
         section_el.getElementsByClassName(cls_editablediv)[0].focus();
         
         removeAddSectionMenu();
@@ -1099,40 +1101,6 @@
         add_new_section_menu.parentNode.removeChild(add_new_section_menu);
     }
 
-    /*
-     * Sets all events for "Add new section" menu
-     */
-    function setEventsForAddNewSection() {
-        add_new_section_menu = document.getElementById("add-new-section-menu");
-        
-        if (!!add_new_section_menu) {
-            btn_add_txt_sect     = document.getElementById("add-text-section");
-            btn_add_media_sect   = document.getElementById("add-media-section");
-            btn_add_tbl_sect     = document.getElementById("add-tbl-section");
-            rmv_add_section_menu = document.getElementById("remove-add-section-menu");
-
-            btn_add_txt_sect.onclick     = addTxtSection;
-            btn_add_media_sect.onclick   = addMediaSection;
-            btn_add_tbl_sect.onclick     = addTblSection;
-            rmv_add_section_menu.onclick = removeAddSectionMenu;
-        }
-    }
-
-    /*
-     * Placeholder like native HTML5
-     */
-    function placeholder() {
-        var placeholder_el = cur_contentdiv.parentNode.getElementsByClassName("placeholder")[0];
-
-        setTimeout(function(){
-            if (cur_contentdiv.innerHTML.length > 0 && cur_contentdiv.innerHTML != "<br>") {
-                removeClass(placeholder_el, "show");
-            } else {
-                addClass(placeholder_el, "show");
-            }
-        }, 0);
-    }
-
 
 
 
@@ -1141,19 +1109,11 @@
 // Event listeners
 //------------------------------------------
 
-
-
-
-
-//------------------------------------------
-// App.Init
-//------------------------------------------
-
     /*
-     * Sets all event listeners for section elements and section itself
+     * Sets all event listeners for media container elements
      * @el - elements or set of elements
      */
-    function setEventsForSection(el) {
+    function setEventsForMediaContainer(el) {
         // Check if it's single element and convert it to array
         if (!el.length) {
             var elem = {};
@@ -1161,79 +1121,114 @@
             el = elem;
         }
 
-        for (var i = 0; el[i] !== undefined; i++) {
-            // Event listener to remove section
-            el[i].getElementsByClassName("remove-section")[0].onclick = removeSection;
+        for (var i=0; el[i] !== undefined; i++) {
+            // Add event listener for "Align media" button
+            el[i].getElementsByClassName("align-media")[0].onclick = alignMedia;
 
-            // Event to toggle "Add media" menu
-            el[i].getElementsByClassName("add-media")[0].onclick = toggleMediaMenu;
+            // Add event listener for "Remove media" button
+            el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
 
-            // Event to insert media into section
-            el[i].getElementsByClassName("add-media-left")[0].onclick = function(e) { addMedia(e, "left"); }
-            el[i].getElementsByClassName("add-media-right")[0].onclick = function(e) { addMedia(e, "right"); }
+            // Resize from left bottom corner
+            el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown  = function(e) { resizeImg(e, this.parentNode.parentNode, "left") };
+
+            // Resize from right bottom corner
+            el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "right") };
+        }
+    }
+
+    /*
+     * Sets all events for "Add new section" menu
+     */
+    function setEventsForAddNewSection() {
+        // 'Add new section' menu element
+        add_new_section_menu = document.getElementById("add-new-section-menu");
+        
+        // All buttons within menu
+        btn_add_txt_sect     = document.getElementById("add-text-section");
+        btn_add_media_sect   = document.getElementById("add-media-section");
+        btn_add_tbl_sect     = document.getElementById("add-tbl-section");
+        cls_add_section_menu = document.getElementById("close-add-section-menu"); // close menu
+
+        // If element exists then add events
+        if (!!add_new_section_menu) {
+            btn_add_txt_sect.onclick     = addTxtSection;
+            btn_add_media_sect.onclick   = addMediaSection;
+            btn_add_tbl_sect.onclick     = addTblSection;
+            cls_add_section_menu.onclick = removeAddSectionMenu;
         }
     }
 
     /*
      * This function was created due to the closure inside the loops
      */
-    function setCoreElementEventListener(el) {
-        var is_new_elem = false; // If element added dinamically this turns into "true"
+    function setSectionEventListeners(el) {
+        var add_section_above,  // (+) add new section above button
+            add_section_below,  // (+) add new section below button
+            
+            content_div,        // section container itself
+            btn_rmv_section,    // remove section button
+            btn_move_sec_up,    // move section up button
+            btn_move_sec_down,  // move section down button
+            btn_add_media,      // add new media
+            btn_add_med_left,   // adds media on the left
+            btn_add_med_right;  // adds media on the right
+
 
         // Check if it's single element and convert it to array
         if (!el.length && !!el) {
             var elem = {};
             Array.prototype.push.call(elem, el);
             el = elem;
-            is_new_elem = true;
         }
         
         // Loop through each 'text editor content' element and add event listeners
         for(var i = 0; el[i] !== undefined; i++) {
+            add_section_above = el[i].getElementsByClassName("add-above")[0],
+            add_section_below = el[i].getElementsByClassName("add-below")[0],
+            
+            content_div       = el[i].getElementsByClassName(cls_editablediv)[0],
+            btn_rmv_section   = el[i].getElementsByClassName("remove-section")[0]
+            btn_move_sec_up   = el[i].getElementsByClassName("move-sec-up")[0],
+            btn_move_sec_down = el[i].getElementsByClassName("move-sec-down")[0];
+            btn_add_media     = el[i].getElementsByClassName("add-media")[0];
+            btn_add_med_left  = el[i].getElementsByClassName("add-media-left")[0];
+            btn_add_med_right = el[i].getElementsByClassName("add-media-right")[0];
+            cur_contentdiv    = content_div; // sets current editable div element
 
-            var content_div       = el[i].getElementsByClassName(cls_editablediv)[0],
-                add_section_above = el[i].getElementsByClassName("add-above")[0],
-                add_section_below = el[i].getElementsByClassName("add-below")[0],
-                move_sec_up       = el[i].getElementsByClassName("move-sec-up")[0],
-                move_sec_down     = el[i].getElementsByClassName("move-sec-down")[0];
 
-            cur_contentdiv = content_div;
-            // Adding event listeners
-            content_div.addEventListener("load",      placeholder(),  false);
-            content_div.addEventListener("paste",     makePlain,    false); // Paste unformatted text
-            content_div.addEventListener("drop",      makePlain,    false); // Drops unformatted text
+            // Run placeholder right after load
+            content_div.addEventListener("load",  placeholder(),  false);
 
-            content_div.addEventListener("focus",     function(el){
+            // Show or hide placeholder within section
+            content_div.addEventListener("keydown", placeholder, false);
+            
+            // Put all date into textarea right after load
+            content_div.addEventListener("load",  updateTextarea(el[i]),  false);
+
+            // Apply changes to main container after focus
+            content_div.addEventListener("focus", function(el){
                 return function() {
-
+                    // Update current editable div to indicate working element
                     cur_contentdiv = el.getElementsByClassName(cls_editablediv)[0];
                     
-                    is_in_focus = true; // got the focus
+                    // Flag for toolbar
+                    is_in_focus = true;
 
-                    addClass(this.parentNode.parentNode, "hover"); // add .hover for main container when in focus
+                    // Add .hover for main container when in focus
+                    addClass(this.parentNode.parentNode, "hover");
 
+                    // Check if need to show editing toolbar
                     if(sel_type==="Range"){ showTools(); }
                 };
             }(el[i]), false);
+
+            // Make possible to paste plain text
+            content_div.addEventListener("paste", makePlain,    false);
             
-            // Saves all data into textarea.
-            // Hides editing tools when out of editing element focus.
-            content_div.addEventListener("blur",      function(el) {
-                return function() {
-                    is_in_focus = false; // Lost the focus
-                    
-                    removeClass(this.parentNode.parentNode, "hover"); // remove .hover for main container when in blur
+            // Disable dragging text for editable area
+            content_div.addEventListener("drop",  makePlain,    false);
 
-                    // Updates textarea for back-end submition
-                    updateTextarea(el);
-
-                    // Defines whether user selected text or not
-                    sel_type = checkSelectionType(window.getSelection());
-                    if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
-                };
-            }(el[i]), false);
-
-            //// Place formatting tools
+            /* Place formatting tools */
             // React on mouse move within content element
             content_div.addEventListener("mousemove", function() {
                 if(is_in_focus === true) { positionTools(); } }, false);
@@ -1245,54 +1240,112 @@
             // Show formatting tools when SELECTED with MOUSE
             content_div.addEventListener("mouseup", positionTools, false);
 
-            // Show or hide placeholder within section
-            content_div.addEventListener("keydown", placeholder, false);
-
             // Show formatting tools when SELECTED with KEYBOARD
             content_div.addEventListener("keyup", positionTools, false);
 
             // Show formatting tools when Scroll and move with the content
-            document.addEventListener("scroll",    function() {
+            document.addEventListener("scroll", function() {
                 if(sel_type === "Range") { positionTools(); } }, false);
 
+            // Saves all data into textarea.
+            // Hides editing tools when out of editing element focus.
+            content_div.addEventListener("blur", function(el) {
+                return function() {
+                    // Indicate when focus is lost
+                    is_in_focus = false;
+                    
+                    // Remove .hover for main container when in blur
+                    removeClass(this.parentNode.parentNode, "hover");
+
+                    // Updates textarea for back-end submition
+                    updateTextarea(el);
+
+                    // Defines whether user selected text or not
+                    sel_type = checkSelectionType(window.getSelection());
+                    if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
+                };
+            }(el[i]), false);
+
+            /* Section actions */
             // Sets event listener for "Add new section" buttons aka "Pluses"(+)
             add_section_above.onclick = function(e) { addNewSectionMenu(e, "above"); }
             add_section_below.onclick = function(e) { addNewSectionMenu(e, "below"); }
 
-            move_sec_up.onclick       = function(e) { moveSection(e, "up"); }
-            move_sec_down.onclick     = function(e) { moveSection(e, "down"); }
-            
-            setEventsForSection(el[i]);
+            // Event listener to remove section
+            btn_rmv_section.onclick = removeSection;
+
+            // Event to toggle "Add media" menu
+            btn_add_media.onclick = toggleMediaMenu;
+
+            // Event to insert media into section
+            btn_add_med_left.onclick = function(e) { addMedia(e, "left"); }
+            btn_add_med_right.onclick = function(e) { addMedia(e, "right"); }
+
+            // Move section up/down
+            btn_move_sec_up.onclick       = function(e) { moveSection(e, "up"); }
+            btn_move_sec_down.onclick     = function(e) { moveSection(e, "down"); }
         }
     }
-
-    // Add all events after initiall run
-    setCoreElementEventListener(section_container);
-    setEventsForMediaContainer(media_container);
 
     /*
      * Sets actions for all toolbar buttons
      */
-    function setFormatTools() {
+    function setToolbar() {
         // Formatting tools
-        formatTools["toggle-bold"]          .addEventListener("click", toggleBold,   false);
-        formatTools["toggle-italic"]        .addEventListener("click", toggleItalic, false);
-        formatTools["toggle-color-menu"]    .addEventListener("click", toggleColorMenu, false);
-        formatTools["color-red"]            .addEventListener("click", function(){ setColor("red") }, false);
-        formatTools["color-green"]          .addEventListener("click", function(){ setColor("green") }, false);
-        formatTools["color-blue"]           .addEventListener("click", function(){ setColor("blue") }, false);
-        formatTools["toggle-paragraph-menu"].addEventListener("click", toggleParagraphMenu, false);
-        formatTools["toggle-heading-h1"]    .addEventListener("click", function(){ toggleHeading("h1"); }, false);
-        formatTools["toggle-heading-h2"]    .addEventListener("click", function(){ toggleHeading("h2"); }, false);
+        toolbar.bold.addEventListener("click", toggleBold, false);
+        toolbar.italic.addEventListener("click", toggleItalic, false);
         
-        formatTools["toggle-web-link"]      .addEventListener("click", function(){ createWebLink(); }, false);
-        formatTools["toggle-email-link"]    .addEventListener("click", function(){ createEmailLink(); }, false);
-            formatTools["edit-link"]        .addEventListener("click", function(){ editLink(); }, false);
-            formatTools["open-link"]        .addEventListener("click", function(){ openLink(); }, false);
+        toolbar.color_menu.addEventListener("click", toggleColorMenu, false);
+        toolbar.color_red.addEventListener("click", function(){ setColor("red") }, false);
+        toolbar.color_green.addEventListener("click", function(){ setColor("green") }, false);
+        toolbar.color_blue.addEventListener("click", function(){ setColor("blue") }, false);
+        
+        toolbar.paragraph.addEventListener("click", toggleParagraphMenu, false);
+        toolbar.h1.addEventListener("click", function(){ toggleHeading("h1"); }, false);
+        toolbar.h2.addEventListener("click", function(){ toggleHeading("h2"); }, false);
+        
+        toolbar.web_link.addEventListener("click", function(){ createWebLink(); }, false);
+        toolbar.email_link.addEventListener("click", function(){ createEmailLink(); }, false);
+        toolbar.edit_link.addEventListener("click", function(){ editLink(); }, false);
+        toolbar.open_link.addEventListener("click", function(){ openLink(); }, false);
 
-        formatTools["remove-formatting"]    .addEventListener("click", function(){ removeFormatting(); }, false);
+        toolbar.plain.addEventListener("click", function(){ removeFormatting(); }, false);
     }
 
-    setFormatTools();
+
+
+
+
+//------------------------------------------
+// Application Init
+//------------------------------------------
+
+    window.PebbleEditor = (function()
+    {
+        var _init = false, app = {};
+
+        app.init = function() {
+            // Exit function if it's already running
+            if (_init) { return; }
+
+            // Indicate that function is running
+            _init = true;
+
+            // Add all events after initiall run
+            setSectionEventListeners(section_container);
+            setEventsForMediaContainer(media_container);
+            setToolbar();
+        };
+
+        return app;
+
+    })();
+
+    window.PebbleEditor.init();
+
+    // Run this script only when content is loaded and addEventListener is suppported by the browser
+    if (window.addEventListener) {
+        window.addEventListener('DOMContentLoaded', window.PebbleEditor.init(), false);
+    }
 
 })(window, document);

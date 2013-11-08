@@ -8,14 +8,6 @@
 //   width: device-width;
 // }
 
-/*
- * These selection declarations have to be separate
- * No text-shadow: twitter.com/miketaylr/status/12228805301
- * Also: hot pink!
- */
-::-moz-selection { background: #3498db; color: #fff; text-shadow: none; }
-::selection { background: #3498db; color: #fff; text-shadow: none; }
-
 $zEditingTools: 1000;
 $zInterface: 0;
 
@@ -39,6 +31,29 @@ $zInterface: 0;
          -o-transform: $value;
             transform: $value;
 }
+
+@mixin box-shadow($value) {
+    -webkit-box-shadow: $value;
+       -moz-box-shadow: $value;
+            box-shadow: $value;
+}
+
+
+/*
+ * These selection declarations have to be separate
+ * No text-shadow: twitter.com/miketaylr/status/12228805301
+ */
+::-moz-selection {
+    background: #00aeff;
+    color: #fff;
+    text-shadow: none;
+}
+::selection {
+    background: #00aeff;
+    color: #fff;
+    text-shadow: none;
+}
+
 
 body {
     // -webkit-user-select: none;

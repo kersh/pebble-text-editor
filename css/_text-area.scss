@@ -271,7 +271,7 @@ $main_color: #00aeff;
         border: 1px solid darken($main_color, 20);
     }
 
-    button#remove-add-section-menu {
+    button#close-add-section-menu {
         position: absolute;
         top: 0;
         right: 0;
@@ -282,7 +282,7 @@ $main_color: #00aeff;
         padding: 1px 4px;
         margin: 5px;
     }
-    button#remove-add-section-menu:hover {
+    button#close-add-section-menu:hover {
         color: #777;
         border-color: #777;
     }
