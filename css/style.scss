@@ -8,16 +8,52 @@
 //   width: device-width;
 // }
 
+$zEditingTools: 1000;
+$zInterface: 0;
+
+@mixin transition($property, $duration, $trans-type) {
+    -webkit-transition: $property $duration $trans-type;
+       -moz-transition: $property $duration $trans-type;
+         -o-transition: $property $duration $trans-type;
+            transition: $property $duration $trans-type;
+}
+
+@mixin border-radius($value) {
+    -webkit-border-radius: $value;
+       -moz-border-radius: $value;
+            border-radius: $value;
+}
+
+@mixin transform($value) {
+    -webkit-transform: $value;
+       -moz-transform: $value;
+        -ms-transform: $value;
+         -o-transform: $value;
+            transform: $value;
+}
+
+@mixin box-shadow($value) {
+    -webkit-box-shadow: $value;
+       -moz-box-shadow: $value;
+            box-shadow: $value;
+}
+
+
 /*
  * These selection declarations have to be separate
  * No text-shadow: twitter.com/miketaylr/status/12228805301
- * Also: hot pink!
  */
-::-moz-selection { background: #3498db; color: #fff; text-shadow: none; }
-::selection { background: #3498db; color: #fff; text-shadow: none; }
+::-moz-selection {
+    background: #00aeff;
+    color: #fff;
+    text-shadow: none;
+}
+::selection {
+    background: #00aeff;
+    color: #fff;
+    text-shadow: none;
+}
 
-$zEditingTools: 1000;
-$zInterface: 0;
 
 body {
     // -webkit-user-select: none;

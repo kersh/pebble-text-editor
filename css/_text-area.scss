@@ -1,6 +1,13 @@
 /* Core variables */
 $main_color: #00aeff;
 
+.ne-resize {
+    cursor: ne-resize !important;
+}
+.nw-resize {
+    cursor: nw-resize !important;
+}
+
 /* Plus (+) button core style */
 .add-btn {
     color: $main_color;
@@ -18,11 +25,35 @@ $main_color: #00aeff;
     color: #008aca;
 }
 
+.resize-img {
+    /*background-color: cyan;*/
+    width: 30px;
+    height: 30px;
+    position: absolute;
+}
+
 /* Main holder of whole set */
 .text-area-holder {
     margin: -16px 0 0 0;
     height: 100%;
-    background-color: #fff;
+
+    .placeholder {
+        color: #bbb;
+        position: absolute;
+        margin: 4px 0;
+        z-index: -999;
+        display: none;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .placeholder.show {
+        display: block;
+    }
     
     /* Set defaults for all buttons */
     button {
@@ -31,8 +62,7 @@ $main_color: #00aeff;
         outline: none;
     }
 
-    /* Main field with content */
-    .text-editor-content {
+    .editor-content-wrapper {
         display: inline-block;
         outline: none;
         border: 1px solid rgba(0,0,0,0);
@@ -41,15 +71,18 @@ $main_color: #00aeff;
         padding: 4px;
         margin: 0;
 
+        /* Main field with content */
+        .text-editor-content {
+            display: block;
+            outline: none;
+            margin: 4px 0;
+        }
+
+        /* Field with media */
         .media-container {
             position: relative;
             margin: 4px;
-            width: 25%;
-            cursor: default;
-            -webkit-transition: width .15s ease-out;
-               -moz-transition: width .15s ease-out;
-                 -o-transition: width .15s ease-out;
-                    transition: width .15s ease-out;
+            @include transition(width, .15s, ease-out);
 
             .media-options {
                 background-color: rgba(0, 0, 0, 0);
@@ -59,7 +92,6 @@ $main_color: #00aeff;
                 width: 100%;
                 height: 100%;
                 opacity: 0;
-                text-align: center;
 
                 -webkit-touch-callout: none;
                 -webkit-user-select: none;
@@ -68,10 +100,7 @@ $main_color: #00aeff;
                 -ms-user-select: none;
                 user-select: none;
 
-                -webkit-transition: opacity .15s ease-out;
-                   -moz-transition: opacity .15s ease-out;
-                     -o-transition: opacity .15s ease-out;
-                        transition: opacity .15s ease-out;
+                @include transition(opacity, .15s, ease-out);
 
                 > button {
                     color: #F3FFE2;
@@ -85,6 +114,21 @@ $main_color: #00aeff;
                 > button:hover {
                     text-decoration: underline;
                 }
+
+                .resize-img-left-bot {
+                    @extend .resize-img;
+                    bottom: 0;
+                    left: 0;
+                    margin: 0 0 -5px -5px;
+                    cursor: ne-resize;
+                }
+                .resize-img-right-bot {
+                    @extend .resize-img;
+                    bottom: 0;
+                    right: 0;
+                    margin: 0 -5px -5px 0;
+                    cursor: nw-resize;
+                }
             }
 
             img {
@@ -97,16 +141,14 @@ $main_color: #00aeff;
             .media-options {
                 opacity: 1;
                 background-color: rgba(0, 0, 0, 0.6);
-                -webkit-transition: opacity .15s ease-out;
-                   -moz-transition: opacity .15s ease-out;
-                     -o-transition: opacity .15s ease-out;
-                        transition: opacity .15s ease-out;
             }
         }
-    }
+    } /* /.editor-content-wrapper */
 
     .text-editor-textarea {
         display: none;
+        width: 100%;
+        height: 250px;
     }
 
     /* Style for plus on the top */
@@ -128,7 +170,7 @@ $main_color: #00aeff;
             border-right: none;
             
             /* Style for "Remove" "Move Up" "Move Down" buttons */
-            > button {
+            button {
                 color: $main_color;
                 font-size: 1em;
                 margin: 0;
@@ -140,8 +182,21 @@ $main_color: #00aeff;
                 border-right: 1px solid $main_color;
             }
 
-            > button:hover {
+            button:hover {
                 color: darken($main_color, 25);
+            }
+
+            .align-media-choice {
+                position: absolute;
+                display: none;
+                padding: 0;
+                margin: -22px 0 0 -84px;
+                border-top: 1px solid $main_color;
+                border-left: 1px solid $main_color;
+                background-color: #fff;
+            }
+            .align-media-choice.show {
+                display: inline-block;
             }
         }
 
@@ -155,7 +210,7 @@ $main_color: #00aeff;
 
 .hover, .text-area-holder:hover {
     /* Show border when on hover */
-    .text-editor-content {
+    .editor-content-wrapper {
         border: 1px solid $main_color;
     }
     
@@ -168,6 +223,75 @@ $main_color: #00aeff;
     .add-btn {
         visibility: visible;
     }
+}
+
+/* Add New Section */
+.add-new-section-menu {
+    border: 1px solid #bbb;
+    background-color: #eee;
+    display: block;
+    position: relative;
+    text-align: center;
+    margin: 10px auto 20px auto;
+    padding: 0;
+    /*height: 0;*/
+    max-height: 0px;
+    width: 100%;
+    @include border-radius(2px);
+    overflow: hidden;
+    transform-origin: 50% 50%;
+    -webkit-transform-origin: 50% 50%;
+    @include transform(scaleY(0));
+    -webkit-transition: max-height .2s ease-out, -webkit-transform .15s ease-out;
+       -moz-transition: max-height .2s ease-out, -moz-transition .15s ease-out;
+         -o-transition: max-height .2s ease-out, -o-transition .15s ease-out;
+            transition: max-height .2s ease-out, -webkit-transform .15s ease-out;
+
+    button {
+        /*outline: none;*/
+        margin: 14px 8px 14px 0;
+        padding: 5px;
+        border: 1px solid darken($main_color, 10);
+        background-color: $main_color;
+        color: #fff;
+        @include border-radius(3px);
+
+        .icon {
+            font-size: 2em;
+            line-height: .5em;
+        }
+
+        .lbl {
+            font-size: .9em;
+            margin-top: 5px;
+        }
+    }
+    button:hover {
+        background-color: darken($main_color, 10);
+        border: 1px solid darken($main_color, 20);
+    }
+
+    button#close-add-section-menu {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: .8em;
+        background-color: transparent;
+        color: #aaa;
+        border: 1px solid #aaa;
+        padding: 1px 4px;
+        margin: 5px;
+    }
+    button#close-add-section-menu:hover {
+        color: #777;
+        border-color: #777;
+    }
+}
+.add-new-section-menu.show {
+    /*height: auto;*/
+    max-height: 80px;
+    @include transform(scaleY(1));
+    /*@include transition(all, .15s, ease-out);*/
 }
 
 @import "no-touch/text-area";

@@ -1,6 +1,11 @@
 // All variables defined here
 $heightOfMainMenu: 71px;
 $speedOfMenuTransition: .15s;
+
+$btn_main_bg_color: #3a3a3a;
+$btn_main_bg_color_hover: #202020;
+$font_color: #f6f6f6;
+$border_color: #f6f6f6;
 // --------------------------
 
 
@@ -31,7 +36,7 @@ $speedOfMenuTransition: .15s;
         height: 0;
         border-left: 5px solid transparent;
         border-right: 5px solid transparent;
-        border-bottom: 5px solid black;
+        border-bottom: 5px solid $btn_main_bg_color;
     }
 
     // Same arrow but reversed
