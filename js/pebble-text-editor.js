@@ -1053,7 +1053,7 @@
             section_el.innerHTML = '<button class="add-btn add-above">+</button>'
                                  + '<div class="'+ cls_content_wrapper +'">'
                                  + '<div class="placeholder">Start typing here...</div>'
-                                 + '<div class="'+cls_editablediv+'" contenteditable></div>'
+                                 + '<div class="'+cls_editablediv+'" contenteditable><br/></div>'
                                  + '</div><!-- /.'+ cls_content_wrapper +' -->'
                                  + '<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>'
                                  + '<div class="section-options">'

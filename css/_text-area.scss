@@ -16,6 +16,7 @@ $main_color: #00aeff;
     padding-left: 0;
     font-size: 1.2em;
     height: 16px;
+    width: 14px;
     background-color: yellow;
     line-height: 0;
     visibility: hidden;
@@ -34,6 +35,7 @@ $main_color: #00aeff;
 
 /* Main holder of whole set */
 .text-area-holder {
+    font-size: 1em;
     margin: -16px 0 0 0;
     height: 100%;
 
@@ -73,9 +75,13 @@ $main_color: #00aeff;
 
         /* Main field with content */
         .text-editor-content {
+            white-space: normal;
+            word-wrap: break-word;
             display: block;
             outline: none;
             margin: 4px 0;
+            border-bottom: none;
+            min-height: 1.2em;
         }
 
         /* Field with media */
@@ -159,8 +165,11 @@ $main_color: #00aeff;
 
     /* Container with options for current section */
     .section-options {
+        display: block;
         position: relative;
         visibility: hidden;
+        top: 0;
+        margin-top: 0;
         
         /* Additional holder for core buttons */
         .core-options-holder {
