@@ -33,6 +33,13 @@ $main_color: #00aeff;
     position: absolute;
 }
 
+input::-moz-focus-inner { 
+    border: 0; 
+    padding: 0; 
+    margin-top:-2px; 
+    margin-bottom: -2px; 
+}
+
 /* Main holder of whole set */
 .text-area-holder {
     font-size: 1em;
@@ -45,6 +52,7 @@ $main_color: #00aeff;
         margin: 4px 0;
         z-index: -999;
         display: none;
+        // float: left;
 
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -65,7 +73,7 @@ $main_color: #00aeff;
     }
 
     .editor-content-wrapper {
-        display: inline-block;
+        display: block;
         outline: none;
         border: 1px solid rgba(0,0,0,0);
         height: 100%;
@@ -88,7 +96,7 @@ $main_color: #00aeff;
         .media-container {
             position: relative;
             margin: 4px;
-            @include transition(width, .15s, ease-out);
+            // @include transition(width, .15s, ease-out);
 
             .media-options {
                 background-color: rgba(0, 0, 0, 0);
@@ -151,6 +159,15 @@ $main_color: #00aeff;
         }
     } /* /.editor-content-wrapper */
 
+    .editor-content-wrapper:before,
+    .editor-content-wrapper:after {
+        content: "";
+        display: table;
+    }
+    .editor-content-wrapper:after {
+        clear: both;
+    }
+
     .text-editor-textarea {
         display: none;
         width: 100%;
@@ -185,7 +202,7 @@ $main_color: #00aeff;
                 margin: 0;
                 padding: 0 4px;
                 height: 20px;
-                line-height: 1em;
+                line-height: 20px;
                 display: block;
                 float: left;
                 border-right: 1px solid $main_color;

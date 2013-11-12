@@ -744,7 +744,9 @@
 
         if (value == "right") {
             elem.style.display = "none";
-            elem.style.float = "left";
+            elem.style.styleFloat = "left"; // ie style
+            elem.style.cssFloat   = "left"; // all rest browser style
+
             this.innerHTML = "Right";
 
             setTimeout( function(){
@@ -752,7 +754,8 @@
             }, 150);
         } else {
             elem.style.display = "none";
-            elem.style.float = "right";
+            elem.style.styleFloat = "right"; // ie style
+            elem.style.cssFloat   = "right"; // all rest browser style
             this.innerHTML = "Left";
 
             setTimeout( function(){
@@ -786,18 +789,21 @@
         // Current width of media container
         cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
 
+        console.log("cur_width:", cur_width);
+
         // Direction: to top right corner (-> ^)
         if (direction == "left") {
-            dist_x   = e.x - cur_mouse_x;
-            dist_y   = cur_mouse_y - e.y;
+            dist_x   = e.clientX - cur_mouse_x;
+            dist_y   = cur_mouse_y - e.clientY;
             sum      = dist_x + dist_y;
             pows     = Math.pow(dist_x, 2) + Math.pow(dist_y, 2);
             diagonal = Math.sqrt(pows);
+            // console.log("dist_x:",dist_x, "dist_y:",dist_x);
         }
         // Direction: left top corner
         else {
-            dist_x   = cur_mouse_x - e.x;
-            dist_y   = cur_mouse_y - e.y;
+            dist_x   = cur_mouse_x - e.clientX;
+            dist_y   = cur_mouse_y - e.clientY;
             sum      = dist_x + dist_y;
             pows     = Math.pow(dist_x, 2) + Math.pow(dist_y, 2);
             diagonal = Math.sqrt(pows);
@@ -822,8 +828,8 @@
         }
 
         // Set current new mouse coordinates
-        cur_mouse_x = e.x;
-        cur_mouse_y = e.y;
+        cur_mouse_x = e.clientX;
+        cur_mouse_y = e.clientY;
 
         return false;
     }
@@ -831,9 +837,8 @@
     /*
      * Resize image width in % accordingly to user actions
      *
-     * @this_el - 
-     * @media_el - 
-     * direction - 
+     * @media_el - element that will be resized
+     * direction - can be left or right
      */
     function resizeImg(e, media_el, direction) {
         var cur_width;
@@ -842,8 +847,8 @@
         document.onselectstart = function(){ return false; }
         
         // Set current mouse location
-        cur_mouse_x = e.x;
-        cur_mouse_y = e.y;
+        cur_mouse_x = e.clientX;
+        cur_mouse_y = e.clientY;
 
         // Keep cursor changed
         if (direction == "left") {
@@ -876,7 +881,6 @@
                 cur_mouse_x = 0;
                 cur_mouse_y = 0;
             };
-
             document.onselectstart = function(){ return true; }
         }
     }
@@ -957,7 +961,10 @@
         
         var media_div = document.createElement("div"); // main media container
         media_div.className = cls_media_container;
-        media_div.style.float = float;
+        
+        media_div.style.styleFloat = float; // ie style
+        media_div.style.cssFloat = float; // all rest browser style
+
         media_div.style.width = "30%"; // default width
         
         // Should change button value opposite to current state
@@ -1053,7 +1060,7 @@
             section_el.innerHTML = '<button class="add-btn add-above">+</button>'
                                  + '<div class="'+ cls_content_wrapper +'">'
                                  + '<div class="placeholder">Start typing here...</div>'
-                                 + '<div class="'+cls_editablediv+'" contenteditable><br/></div>'
+                                 + '<div class="'+cls_editablediv+'" contenteditable></div>'
                                  + '</div><!-- /.'+ cls_content_wrapper +' -->'
                                  + '<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>'
                                  + '<div class="section-options">'
