@@ -912,13 +912,12 @@
      * Move section up or down
      * @direction - can be 'up' or 'down'
      */
-    function moveSection(e, direction) {
-        var el = e.target.parentNode.parentNode.parentNode,
+    function moveSection(elem, direction) {
+        var el = elem.parentNode.parentNode.parentNode,
             par_el = el.parentNode,
             ref_el;
         
         if (direction == "up") {
-            // console.log("up was hit");
             ref_el = prev(el);
 
             if (ref_el !== null) {
@@ -926,11 +925,9 @@
             }
         }
         else {
-            // console.log("down was hit");
             ref_el = next(el);
 
             if (ref_el !== null) {
-                // console.log("ref_el:", ref_el);
                 par_el.insertBefore(ref_el, el);
             }
         }
@@ -954,9 +951,9 @@
      * Event for adding new media into section
      * @float - can be "left"/"right"
      */
-    function addMedia(e, float) {
+    function addMedia(elem, float) {
         var btn_value = "Left"; // Default button value
-        var parent_el = e.target.parentNode.parentNode.parentNode.parentNode.getElementsByClassName(cls_content_wrapper)[0]; // parent element
+        var parent_el = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName(cls_content_wrapper)[0]; // parent element
         var first_child_el = parent_el.firstChild; // first child element
         
         var media_div = document.createElement("div"); // main media container
@@ -984,7 +981,7 @@
         parent_el.insertBefore(media_div, first_child_el); // insert new created container into section
         setEventsForMediaContainer(media_div);             // add all necessary event listeners
 
-        removeClass(e.target.parentNode, "show"); // hide option for "add media" (left/right)
+        removeClass(elem.parentNode, "show"); // hide option for "add media" (left/right)
     }
 
     /*
@@ -1285,12 +1282,12 @@
             btn_add_media.onclick = toggleMediaMenu;
 
             // Event to insert media into section
-            btn_add_med_left.onclick = function(e) { addMedia(e, "left"); }
-            btn_add_med_right.onclick = function(e) { addMedia(e, "right"); }
+            btn_add_med_left.addEventListener("click", function(){ addMedia(this, "left"); }, false);
+            btn_add_med_right.addEventListener("click", function(){ addMedia(this, "right"); }, false);
 
             // Move section up/down
-            btn_move_sec_up.onclick       = function(e) { moveSection(e, "up"); }
-            btn_move_sec_down.onclick     = function(e) { moveSection(e, "down"); }
+            btn_move_sec_up.addEventListener("click", function(){ moveSection(this, "up"); }, false);
+            btn_move_sec_down.addEventListener("click", function(){ moveSection(this, "down"); }, false);
         }
     }
 

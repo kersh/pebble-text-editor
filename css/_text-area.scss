@@ -17,10 +17,10 @@ $main_color: #00aeff;
     font-size: 1.2em;
     height: 16px;
     width: 14px;
-    background-color: yellow;
     line-height: 0;
     visibility: hidden;
     position: relative;
+    background-color: #fff;
 }
 .add-btn:hover {
     color: #008aca;
@@ -67,7 +67,6 @@ input::-moz-focus-inner {
     
     /* Set defaults for all buttons */
     button {
-        background: none;
         border: none;
         outline: none;
     }
@@ -124,6 +123,7 @@ input::-moz-focus-inner {
                     margin-right: 0;
                     padding: 2px 6px;
                     font-size: .65em;
+                    background: none;
                 }
                 > button:hover {
                     text-decoration: underline;
@@ -198,10 +198,12 @@ input::-moz-focus-inner {
             /* Style for "Remove" "Move Up" "Move Down" buttons */
             button {
                 color: $main_color;
+                background-color: #fff;
                 font-size: 1em;
                 margin: 0;
-                padding: 0 4px;
+                padding: 0 6px;
                 height: 20px;
+                width: 29px;
                 line-height: 20px;
                 display: block;
                 float: left;
@@ -216,7 +218,7 @@ input::-moz-focus-inner {
                 position: absolute;
                 display: none;
                 padding: 0;
-                margin: -22px 0 0 -84px;
+                margin: -22px 0 0 -44px;
                 border-top: 1px solid $main_color;
                 border-left: 1px solid $main_color;
                 background-color: #fff;
@@ -322,3 +324,27 @@ input::-moz-focus-inner {
 
 @import "no-touch/text-area";
 @import "touch/text-area";
+
+@media screen and (max-width: 318px) {
+    .text-area-holder {
+        /* Container with options for current section */
+        .section-options {
+            /* Style for plus on the bottom */
+            > button.add-below {
+                margin-right: 25%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 238px) {
+    .text-area-holder {
+        /* Container with options for current section */
+        .section-options {
+            /* Style for plus on the bottom */
+            > button.add-below {
+                margin-right: 10%;
+            }
+        }
+    }
+}
