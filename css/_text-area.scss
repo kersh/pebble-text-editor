@@ -20,7 +20,7 @@ $main_color: #00aeff;
     line-height: 0;
     visibility: hidden;
     position: relative;
-    background-color: #fff;
+    background: none;
 }
 .add-btn:hover {
     color: #008aca;
@@ -198,7 +198,6 @@ input::-moz-focus-inner {
             /* Style for "Remove" "Move Up" "Move Down" buttons */
             button {
                 color: $main_color;
-                background-color: #fff;
                 font-size: 1em;
                 margin: 0;
                 padding: 0 6px;
@@ -208,6 +207,7 @@ input::-moz-focus-inner {
                 display: block;
                 float: left;
                 border-right: 1px solid $main_color;
+                background-color: #fff;
             }
 
             button:hover {
@@ -232,98 +232,14 @@ input::-moz-focus-inner {
         > button.add-below {
             border: none;
             margin-top: -24px;
+            background-color: #fff;
         }
     }
-}
-
-.hover, .text-area-holder:hover {
-    /* Show border when on hover */
-    .editor-content-wrapper {
-        border: 1px solid $main_color;
-    }
-    
-    /* Show option buttons when on hover */
-    .section-options {
-        visibility: visible;
-    }
-    
-    /* Show plus(+) buttons when on hover */
-    .add-btn {
-        visibility: visible;
-    }
-}
-
-/* Add New Section */
-.add-new-section-menu {
-    border: 1px solid #bbb;
-    background-color: #eee;
-    display: block;
-    position: relative;
-    text-align: center;
-    margin: 10px auto 20px auto;
-    padding: 0;
-    /*height: 0;*/
-    max-height: 0px;
-    width: 100%;
-    @include border-radius(2px);
-    overflow: hidden;
-    transform-origin: 50% 50%;
-    -webkit-transform-origin: 50% 50%;
-    @include transform(scaleY(0));
-    -webkit-transition: max-height .2s ease-out, -webkit-transform .15s ease-out;
-       -moz-transition: max-height .2s ease-out, -moz-transition .15s ease-out;
-         -o-transition: max-height .2s ease-out, -o-transition .15s ease-out;
-            transition: max-height .2s ease-out, -webkit-transform .15s ease-out;
-
-    button {
-        /*outline: none;*/
-        margin: 14px 8px 14px 0;
-        padding: 5px;
-        border: 1px solid darken($main_color, 10);
-        background-color: $main_color;
-        color: #fff;
-        @include border-radius(3px);
-
-        .icon {
-            font-size: 2em;
-            line-height: .5em;
-        }
-
-        .lbl {
-            font-size: .9em;
-            margin-top: 5px;
-        }
-    }
-    button:hover {
-        background-color: darken($main_color, 10);
-        border: 1px solid darken($main_color, 20);
-    }
-
-    button#close-add-section-menu {
-        position: absolute;
-        top: 0;
-        right: 0;
-        font-size: .8em;
-        background-color: transparent;
-        color: #aaa;
-        border: 1px solid #aaa;
-        padding: 1px 4px;
-        margin: 5px;
-    }
-    button#close-add-section-menu:hover {
-        color: #777;
-        border-color: #777;
-    }
-}
-.add-new-section-menu.show {
-    /*height: auto;*/
-    max-height: 80px;
-    @include transform(scaleY(1));
-    /*@include transition(all, .15s, ease-out);*/
 }
 
 @import "no-touch/text-area";
 @import "touch/text-area";
+@import "new-section-menu";
 
 @media screen and (max-width: 318px) {
     .text-area-holder {

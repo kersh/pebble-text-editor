@@ -38,7 +38,7 @@
     var buttons_wrapper   = document.getElementById("buttons-container");            // all button holder
 
     var section_container = document.getElementsByClassName(cls_section);            // section container
-    var media_container   = document.getElementsByClassName(cls_media_container);      // media container
+    var media_container   = document.getElementsByClassName(cls_media_container);    // media container
     var cur_contentdiv; // current section element
 
     // 'Add new section' menu elements
@@ -53,6 +53,7 @@
 
     // All toolbar elements stored in this object
     var toolbar = {
+        // Toolbar elements
         bold        : document.getElementById("toggle-bold"),
         italic      : document.getElementById("toggle-italic"),
         
@@ -72,6 +73,10 @@
 
         plain       : document.getElementById("remove-formatting")
     }
+
+
+
+
 
 //------------------------------------------
 // Helper functions
@@ -237,10 +242,9 @@
      * Hide all open context menus at the same time
      */
     function hideAllContextMenus() {
-        hideContextMenu(color_menu, toolbar.color_menu);          // hide color menu
+        hideContextMenu(color_menu, toolbar.color_menu);     // hide color menu
         hideContextMenu(paragraph_menu, toolbar.paragraph);  // hide paragraph menu
     }
-
 
 
 
@@ -254,8 +258,8 @@
      * Update textarea.
      * This function saves everything from editable div into <textarea> to make it easy to submit data to back-end.
      * 
-     * @evt event object
-     * @id the id of editable div in a DOM tree
+     * @evt - event object
+     * @id - the id of editable div in a DOM tree
      */
     function updateTextarea(cur_sect) {
         var textarea   = cur_sect.getElementsByTagName("textarea")[0]; // textarea where save data in
@@ -730,7 +734,6 @@
 
 
 
-
 //------------------------------------------
 // Media functions
 //------------------------------------------
@@ -884,7 +887,6 @@
             document.onselectstart = function(){ return true; }
         }
     }
-
 
 
 
@@ -1062,13 +1064,13 @@
                                  + '<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>'
                                  + '<div class="section-options">'
                                  + '<div class="core-options-holder">'
-                                 + '<button class="remove-section">✖ Remove</button>'
-                                 + '<button class="move-sec-up">Up</button>'
-                                 + '<button class="move-sec-down">Dw</button>'
-                                 + '<button class="add-media">Add Media</button>'
+                                 + '<button class="remove-section"><i class="fa fa-trash-o"></i></button>'
+                                 + '<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>'
+                                 + '<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>'
+                                 + '<button class="add-media"><i class="fa fa-picture-o"></i></button>'
                                  + '<div class="align-media-choice">'
-                                 + '<button class="add-media-left">Left</button>'
-                                 + '<button class="add-media-right">Right</button>'
+                                 + '<button class="add-media-left"><i class="fa fa-reply"></i></button>'
+                                 + '<button class="add-media-right"><i class="fa fa-share"></i></button>'
                                  + '</div><!-- /.align-media-choice -->'
                                  + '</div><!-- /.core-options-holder -->'
                                  + '<button class="add-btn add-below">+</button>'
@@ -1176,7 +1178,6 @@
             btn_add_media,      // add new media
             btn_add_med_left,   // adds media on the left
             btn_add_med_right;  // adds media on the right
-
 
         // Check if it's single element and convert it to array
         if (!el.length && !!el) {
