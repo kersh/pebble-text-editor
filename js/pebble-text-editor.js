@@ -164,7 +164,7 @@
             // If object exists do below
             if (!!prev_el) {
                 if (prev_el.nodeType == 1) { // if node type match to <div> then check for class
-                    if (!hasClass(prev_el, el.className)) { // check if class matches to section class
+                    if (!hasClass(prev_el, cls_section)) { // check if class matches to section class
                         prev_el = prev_el.previousSibling;
                     }
                     else { // previous sibling was found, Exit loop
@@ -196,7 +196,7 @@
             // If object exists do below
             if (!!next_el) {
                 if (next_el.nodeType == 1) { // if node type match to <div> then check for class
-                    if (!hasClass(next_el, el.className)) { // check if class matches to section class
+                    if (!hasClass(next_el, cls_section)) { // check if class matches to section class
                         next_el = next_el.nextSibling;
                     }
                     else { // previous sibling was found, Exit loop

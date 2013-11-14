@@ -202,7 +202,7 @@
             // If object exists do below
             if (!!prev_el) {
                 if (prev_el.nodeType == 1) { // if node type match to <div> then check for class
-                    if (!hasClass(prev_el, el.className)) { // check if class matches to section class
+                    if (!hasClass(prev_el, cls_section)) { // check if class matches to section class
                         prev_el = prev_el.previousSibling;
                     }
                     else { // previous sibling was found, Exit loop
@@ -234,7 +234,7 @@
             // If object exists do below
             if (!!next_el) {
                 if (next_el.nodeType == 1) { // if node type match to <div> then check for class
-                    if (!hasClass(next_el, el.className)) { // check if class matches to section class
+                    if (!hasClass(next_el, cls_section)) { // check if class matches to section class
                         next_el = next_el.nextSibling;
                     }
                     else { // previous sibling was found, Exit loop
@@ -982,11 +982,33 @@
     /*
      * Checks if .hover needed for section
      */
-    function checkHover(e) {
-        console.log("e.target:", e.target);
-        // if (hasClass(cur_section, "hover")) {
-        //     removeClass(cur_section, "hover");
-        // }
+    function checkHover(el) {
+        console.log("elem:", el);
+        console.log("cur_elem:", cur_section);
+
+        // If current element is undefined
+        // make currently active element as current element
+        if (!cur_section) {
+            cur_section = el;
+        }
+
+        // If element match current element
+        if (el === cur_section) {
+            // console.log("match");
+            // Make all section buttons visible
+            addClass(el, "hover");
+        } else {
+            // console.log("not match");
+            // Hide buttons from previously used element
+            removeClass(cur_section, "hover");
+
+            // Show all section buttons on current element
+            addClass(el, "hover");
+
+            // Updates current section element
+            cur_section = el;
+        }
+        console.log("--------------------------------");
     }
 
 
@@ -1186,7 +1208,6 @@
             btn_add_media     = el[i].getElementsByClassName("add-media")[0];
             btn_add_med_left  = el[i].getElementsByClassName("add-media-left")[0];
             btn_add_med_right = el[i].getElementsByClassName("add-media-right")[0];
-            cur_section       = el[i]; // sets current section element
             cur_contentdiv    = content_div; // sets current editable div element
 
 
@@ -1203,11 +1224,10 @@
             content_div.addEventListener("focus", function(el){
                 return function() {
                     // Update current editable div to indicate working element
-                    cur_section    = el; // sets current section element
                     cur_contentdiv = el.getElementsByClassName(cls_editablediv)[0]; // sets current editable div element
 
                     // Add .hover for main container when in focus
-                    addClass(this.parentNode.parentNode, "hover");
+                    checkHover(el);
 
                     // Check if need to show editing toolbar
                     if(sel_type==="Range"){ showTools(); }
@@ -1225,8 +1245,12 @@
             content_div.addEventListener("touchstart", function() { positionTools; }, false);
             content_div.addEventListener("touchmove", function() { positionTools; }, false);
             content_div.addEventListener("touchend",   function() { positionTools; }, false);
-            el[i].addEventListener("touchstart", function(e) { checkHover(e); }, false);
-
+            
+            el[i].addEventListener("touchstart", function(el) {
+                return function() {
+                    checkHover(el);
+                }
+            }(el[i]), false);
             
             // Show formatting tools when Scroll and move with the content
             document.addEventListener("scroll", function() {
@@ -1238,12 +1262,10 @@
             content_div.addEventListener("blur", function(el) {
                 return function() {
                     // Remove .hover for main container when in blur
-                    removeClass(this.parentNode.parentNode, "hover");
-                    // checkHover();
+                    checkHover(el);
 
                     // Updates textarea for back-end submition
                     updateTextarea(el);
-
 
                     // Defines whether user selected text or not
                     sel_type = checkSelectionType(window.getSelection());

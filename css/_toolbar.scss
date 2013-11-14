@@ -19,7 +19,7 @@ $border_color: #f6f6f6;
     transition: opacity $speedOfMenuTransition ease-in-out;
     -moz-transition: opacity $speedOfMenuTransition ease-in-out;
     -webkit-transition: opacity $speedOfMenuTransition ease-in-out;
-    z-index: $zEditingTools;
+    z-index: -999;
 
     // Container that holds all the buttons
     .button-container {
@@ -71,4 +71,5 @@ $border_color: #f6f6f6;
 .show-tools {
     visibility: visible;
     opacity: 1;
+    z-index: $zEditingTools;
 }
