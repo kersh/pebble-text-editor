@@ -395,18 +395,14 @@
 
             // position:fixed iOS bug when keyboard is on the screen
             if (iOS) {
-                // console.log("iOS");
                 dist_to_top = oRect.top + sel_height; // works on iOS
             } else {
-                // console.log("Rest OS");
                 dist_to_top = oRect.top + window.pageYOffset + sel_height; // should work everywhere else
             }
 
             dist_to_top = dist_to_top + 20;
             
             dist_to_left = 0;
-
-            // console.log("dist_to_top:", dist_to_top);
 
             // Place tools in right place
             if (window.innerWidth < mobile_width) {
@@ -770,8 +766,6 @@
         // Current width of media container
         cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
 
-        console.log("cur_width:", cur_width);
-
         // Direction: to top right corner (-> ^)
         if (direction == "left") {
             dist_x   = e.clientX - cur_mouse_x;
@@ -779,7 +773,6 @@
             sum      = dist_x + dist_y;
             pows     = Math.pow(dist_x, 2) + Math.pow(dist_y, 2);
             diagonal = Math.sqrt(pows);
-            // console.log("dist_x:",dist_x, "dist_y:",dist_x);
         }
         // Direction: left top corner
         else {
@@ -983,8 +976,7 @@
      * Checks if .hover needed for section
      */
     function checkHover(el) {
-        console.log("elem:", el);
-        console.log("cur_elem:", cur_section);
+        event.stopPropagation();
 
         // If current element is undefined
         // make currently active element as current element
@@ -994,11 +986,9 @@
 
         // If element match current element
         if (el === cur_section) {
-            // console.log("match");
             // Make all section buttons visible
             addClass(el, "hover");
         } else {
-            // console.log("not match");
             // Hide buttons from previously used element
             removeClass(cur_section, "hover");
 
@@ -1008,7 +998,17 @@
             // Updates current section element
             cur_section = el;
         }
-        console.log("--------------------------------");
+    }
+
+    /*
+     * Removes all .hover when user is outside section
+     */
+    function clearHover() {
+        document.body.addEventListener("touchstart", function() {
+            if (!!cur_section) {
+                removeClass(cur_section, "hover");
+            }
+        }, false);
     }
 
 
@@ -1355,6 +1355,7 @@
             setSectionEventListeners(section_container);
             setEventsForMediaContainer(media_container);
             setToolbar();
+            clearHover();
         };
 
         return app;
