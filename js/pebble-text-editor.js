@@ -750,7 +750,7 @@
             elem.style.styleFloat = "left"; // ie style
             elem.style.cssFloat   = "left"; // all rest browser style
 
-            this.innerHTML = "Right";
+            this.innerHTML = '<i class="fa fa-arrow-right"></i>';
 
             setTimeout( function(){
                 elem.style.display = "";
@@ -759,7 +759,7 @@
             elem.style.display = "none";
             elem.style.styleFloat = "right"; // ie style
             elem.style.cssFloat   = "right"; // all rest browser style
-            this.innerHTML = "Left";
+            this.innerHTML = '<i class="fa fa-arrow-left"></i>';
 
             setTimeout( function(){
                 elem.style.display = "";
@@ -813,7 +813,7 @@
         }
 
         // Set new ration
-        ratio = diagonal * 0.2;
+        ratio = diagonal * 0.1;
 
         // Make image smaller
         if (sum > 0) {
@@ -954,7 +954,7 @@
      * @float - can be "left"/"right"
      */
     function addMedia(elem, float) {
-        var btn_value = "Left"; // Default button value
+        var btn_value = '<i class="fa fa-arrow-left"></i>'; // Default button value
         var parent_el = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName(cls_content_wrapper)[0]; // parent element
         var first_child_el = parent_el.firstChild; // first child element
         
@@ -968,13 +968,13 @@
         
         // Should change button value opposite to current state
         if (float == "left") {
-            btn_value = "Right";
+            btn_value = '<i class="fa fa-arrow-right"></i>';
         }
 
         media_div.innerHTML = '<div class="media-options">'
                             +   '<button class="align-media">'+ btn_value +'</button>'
-                            +   '<button class="replace-media">Replace</button>'
-                            +   '<button class="remove-media">Remove</button>'
+                            +   '<button class="replace-media"><i class="fa fa-undo"></i> Replace</button>'
+                            +   '<button class="remove-media"><i class="fa fa-trash-o"></i></button>'
                             +   '<div class="resize-img-left-bot"></div>'
                             +   '<div class="resize-img-right-bot"></div>'
                             + '</div>'

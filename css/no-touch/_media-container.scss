@@ -1,0 +1,23 @@
+.no-touch {
+    .media-container:hover {
+        .media-options {
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.6);
+
+            .resize-img-left-bot {
+                @extend .resize-img;
+                bottom: 0;
+                left: 0;
+                margin: 0 0 -5px -5px;
+                cursor: ne-resize;
+            }
+            .resize-img-right-bot {
+                @extend .resize-img;
+                bottom: 0;
+                right: 0;
+                margin: 0 -5px -5px 0;
+                cursor: nw-resize;
+            }
+        }
+    } //.media-container:hover
+}

@@ -43,8 +43,9 @@
 
     var section_container = document.getElementsByClassName(cls_section);            // section container
     var media_container   = document.getElementsByClassName(cls_media_container);    // media container
-    var cur_contentdiv, // current section content editable element
-        cur_section;     // currently used section
+    var cur_contentdiv,  // current section content editable element
+        last_section,    // recently used section
+        last_media_item; // recently used media container
 
     // 'Add new section' menu elements
     var add_new_section_menu, // Main container
@@ -110,6 +111,17 @@
         if (hasClass(element, class_name)) {
             var regexp = new RegExp('(\\s|^)' + class_name + '(?!\S)');
             element.className = element.className.replace(regexp, '');
+        }
+    }
+
+    /*
+     * Toggle class on element
+     */
+    function toggleClass(element, class_name) {
+        if (hasClass(element, class_name)) {
+            removeClass(element, class_name);
+        } else {
+            addClass(element, class_name);
         }
     }
 
@@ -724,7 +736,7 @@
             elem.style.styleFloat = "left"; // ie style
             elem.style.cssFloat   = "left"; // all rest browser style
 
-            this.innerHTML = "Right";
+            this.innerHTML = '<i class="fa fa-arrow-right"></i>';
 
             setTimeout( function(){
                 elem.style.display = "";
@@ -733,7 +745,7 @@
             elem.style.display = "none";
             elem.style.styleFloat = "right"; // ie style
             elem.style.cssFloat   = "right"; // all rest browser style
-            this.innerHTML = "Left";
+            this.innerHTML = '<i class="fa fa-arrow-left"></i>';
 
             setTimeout( function(){
                 elem.style.display = "";
@@ -762,6 +774,8 @@
      */
     function calculateResize(e, direction, media_el) {
         var dist_x, dist_y, sum, cur_width, pows, diagonal, ratio;
+        // console.log("e.touches:", e.touches[0].clientX);
+        e = e.touches[0];
 
         // Current width of media container
         cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
@@ -784,7 +798,8 @@
         }
 
         // Set new ration
-        ratio = diagonal * 0.2;
+        ratio = diagonal * 0.1;
+        // console.log("ratio:", ratio);
 
         // Make image smaller
         if (sum > 0) {
@@ -815,16 +830,23 @@
      * direction - can be left or right
      */
     function resizeImg(e, media_el, direction) {
+        // console.log("e:", e);
+        // e = e.touches[0];
+        // console.log("e:", e);
+        // console.log("e.layerX:", e.layerX);
+        // console.log("media_el:", media_el);
+
         var cur_width;
+        // console.log("e:")
 
         // Disable selestion on drag
         document.onselectstart = function(){ return false; }
-        
-        // Set current mouse location
-        cur_mouse_x = e.clientX;
-        cur_mouse_y = e.clientY;
 
-        // Keep cursor changed
+        // Set current mouse location
+        cur_mouse_x = e.touches[0].clientX;
+        cur_mouse_y = e.touches[0].clientY;
+
+        // Keep cursor changed ??
         if (direction == "left") {
             addClass(document.documentElement, "ne-resize");
         } else {
@@ -832,10 +854,13 @@
         }
 
         // Run function to calculate and resize image
-        document.onmousemove = function(e) { calculateResize(e, direction, media_el) };
+        // document.onmousemove = function(e) { calculateResize(e, direction, media_el) };
+        document.addEventListener("touchmove", function() {
+            calculateResize(e, direction, media_el);
+        }, false);
 
         // Remove event listener
-        document.onmouseup  = function() {
+        document.addEventListener("touchend", function() {
             removeClass(document.documentElement, "ne-resize");
             removeClass(document.documentElement, "nw-resize");
 
@@ -850,13 +875,38 @@
             if (cur_width < 20) {
                 media_el.style.width = 20 + "%";
             }
-            document.onmousemove = function() {
+            
+            document.addEventListener("touchmove", function() {
                 // Reset all values
                 cur_mouse_x = 0;
                 cur_mouse_y = 0;
-            };
+            }, false);
+
             document.onselectstart = function(){ return true; }
-        }
+        }, false);
+
+        // document.onmouseup  = function() {
+        //     removeClass(document.documentElement, "ne-resize");
+        //     removeClass(document.documentElement, "nw-resize");
+
+        //     // Find current width of media element
+        //     cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
+
+        //     // Check if image is oversized
+        //     if (cur_width > 99) {
+        //         media_el.style.width = 99 + "%";
+        //     }
+        //     // Check if media is smaller than minimum limit
+        //     if (cur_width < 20) {
+        //         media_el.style.width = 20 + "%";
+        //     }
+        //     document.onmousemove = function() {
+        //         // Reset all values
+        //         cur_mouse_x = 0;
+        //         cur_mouse_y = 0;
+        //     };
+        //     document.onselectstart = function(){ return true; }
+        // }
     }
 
 
@@ -925,7 +975,7 @@
      * @float - can be "left"/"right"
      */
     function addMedia(elem, float) {
-        var btn_value = "Left"; // Default button value
+        var btn_value = '<i class="fa fa-arrow-left"></i>'; // Default button value
         var parent_el = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName(cls_content_wrapper)[0]; // parent element
         var first_child_el = parent_el.firstChild; // first child element
         
@@ -939,13 +989,13 @@
         
         // Should change button value opposite to current state
         if (float == "left") {
-            btn_value = "Right";
+            btn_value = '<i class="fa fa-arrow-right"></i>';
         }
 
         media_div.innerHTML = '<div class="media-options">'
                             +   '<button class="align-media">'+ btn_value +'</button>'
-                            +   '<button class="replace-media">Replace</button>'
-                            +   '<button class="remove-media">Remove</button>'
+                            +   '<button class="replace-media"><i class="fa fa-undo"></i> Replace</button>'
+                            +   '<button class="remove-media"><i class="fa fa-trash-o"></i></button>'
                             +   '<div class="resize-img-left-bot"></div>'
                             +   '<div class="resize-img-right-bot"></div>'
                             + '</div>'
@@ -980,23 +1030,23 @@
 
         // If current element is undefined
         // make currently active element as current element
-        if (!cur_section) {
-            cur_section = el;
+        if (!last_section) {
+            last_section = el;
         }
 
         // If element match current element
-        if (el === cur_section) {
+        if (el === last_section) {
             // Make all section buttons visible
             addClass(el, "hover");
         } else {
             // Hide buttons from previously used element
-            removeClass(cur_section, "hover");
+            removeClass(last_section, "hover");
 
             // Show all section buttons on current element
             addClass(el, "hover");
 
             // Updates current section element
-            cur_section = el;
+            last_section = el;
         }
     }
 
@@ -1005,8 +1055,8 @@
      */
     function clearHover() {
         document.body.addEventListener("touchstart", function() {
-            if (!!cur_section) {
-                removeClass(cur_section, "hover");
+            if (!!last_section) {
+                removeClass(last_section, "hover");
             }
         }, false);
     }
@@ -1138,6 +1188,32 @@
         }
 
         for (var i=0; el[i] !== undefined; i++) {
+            var tap; // true if user tapper on media container
+
+            // Check if media container was tapped
+            el[i].addEventListener("touchstart", function() { tap = true; }, false);
+            el[i].addEventListener("touchmove", function() { tap = false; }, false);
+            // Do this only if user tapped on container
+            el[i].addEventListener("touchend", function() {
+                // Make current item as last_media_item if it's undefined
+                !last_media_item ? last_media_item = this : false;
+
+                // If it is same item that was tapped, do below
+                if (last_media_item === this) {
+                    tap ? toggleClass(this, "hover") : false; // add .hover to current media element
+                }
+                else {
+                    // Remove .hover from last used item
+                    removeClass(last_media_item, "hover");
+
+                    // Add .hover to new item
+                    addClass(this, "hover");
+
+                    // Update last item
+                    last_media_item = this;
+                }
+            }, false);
+
             // Add event listener for "Align media" button
             el[i].getElementsByClassName("align-media")[0].onclick = alignMedia;
 
@@ -1145,10 +1221,14 @@
             el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
 
             // Resize from left bottom corner
-            el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown  = function(e) { resizeImg(e, this.parentNode.parentNode, "left") };
+            el[i].getElementsByClassName("resize-img-left-bot")[0].addEventListener("touchstart", function(e) {
+                resizeImg(e, this.parentNode.parentNode, "left");
+            }, false);
+
+            // el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "left") };
 
             // Resize from right bottom corner
-            el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "right") };
+            // el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "right") };
         }
     }
 
@@ -1244,7 +1324,7 @@
             // Touch events ??
             content_div.addEventListener("touchstart", function() { positionTools; }, false);
             content_div.addEventListener("touchmove", function() { positionTools; }, false);
-            content_div.addEventListener("touchend",   function() { positionTools; }, false);
+            content_div.addEventListener("touchend", function() { positionTools; }, false);
             
             el[i].addEventListener("touchstart", function(el) {
                 return function() {
