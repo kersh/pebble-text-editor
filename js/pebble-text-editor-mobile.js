@@ -766,16 +766,85 @@
         }
     }
 
+
+    var prev_sum;
+
+    var pinchToZoom = {
+        /*
+         * Defines initial coordinates of touch
+         */
+        startResizeImg : function(e) {
+            // Set current mouse location
+            var dist_x = Math.abs(e.touches[0].clientX - e.touches[1].clientX),
+                dist_y = Math.abs(e.touches[0].clientY - e.touches[1].clientY);
+                
+            prev_sum = dist_x + dist_y;
+        },
+
+        performResizeImg : function(e, elem) {
+            var dist_x, dist_y, sum, cur_width, ratio;
+
+            // Current width of media container
+            cur_width = parseFloat(elem.style.getPropertyValue("width").replace("%",""));
+
+            dist_x = Math.abs(e.touches[0].clientX - e.touches[1].clientX);
+            dist_y = Math.abs(e.touches[0].clientY - e.touches[1].clientY);
+            sum    = dist_x + dist_y;
+            // console.log("dist_x:", dist_x, "dist_y:", dist_y, "sum:", sum);
+
+            // Set new ration
+            ratio = Math.abs(prev_sum - sum) * 0.1;
+
+            // Make image smaller
+            if (sum < prev_sum) {
+                if (cur_width > 20) { // set minimum limit
+                    cur_width = cur_width - ratio;
+                    elem.style.width = cur_width + "%";
+                }
+            }
+            // Make image bigger
+            else {
+                if (cur_width < 99) { // set maximum limit
+                    cur_width = cur_width + ratio;
+                    elem.style.width = cur_width + "%";
+                }
+            }
+
+            // Set current new mouse coordinates
+            prev_sum = sum;
+
+            return false;
+        },
+
+        endResizeImg : function() {
+
+        }
+    };
+
+
     /*
-     * Calculates how much to resize the media container
+     * Defines initial coordinates of touch
+     */
+    function startResizeImg(e) {
+        // Set current mouse location
+        cur_mouse_x = e.touches[0].clientX;
+        cur_mouse_y = e.touches[0].clientY;
+        console.log("touch1=", "x:", cur_mouse_x, "y:", cur_mouse_y);
+        
+        var cur_mouse_x_2 = e.touches[1].clientX,
+            cur_mouse_y_2 = e.touches[1].clientY;
+        console.log("touch2=", "x:", cur_mouse_x_2, "y:", cur_mouse_y_2);
+    }
+
+    /*
+     * Calculates how much to resize the media container and then resizes it
      *
      * @direction - which side was dragged (can be "left"/"right" bottom corner)
      * @media_el - current media element
      */
-    function calculateResize(e, direction, media_el) {
+    function performResizeImg(e, media_el, direction) {
         var dist_x, dist_y, sum, cur_width, pows, diagonal, ratio;
-        // console.log("e.touches:", e.touches[0].clientX);
-        e = e.touches[0];
+        e = e.touches[0]; // get coordinates from only one touch event
 
         // Current width of media container
         cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
@@ -799,7 +868,6 @@
 
         // Set new ration
         ratio = diagonal * 0.1;
-        // console.log("ratio:", ratio);
 
         // Make image smaller
         if (sum > 0) {
@@ -824,89 +892,24 @@
     }
 
     /*
-     * Resize image width in % accordingly to user actions
-     *
-     * @media_el - element that will be resized
-     * direction - can be left or right
+     * 
      */
-    function resizeImg(e, media_el, direction) {
-        // console.log("e:", e);
-        // e = e.touches[0];
-        // console.log("e:", e);
-        // console.log("e.layerX:", e.layerX);
-        // console.log("media_el:", media_el);
+    function endResizeImg(media_el) {
+        // Find current width of media element
+        var cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
 
-        var cur_width;
-        // console.log("e:")
-
-        // Disable selestion on drag
-        document.onselectstart = function(){ return false; }
-
-        // Set current mouse location
-        cur_mouse_x = e.touches[0].clientX;
-        cur_mouse_y = e.touches[0].clientY;
-
-        // Keep cursor changed ??
-        if (direction == "left") {
-            addClass(document.documentElement, "ne-resize");
-        } else {
-            addClass(document.documentElement, "nw-resize");
+        // Check if image is oversized
+        if (cur_width > 99) {
+            media_el.style.width = 99 + "%";
+        }
+        // Check if media is smaller than minimum limit
+        if (cur_width < 20) {
+            media_el.style.width = 20 + "%";
         }
 
-        // Run function to calculate and resize image
-        // document.onmousemove = function(e) { calculateResize(e, direction, media_el) };
-        document.addEventListener("touchmove", function() {
-            calculateResize(e, direction, media_el);
-        }, false);
-
-        // Remove event listener
-        document.addEventListener("touchend", function() {
-            removeClass(document.documentElement, "ne-resize");
-            removeClass(document.documentElement, "nw-resize");
-
-            // Find current width of media element
-            cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
-
-            // Check if image is oversized
-            if (cur_width > 99) {
-                media_el.style.width = 99 + "%";
-            }
-            // Check if media is smaller than minimum limit
-            if (cur_width < 20) {
-                media_el.style.width = 20 + "%";
-            }
-            
-            document.addEventListener("touchmove", function() {
-                // Reset all values
-                cur_mouse_x = 0;
-                cur_mouse_y = 0;
-            }, false);
-
-            document.onselectstart = function(){ return true; }
-        }, false);
-
-        // document.onmouseup  = function() {
-        //     removeClass(document.documentElement, "ne-resize");
-        //     removeClass(document.documentElement, "nw-resize");
-
-        //     // Find current width of media element
-        //     cur_width = parseFloat(media_el.style.getPropertyValue("width").replace("%",""));
-
-        //     // Check if image is oversized
-        //     if (cur_width > 99) {
-        //         media_el.style.width = 99 + "%";
-        //     }
-        //     // Check if media is smaller than minimum limit
-        //     if (cur_width < 20) {
-        //         media_el.style.width = 20 + "%";
-        //     }
-        //     document.onmousemove = function() {
-        //         // Reset all values
-        //         cur_mouse_x = 0;
-        //         cur_mouse_y = 0;
-        //     };
-        //     document.onselectstart = function(){ return true; }
-        // }
+        // Resets touch coordinates for new events
+        cur_mouse_x = 0;
+        cur_mouse_y = 0;
     }
 
 
@@ -1188,7 +1191,9 @@
         }
 
         for (var i=0; el[i] !== undefined; i++) {
-            var tap; // true if user tapper on media container
+            var tap, // true if user tapper on media container
+                left_resize  = el[i].getElementsByClassName("resize-img-left-bot")[0],
+                right_resize = el[i].getElementsByClassName("resize-img-right-bot")[0];
 
             // Check if media container was tapped
             el[i].addEventListener("touchstart", function() { tap = true; }, false);
@@ -1221,14 +1226,18 @@
             el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
 
             // Resize from left bottom corner
-            el[i].getElementsByClassName("resize-img-left-bot")[0].addEventListener("touchstart", function(e) {
-                resizeImg(e, this.parentNode.parentNode, "left");
-            }, false);
+            el[i].addEventListener("touchstart", function(e) { pinchToZoom.startResizeImg(e); }, false);
+            el[i].addEventListener("touchmove", function(e) { pinchToZoom.performResizeImg(e, this); }, false);
 
-            // el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "left") };
+            // Resize from left bottom corner
+            // left_resize.addEventListener("touchstart", function(e) { startResizeImg(e); }, false);
+            // left_resize.addEventListener("touchmove", function(e) { performResizeImg(e, this.parentNode.parentNode, "left"); }, false);
+            // left_resize.addEventListener("touchend", function(e) { endResizeImg(this.parentNode.parentNode); }, false);
 
             // Resize from right bottom corner
-            // el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "right") };
+            // right_resize.addEventListener("touchstart", function(e) { startResizeImg(e); }, false);
+            // right_resize.addEventListener("touchmove", function(e) { performResizeImg(e, this.parentNode.parentNode, "right"); }, false);
+            // right_resize.addEventListener("touchend", function(e) { endResizeImg(this.parentNode.parentNode); }, false);
         }
     }
 

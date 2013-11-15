@@ -1,6 +1,21 @@
 .resize-img {
     width: 30px;
     height: 30px;
+    bottom: 0;
+    position: absolute;
+}
+
+.corner-resize-front {
+    width: 25px;
+    height: 25px;
+    bottom: 0;
+    position: absolute;
+}
+
+.corner-resize-back {
+    width: 25px;
+    height: 25px;
+    bottom: 0;
     position: absolute;
 }
 
@@ -40,6 +55,40 @@
         }
         > button:hover {
             text-decoration: underline;
+        }
+
+        .corner-resize-left-front {
+            @extend .corner-resize-front;
+            left: 0;
+            border-top: 28px solid transparent;
+            border-bottom: 0px solid transparent;
+            border-left: 28px solid rgba(255, 255, 255, .2);
+            z-index: 0;
+        }
+        .corner-resize-left-back {
+            @extend .corner-resize-front;
+            left: 0;
+            border-top: 25px solid transparent;
+            border-bottom: 0px solid transparent;
+            border-left: 25px solid rgba(255, 255, 255, .5);
+            z-index: 0;
+        }
+
+        .corner-resize-right-front {
+            @extend .corner-resize-front;
+            right: 0;
+            border-style: solid;
+            border-width: 0 0 28px 28px;
+            border-color: transparent transparent rgba(255, 255, 255, .2) transparent;
+            z-index: 0;
+        }
+        .corner-resize-right-back {
+            @extend .corner-resize-front;
+            right: 0;
+            border-style: solid;
+            border-width: 0 0 25px 25px;
+            border-color: transparent transparent rgba(255, 255, 255, .5) transparent;
+            z-index: 0;
         }
     }
 

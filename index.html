@@ -35,7 +35,6 @@
 				<li><a href="#">Link 3</a></li>
 				<li><a href="#">Link 4</a></li>
 				<li><a href="#">Link 5</a></li>
-				<li id="show-elem-amount">Show element amount</li>
 			</ul>
 		</div>
 	</div>
@@ -62,7 +61,7 @@
 
 
 			<div id="color-menu" class="color-menu group">
-				<button id="back-main-from-color" class="back-to-main">\/ Go back</button>
+				<button id="back-main-from-color" class="back-to-main"><i class="fa fa-arrow-up"></i></button>
 				
 				<div class="sub-menu-holder">
 					<div class="sub-menu-container">
@@ -86,7 +85,7 @@
 
 
 			<div id="paragraph-menu" class="paragraph-menu group">
-				<button id="back-main-from-paragraph" class="back-to-main">\/ Go back</button>
+				<button id="back-main-from-paragraph" class="back-to-main"><i class="fa fa-arrow-up"></i></button>
 				
 				<div class="sub-menu-holder">
 					<div class="sub-menu-container">
@@ -102,31 +101,6 @@
 
 	<div class="content" id="main-content">
 		<div style="color:red">Some <em>rich</em> <span style="font-size:2em">HTML</span></div>
-
-		<div class="text-area-holder group">
-			<button class="add-btn add-above">+</button>
-
-			<div class="editor-content-wrapper">
-				<div class="placeholder">Start typing here...</div>
-				<div class="text-editor-content" contenteditable>222 I've become so numb, I can't feel you there, Become so tired, so much more aware I'm becoming this, all I want to do Is be more like me and be less like you.I've become so numb, I can't feel you there, Become so tired, so much more aware I'm becoming this, all I want to do Is be more like me and be less like you.[Chorus:]</div><!-- /.text-editor-content -->
-			</div><!-- /.editor-content-wrapper -->
-			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
-
-			<div class="section-options">
-				<div class="core-options-holder">
-					<button class="remove-section"><i class="fa fa-trash-o"></i></button>
-					<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
-					<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
-					<button class="add-media"><i class="fa fa-picture-o"></i></button>
-					<div class="align-media-choice">
-						<button class="add-media-left"><i class="fa fa-reply"></i></button>
-						<button class="add-media-right"><i class="fa fa-share"></i></button>
-					</div>
-				</div><!-- /.core-options-holder -->
-
-				<button class="add-btn add-below">+</button>
-			</div><!-- /.section-options -->
-		</div><!-- /.text-area-holder -->
 
 		<div class="text-area-holder group">
 			<button class="add-btn add-above">+</button>
@@ -163,7 +137,11 @@
 						<button class="replace-media"><i class="fa fa-undo"></i> Replace</button>
 						<button class="remove-media"><i class="fa fa-trash-o"></i></button>
 						<div class="resize-img-left-bot"></div>
+							<div class="corner-resize-left-front"></div>
+							<div class="corner-resize-left-back"></div>
 						<div class="resize-img-right-bot"></div>
+							<div class="corner-resize-right-front"></div>
+							<div class="corner-resize-right-back"></div>
 					</div><!-- /.media-options -->
 					<img src="img/cat.jpg" alt="cat"/>
 				</div><!-- /.media-container -->
