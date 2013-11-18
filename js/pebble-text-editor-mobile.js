@@ -1451,8 +1451,6 @@
 
     })();
 
-    window.PebbleEditor.init();
-
     // Run this script only when content is loaded and addEventListener is suppported by the browser
     if (window.addEventListener) {
         window.addEventListener('DOMContentLoaded', window.PebbleEditor.init(), false);

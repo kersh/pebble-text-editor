@@ -1329,7 +1329,14 @@
     {
         var _init = false, app = {};
 
-        app.init = function() {
+        app.init = function(option) {
+            option = option || {};
+            option.params = option.params || {};
+            option.class_name = option.class_name || "text-editor-textarea"; // class for input field if none, then default
+            option.section = option.section || true; // does this need section buttons
+
+
+
             // Exit function if it's already running
             if (_init) { return; }
 
@@ -1340,17 +1347,17 @@
             setSectionEventListeners(section_container);
             setEventsForMediaContainer(media_container);
             setToolbar();
+
+            console.log("option.class_name:", option.class_name);
         };
 
         return app;
 
     })();
 
-    window.PebbleEditor.init();
-
     // Run this script only when content is loaded and addEventListener is suppported by the browser
-    if (window.addEventListener) {
-        window.addEventListener('DOMContentLoaded', window.PebbleEditor.init(), false);
-    }
+    // if (window.addEventListener) {
+    //     window.addEventListener('DOMContentLoaded', window.PebbleEditor.init(), false);
+    // }
 
 })(window, document);
