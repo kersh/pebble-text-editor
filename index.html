@@ -102,6 +102,33 @@
 	<div class="content" id="main-content">
 		<div style="color:red">Some <em>rich</em> <span style="font-size:2em">HTML</span></div>
 
+	<!-- description area -->
+		<div class="description-section group">
+			<button class="add-btn add-above">+</button>
+
+			<div class="editor-content-wrapper">
+				<div class="placeholder">Start typing here...</div>
+				<div class="text-editor-content" contenteditable></div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+			<div class="section-options">
+				<div class="core-options-holder">
+					<button class="remove-section"><i class="fa fa-trash-o"></i></button>
+					<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
+					<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
+					<button class="add-media"><i class="fa fa-picture-o"></i></button>
+					<div class="align-media-choice">
+						<button class="add-media-left"><i class="fa fa-reply"></i></button>
+						<button class="add-media-right"><i class="fa fa-share"></i></button>
+					</div>
+				</div><!-- /.core-options-holder -->
+
+				<button class="add-btn add-below">+</button>
+			</div><!-- /.section-options -->
+		</div><!-- /.description-section -->
+	<!-- end description area -->
+
 		<div class="text-area-holder group">
 			<button class="add-btn add-above">+</button>
 
@@ -237,7 +264,18 @@
 		  test : Modernizr.touch,
 		  yep  : ['js/fastclick.js', 'js/pebble-text-editor-mobile.js'],
 		  nope : 'js/pebble-text-editor-new.js',
+		  callback : function(){
+		  	BlottoEditor({
+		  		section_class : "text-area-holder",
+		  		toolbar_include: ["bold", "italic"],
+		  		toolbar_exclude: ["color", "paragraph"]
+		  	});
 
+		  	BlottoEditor({
+		  		section_class : "description-section",
+		  		toolbar_exclude: ["web link", "plain"]
+		  	});
+		  }
 		});
 	</script>
 
