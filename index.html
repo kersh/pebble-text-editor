@@ -41,7 +41,7 @@
 
 	<div id="debugging-info">This is touch device!</div>
 
-	<div id="toolbar" class="toolbar group">
+	<!-- <div id="toolbar" class="toolbar group">
 		<div id="arrow-pointer" class="arrow-pointer"></div>
 		
 		<div id="buttons-container" class="buttons-container group">
@@ -56,8 +56,8 @@
 					<button id="edit-link">Edit Link</button>
 					<button id="open-link">Open Link</button>
 					<button id="remove-formatting">Plain</button>
-				</div><!-- /.main-menu-buttons -->
-			</div><!-- /.main-menu -->
+				</div>
+			</div>
 
 
 			<div id="color-menu" class="color-menu group">
@@ -79,9 +79,9 @@
 						<button class="color-pick"></button>
 						<button class="color-pick"></button>
 						<button class="color-pick"></button>
-					</div><!-- /.sub-menu-container -->
-				</div><!-- /.sub-menu-holder -->
-			</div><!-- /#color-menu -->
+					</div>
+				</div>
+			</div>
 
 
 			<div id="paragraph-menu" class="paragraph-menu group">
@@ -92,17 +92,42 @@
 						<button id="toggle-heading-h1">Heading 1</button>
 						<button id="toggle-heading-h2">Heading 2</button>
 						<button id="toggle-heading-h3">Fake heading 3</button>
-					</div><!-- /.sub-menu-container -->
-				</div><!-- /.sub-menu-holder -->
-			</div><!-- #paragraph-menu -->
+					</div>
+				</div>
+			</div>
 
-		</div><!-- /#buttons-container -->
-	</div><!-- /#toolbar -->
+		</div>
+	</div> -->
 
 	<div class="content" id="main-content">
 		<div style="color:red">Some <em>rich</em> <span style="font-size:2em">HTML</span></div>
 
 	<!-- description area -->
+		<div class="description-section group">
+			<button class="add-btn add-above">+</button>
+
+			<div class="editor-content-wrapper">
+				<div class="placeholder">Start typing here...</div>
+				<div class="text-editor-content" contenteditable></div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+			<div class="section-options">
+				<div class="core-options-holder">
+					<button class="remove-section"><i class="fa fa-trash-o"></i></button>
+					<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
+					<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
+					<button class="add-media"><i class="fa fa-picture-o"></i></button>
+					<div class="align-media-choice">
+						<button class="add-media-left"><i class="fa fa-reply"></i></button>
+						<button class="add-media-right"><i class="fa fa-share"></i></button>
+					</div>
+				</div><!-- /.core-options-holder -->
+
+				<button class="add-btn add-below">+</button>
+			</div><!-- /.section-options -->
+		</div><!-- /.description-section -->
+
 		<div class="description-section group">
 			<button class="add-btn add-above">+</button>
 
@@ -266,14 +291,15 @@
 		  nope : 'js/pebble-text-editor-new.js',
 		  callback : function(){
 		  	BlottoEditor({
-		  		section_class : "text-area-holder",
-		  		toolbar_include: ["bold", "italic"],
-		  		toolbar_exclude: ["color", "paragraph"]
+		  		section_class 	: "text-area-holder",
+		  		toolbar_include : ["bold", "italic"],
+		  		toolbar_exclude : ["color", "paragraph"]
 		  	});
 
 		  	BlottoEditor({
-		  		section_class : "description-section",
-		  		toolbar_exclude: ["web link", "plain"]
+		  		section_class	: "description-section",
+		  		toolbar_exclude : ["web link", "plain"],
+		  		is_single : true
 		  	});
 		  }
 		});
