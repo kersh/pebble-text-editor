@@ -14,6 +14,7 @@
 
     // Helpers, Globals
     var cur_contentdiv,                 // current section element
+        last_used_list_of_tools,        // List of tools that been used last
         cur_mouse_x, cur_mouse_y,       // image resizing data
         sel_type         = "Caret",     // variable to store type of selection: caret or range
         show_menu_class  = "show-menu", // class for making visible the context menus
@@ -33,7 +34,7 @@
         },
 
         // Toolbar UI elements
-        toolbar          : function() { return document.getElementById("toolbar") }, // toolbar container itself
+        toolbar          : function() { return document.getElementById("toolbar") },           // toolbar container itself
         buttons_container: function() { return document.getElementById("buttons-container") }, // main buttons holder
         main_menu        : function() { return document.getElementById("main-menu") },         // main menu
         color_menu       : function() { return document.getElementById("color-menu") },        // context menu that holds color pallete
@@ -253,33 +254,6 @@
         //------------------------------------------
 
         /*
-         * Sets all event listeners for media container elements
-         * @el - elements or set of elements
-         */
-        this.setMediaContainerEvents = function(el) {
-            // Check if it's single element and convert it to array
-            if (!el.length) {
-                var elem = {};
-                Array.prototype.push.call(elem, el);
-                el = elem;
-            }
-
-            for (var i=0; el[i] !== undefined; i++) {
-                // Add event listener for "Align media" button
-                el[i].getElementsByClassName("align-media")[0].onclick = alignMedia;
-
-                // Add event listener for "Remove media" button
-                el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
-
-                // Resize from left bottom corner
-                el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown  = function(e) { resizeImg(e, this.parentNode.parentNode, "left") };
-
-                // Resize from right bottom corner
-                el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "right") };
-            }
-        }
-
-        /*
          * Sets all events for "Add new section" menu
          */
         this.setEventsForAddNewSection = function() {
@@ -363,8 +337,14 @@
                 content_div.addEventListener("load",  updateTextarea(el[i]),  false);
 
                 // Apply changes to main container after focus
-                content_div.addEventListener("focus", function(el){
+                content_div.addEventListener("focus", function(el, list_of_tools){
                     return function() {
+                        // Create new toolbar only if it wasn't created previously (performance repaint reason)
+                        if(last_used_list_of_tools !== list_of_tools) {
+                            BlottoEditorObj.prototype.setToolbar(list_of_tools); // create toolbar
+                            last_used_list_of_tools = list_of_tools; // update last used list
+                        }
+
                         // Update current editable div to indicate working element
                         cur_contentdiv = el.getElementsByClassName(SectionElement.editablediv_cls)[0];
                         
@@ -377,7 +357,7 @@
                         // Check if need to show editing toolbar
                         if(sel_type==="Range"){ showTools(); }
                     };
-                }(el[i]), false);
+                }(el[i], this.list_of_tools), false);
 
                 // Make possible to paste plain text
                 content_div.addEventListener("paste", makePlain,    false);
@@ -448,7 +428,7 @@
 
 
         //------------------------------------------
-        // _Event listeners
+        // Init
         //------------------------------------------
 
         /*
@@ -457,7 +437,7 @@
         this.init = function() {
             this.setSectionEvents(this.section_element);
             this.setMediaContainerEvents(SectionElement.media_container());
-            this.setToolbar(this.list_of_tools);
+            // this.setToolbar(this.list_of_tools);
         }
 
         // Initial run
@@ -477,7 +457,9 @@
      * Checks if element has particular class
      */
     function hasClass(element, class_name) {
-        return element.className.match(new RegExp('(\\s|^)' + class_name + '(?!\S)'));
+        if(!!element && !!element) {
+            return element.className.match(new RegExp('(\\s|^)' + class_name + '(?!\S)'));
+        }
     }
 
     /*
@@ -744,9 +726,19 @@
      * It finds the position of selected range and places toolbox next to that.
      */
     var positionTools = function() {
-        var oRange, oRect, selection, sel_width, sel_height, current_bottom_distance;
-        var min_bottom_distance = 140;
-        var tools_height = 32;
+        var oRange,
+            oRect,
+            selection,
+            sel_width,
+            sel_height,
+            current_bottom_distance,
+            toolbar_width = undefined,
+            ratio_arrow,
+            ratio_toolbar,
+            dist_to_right,
+            dist_to_left,
+            min_bottom_distance = 140,
+            tools_height = 32;
 
         selection = window.getSelection();
         sel_type = checkSelectionType(selection); // defines whether user selected text or not
@@ -766,10 +758,31 @@
             // Current distance from selection to bottom
             current_bottom_distance = window.innerHeight - oRect.bottom;
             
+            // Width of toolbar
+            toolbar_width = document.getElementById("main-menu-buttons").offsetWidth;
+
+            dist_to_right = window.innerWidth - oRect.left;
+            dist_to_left = oRect.left;
+
             // Moves arrow pointer in the middle of selection
             if(sel_width > 10) {
-                sel_width = (sel_width - 10) / 2;
-                ToolbarElement.arrow_pointer().style.marginLeft = sel_width + "px";
+                // Center toolbar if selection is wider than toolbar
+                if(sel_width > toolbar_width) {
+                    // Set arrow in the middle of the tools
+                    ratio_arrow = (toolbar_width - 10) / 2;
+                    ToolbarElement.arrow_pointer().style.marginLeft = ratio_arrow + "px";
+
+                    // Set toolbar in the middle of selection
+                    ratio_toolbar = (sel_width / 2) - (toolbar_width / 2);
+                    ToolbarElement.toolbar().style.marginLeft = ratio_toolbar + "px";
+                } else {
+                    // Set arrow in the middle of selection
+                    ratio_arrow = (sel_width - 10) / 2;
+                    ToolbarElement.arrow_pointer().style.marginLeft = ratio_arrow + "px";
+                    
+                    // Set 
+                    ToolbarElement.toolbar().style.marginLeft = 0 + "px";
+                }
             }
             else {
                 ToolbarElement.arrow_pointer().style.marginLeft = "0px";
@@ -786,7 +799,7 @@
                 removeClass(ToolbarElement.paragraph_menu(), "located-reverse");
                 removeClass(ToolbarElement.arrow_pointer(), "arrow-pointer-bottom");
 
-                showTools(oRect.top + sel_height, oRect.left); // place tools below selection
+                showTools(oRect.top + sel_height, dist_to_left); // place tools below selection
             }
             // Reverse tools, when rich bottom side of the browser
             else {
@@ -795,7 +808,7 @@
                 addClass(ToolbarElement.paragraph_menu(), "located-reverse");
                 addClass(ToolbarElement.arrow_pointer(), "arrow-pointer-bottom");
                 
-                showTools(oRect.top - tools_height, oRect.left); // place tools above selection
+                showTools(oRect.top - tools_height, dist_to_left); // place tools above selection
             }
         }
 
@@ -1343,17 +1356,17 @@
      */
     function addMedia(elem, float) {
         var btn_value = '<i class="fa fa-arrow-left"></i>', // Default button value
-            parent_el = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName(SectionElement.editablediv_cls)[0], // parent element
+            parent_el = elem.parentNode.parentNode.parentNode.parentNode.getElementsByClassName(SectionElement.content_wrapper_cls)[0], // parent element
             first_child_el = parent_el.firstChild, // first child element
             media_div = document.createElement("div"); // main media container
-        
+
         media_div.className = SectionElement.media_container_cls;
-        
+
         media_div.style.styleFloat = float; // ie style
         media_div.style.cssFloat = float; // all rest browser style
 
         media_div.style.width = "30%"; // default width
-        
+
         // Should change button value opposite to current state
         if (float == "left") {
             btn_value = '<i class="fa fa-arrow-right"></i>';
@@ -1398,41 +1411,78 @@
 //------------------------------------------
 
     /*
+     * Sets all event listeners for media container elements
+     * @el - elements or set of elements
+     */
+    BlottoEditorObj.prototype.setMediaContainerEvents = function(el) {
+        // Check if it's single element and convert it to array
+        if (!el.length) {
+            var elem = {};
+            Array.prototype.push.call(elem, el);
+            el = elem;
+        }
+
+        for (var i=0; el[i] !== undefined; i++) {
+            // Add event listener for "Align media" button
+            el[i].getElementsByClassName("align-media")[0].onclick = alignMedia;
+
+            // Add event listener for "Remove media" button
+            el[i].getElementsByClassName("remove-media")[0].onclick = removeMedia;
+
+            // Resize from left bottom corner
+            el[i].getElementsByClassName("resize-img-left-bot")[0].onmousedown  = function(e) { resizeImg(e, this.parentNode.parentNode, "left") };
+
+            // Resize from right bottom corner
+            el[i].getElementsByClassName("resize-img-right-bot")[0].onmousedown = function(e) { resizeImg(e, this.parentNode.parentNode, "right") };
+        }
+    }
+
+    /*
      * Sets actions for all toolbar buttons
      */
     BlottoEditorObj.prototype.setToolbar = function(list_of_tools) {
         console.log("setToolbar:", list_of_tools);
 
+        // Container with all toolbar buttons
         var buttons_container_elem = document.createElement("div");
             buttons_container_elem.id = "buttons-container";
             buttons_container_elem.className = "buttons-container group";
         
+        // Container only for main menu toolbar buttons (top level of menu e.g. "bold", "italic", "color", "web-link"...)
         var main_menu_elem = document.createElement("div");
             main_menu_elem.id = "main-menu";
             main_menu_elem.className = "main-menu group";
+        
+        // Holder for main menu buttons (critical for mobile horizontal scrolling)
         var main_menu_buttons = '';
 
+        // Detecters to avoid duplication of menu items
         var link_is_set      = false; // detect when link was set
-            color_is_set     = false;
-            paragraph_is_set = false;
+            color_is_set     = false; // detect if color sub-menu needed
+            paragraph_is_set = false; // detect if paragraph sub-menu needed
 
+        // Loop though each needed item in a list of tools and add this item to main menu
         for(var i=0; i < list_of_tools.length; i++) {
             switch(list_of_tools[i])
             {
                 case "bold":
                     main_menu_buttons += '<button id="toggle-bold">Bold</button>';
                     break;
+
                 case "italic":
                     main_menu_buttons += '<button id="toggle-italic">Italic</button>';
                     break;
+
                 case "color":
                     main_menu_buttons += '<button id="toggle-color-menu">Color</button>';
                     color_is_set = true;
                     break;
+
                 case "paragraph":
                     main_menu_buttons += '<button id="toggle-paragraph-menu">Paragraph</button>';
                     paragraph_is_set = true;
                     break;
+
                 case "web link":
                     main_menu_buttons += '<button id="toggle-web-link">Web Link</button>';
                     // Set additional buttons for link
@@ -1443,6 +1493,7 @@
                         link_is_set = true;
                     }
                     break;
+
                 case "email link":
                     main_menu_buttons += '<button id="toggle-email-link">Email Link</button>';
                     // Set additional buttons for link
@@ -1453,18 +1504,21 @@
                         link_is_set = true;
                     }
                     break;
+
                 case "plain":
                     main_menu_buttons += '<button id="remove-formatting">Plain</button>';
                     break;
+
                 default:
                     console.log("unknown toolbar button");
                     break;
             }
         }
 
-        main_menu_elem.innerHTML = '<div class="main-menu-buttons group">' + main_menu_buttons + '</div>';
+        // Add content to main menu
+        main_menu_elem.innerHTML = '<div id="main-menu-buttons" class="main-menu-buttons group">' + main_menu_buttons + '</div>';
 
-        // Add main menu container
+        // Add main menu container to buttons' holder element
         buttons_container_elem.appendChild(main_menu_elem);
 
         // Add color sub menu if needed
@@ -1473,6 +1527,7 @@
                 color_sub_menu.id = "color-menu";
                 color_sub_menu.className = "color-menu group";
 
+            // Color sub menu
             color_sub_menu.innerHTML = '<button id="back-main-from-color" class="back-to-main"><i class="fa fa-arrow-up"></i></button>'+
                                             '<div class="sub-menu-holder">'+
                                                 '<div class="sub-menu-container">'+
@@ -1503,6 +1558,7 @@
                 paragraph_sub_menu.id = "paragraph-menu";
                 paragraph_sub_menu.className = "paragraph-menu group";
 
+            // Paragraph sub menu
             paragraph_sub_menu.innerHTML = '<button id="back-main-from-paragraph" class="back-to-main"><i class="fa fa-arrow-up"></i></button>'+
                                             '<div class="sub-menu-holder">'+
                                                 '<div class="sub-menu-container">'+
@@ -1512,13 +1568,16 @@
                                                 '</div>'+
                                             '</div>';
 
-            // Add color sub menu
+            // Add parahrahp sub menu
             buttons_container_elem.appendChild(paragraph_sub_menu);
         }
 
-        console.log("ToolbarElement.toolbar_div:", ToolbarElement.toolbar());
+        var buttons_container_el = ToolbarElement.buttons_container();
+        if(buttons_container_el) {
+            buttons_container_el.parentNode.removeChild(buttons_container_el);
+        }
+        // Place toolbar elements into DOM
         ToolbarElement.toolbar().appendChild(buttons_container_elem);
-        // console.log("buttons_container_elem:", buttons_container_elem);
 
         for(var i=0; i < list_of_tools.length; i++) {
             switch(list_of_tools[i])
@@ -1568,29 +1627,6 @@
                     break;
             }
         }
-
-        // console.log("main_menu_elem:", main_menu_elem);
-
-        // Formatting tools
-        // ToolbarElement.bold().addEventListener("click", toggleBold, false);
-        // ToolbarElement.italic().addEventListener("click", toggleItalic, false);
-        
-        // ToolbarElement.color_toggle().addEventListener("click", toggleColorMenu, false);
-        // ToolbarElement.color_red().addEventListener("click", function(){ setColor("red") }, false);
-        // ToolbarElement.color_green().addEventListener("click", function(){ setColor("green") }, false);
-        // ToolbarElement.color_blue().addEventListener("click", function(){ setColor("blue") }, false);
-        
-        // ToolbarElement.paragraph_toggle().addEventListener("click", toggleParagraphMenu, false);
-        // ToolbarElement.h1().addEventListener("click", function(){ toggleHeading("h1"); }, false);
-        // ToolbarElement.h2().addEventListener("click", function(){ toggleHeading("h2"); }, false);
-        
-        // ToolbarElement.web_link().addEventListener("click", function(){ createWebLink(); }, false);
-        // ToolbarElement.email_link().addEventListener("click", function(){ createEmailLink(); }, false);
-        // ToolbarElement.edit_link().addEventListener("click", function(){ editLink(); }, false);
-        // ToolbarElement.open_link().addEventListener("click", function(){ openLink(); }, false);
-
-        // ToolbarElement.plain().addEventListener("click", function(){ removeFormatting(); }, false);
-
     }
 
 
