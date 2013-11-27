@@ -116,7 +116,7 @@
         }, false);
     }
 
-    clickOnLinks();
+    document.addEventListener("DOMContentLoaded", clickOnLinks());
 
     var BlottoEditor = function(option) {
         return new BlottoEditorObj(option);
