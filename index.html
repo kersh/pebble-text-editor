@@ -104,6 +104,23 @@
 
 	<!-- description area -->
 		<div class="description-section group">
+			<div class="editor-content-wrapper">
+				<div class="placeholder">Start typing here...</div>
+				<div class="text-editor-content" contenteditable></div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+		</div><!-- /.description-section -->
+
+		<div class="description-section group">
+			<div class="editor-content-wrapper">
+				<div class="placeholder">Start typing here...</div>
+				<div class="text-editor-content" contenteditable>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, expedita, tempora, quam itaque deserunt maiores dolores nostrum animi ad in repellat fugit cum temporibus nesciunt eveniet eum minus fuga illum.</div><!-- /.text-editor-content -->
+			</div><!-- /.editor-content-wrapper -->
+			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+		</div><!-- /.description-section -->
+	<!-- end description area -->
+
+		<div class="red text-area-holder group">
 			<button class="add-btn add-above">+</button>
 
 			<div class="editor-content-wrapper">
@@ -126,33 +143,7 @@
 
 				<button class="add-btn add-below">+</button>
 			</div><!-- /.section-options -->
-		</div><!-- /.description-section -->
-
-		<div class="description-section group">
-			<button class="add-btn add-above">+</button>
-
-			<div class="editor-content-wrapper">
-				<div class="placeholder">Start typing here...</div>
-				<div class="text-editor-content" contenteditable>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, expedita, tempora, quam itaque deserunt maiores dolores nostrum animi ad in repellat fugit cum temporibus nesciunt eveniet eum minus fuga illum.</div><!-- /.text-editor-content -->
-			</div><!-- /.editor-content-wrapper -->
-			<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
-
-			<div class="section-options">
-				<div class="core-options-holder">
-					<button class="remove-section"><i class="fa fa-trash-o"></i></button>
-					<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
-					<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
-					<button class="add-media"><i class="fa fa-picture-o"></i></button>
-					<div class="align-media-choice">
-						<button class="add-media-left"><i class="fa fa-reply"></i></button>
-						<button class="add-media-right"><i class="fa fa-share"></i></button>
-					</div>
-				</div><!-- /.core-options-holder -->
-
-				<button class="add-btn add-below">+</button>
-			</div><!-- /.section-options -->
-		</div><!-- /.description-section -->
-	<!-- end description area -->
+		</div><!-- /.text-area-holder -->
 
 		<div class="text-area-holder group">
 			<button class="add-btn add-above">+</button>
@@ -298,7 +289,7 @@
 		  	BlottoEditor({
 		  		section_class	: "description-section",
 		  		toolbar_exclude : ["web link", "plain"],
-		  		is_single : true
+		  		has_section_menus : false
 		  	});
 		  }
 		});

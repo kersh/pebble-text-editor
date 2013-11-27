@@ -75,8 +75,12 @@
         media_container_cls : "media-container", // container for media and media options
 
         media_container : function() {
-            return document.getElementsByClassName(this.media_container_cls)[0]
-        }, // media container
+            return document.getElementsByClassName(this.media_container_cls);
+        }, // all media containers
+
+        editablediv_container : function() {
+            return document.getElementsByClassName(this.editablediv_cls);
+        }, // all media containers
     
         // 'Add new section' menu elements
         add_new_section_menu : '', // main container
@@ -86,6 +90,33 @@
         btn_add_tbl_sect : ''      // add new table section
     }
 
+    /*
+     * When ctrl key is pressed make possible to click on the links
+     */
+    function clickOnLinks() {
+        var pressed = false;
+
+        window.addEventListener("keydown", function(e) {
+            if (e.keyCode == 17) {
+                console.log("ctrl down:");
+                for(var i=0; i < SectionElement.editablediv_container().length; i++) {
+                    SectionElement.editablediv_container()[i].setAttribute("contentEditable", false);
+                }
+                // SectionElement.editablediv_container();
+            }
+        }, false);
+
+        window.addEventListener("keyup", function(e) {
+            if (e.keyCode == 17) {
+                console.log("ctrl up");
+                for(var i=0; i < SectionElement.editablediv_container().length; i++) {
+                    SectionElement.editablediv_container()[i].setAttribute("contentEditable", true);
+                }
+            }
+        }, false);
+    }
+
+    clickOnLinks();
 
     var BlottoEditor = function(option) {
         return new BlottoEditorObj(option);
@@ -93,9 +124,11 @@
 
     var BlottoEditorObj = function(option) {
         option = option || {};
-        option.params = option.params || {};
         option.section_class = option.section_class || "editor-section";
-        option.is_single = option.is_single || false;
+        
+        if(option.has_section_menus === false) { option.has_section_menus = "false"; } // to be possible to type "false" without '"'
+        option.has_section_menus = option.has_section_menus || true; // by default all sections with pluses (+) and other menus
+        
         option.toolbar_include = option.toolbar_include || "default";
         option.toolbar_exclude = option.toolbar_exclude || "default";
 
@@ -103,6 +136,7 @@
         this.section_element = document.getElementsByClassName(this.section_cls); // section container
         this.cur_contentdiv; // current section element
         this.list_of_tools = ["bold", "italic", "color", "paragraph", "web link", "email link", "plain"]; // main list of tools
+        this.has_section_menus = option.has_section_menus;
         ToolbarElement.init_toolbar_el();
 
         /*
@@ -328,13 +362,17 @@
 
 
                 // Run placeholder right after load
-                content_div.addEventListener("load",  placeholder,  false);
+                // console.log("content_div:", content_div);
+                content_div.addEventListener("load",  function() {
+                    placeholder("load");
+                    updateTextarea(el[i]);
+                }(),  false);
 
                 // Show or hide placeholder within section
                 content_div.addEventListener("keydown", placeholder, false);
                 
                 // Put all date into textarea right after load
-                content_div.addEventListener("load",  updateTextarea(el[i]),  false);
+                // content_div.addEventListener("load",  updateTextarea(el[i]),  false);
 
                 // Apply changes to main container after focus
                 content_div.addEventListener("focus", function(el, list_of_tools){
@@ -404,25 +442,25 @@
                 }(el[i]), false);
 
                 /* Section actions */
-                // Sets event listener for "Add new section" buttons aka "Pluses"(+)
-                var current_obj = this; // define current object to use within event listeners
+                if(this.has_section_menus === true) {
+                    var current_obj = this; // define current object to use within event listeners
+                    
+                    // Sets event listener for "Add new section" buttons aka "Pluses"(+)
+                    add_section_above.onclick = function(e) { current_obj.addNewSectionMenu(e, "above"); }
+                    add_section_below.onclick = function(e) { current_obj.addNewSectionMenu(e, "below"); }
 
-                add_section_above.onclick = function(e) { current_obj.addNewSectionMenu(e, "above"); }
-                add_section_below.onclick = function(e) { current_obj.addNewSectionMenu(e, "below"); }
+                    // Event listener to remove section
+                    btn_rmv_section.onclick = removeSection;
+                    // Move section up/down
+                    btn_move_sec_up.addEventListener("click", function(){ moveSection(this, "up", current_obj.section_cls); }, false);
+                    btn_move_sec_down.addEventListener("click", function(){ moveSection(this, "down", current_obj.section_cls); }, false);
 
-                // Event listener to remove section
-                btn_rmv_section.onclick = removeSection;
-
-                // Event to toggle "Add media" menu
-                btn_add_media.onclick = toggleMediaMenu;
-
-                // Event to insert media into section
-                btn_add_med_left.addEventListener("click", function(){ addMedia(this, "left"); }, false);
-                btn_add_med_right.addEventListener("click", function(){ addMedia(this, "right"); }, false);
-
-                // Move section up/down
-                btn_move_sec_up.addEventListener("click", function(){ moveSection(this, "up", current_obj.section_cls); }, false);
-                btn_move_sec_down.addEventListener("click", function(){ moveSection(this, "down", current_obj.section_cls); }, false);
+                    // Event to toggle "Add media" menu
+                    btn_add_media.onclick = toggleMediaMenu;
+                    // Event to insert media into section
+                    btn_add_med_left.addEventListener("click", function(){ addMedia(this, "left"); }, false);
+                    btn_add_med_right.addEventListener("click", function(){ addMedia(this, "right"); }, false);
+                }
             }
         }
 
@@ -1390,16 +1428,28 @@
     /*
      * Placeholder like native HTML5
      */
-    function placeholder() {
+    function placeholder(e) {
         var placeholder_el = cur_contentdiv.parentNode.getElementsByClassName("placeholder")[0];
 
-        setTimeout(function(){
-            if (cur_contentdiv.innerHTML.length > 0 && cur_contentdiv.innerHTML != "<br>") {
-                removeClass(placeholder_el, "show");
-            } else {
-                addClass(placeholder_el, "show");
-            }
-        }, 0);
+        if(e !== "load") {
+            setTimeout(function(){
+                togglePlaceholder(placeholder_el);
+            }, 0);
+        } else {
+            togglePlaceholder(placeholder_el);
+        }
+
+    }
+
+    /*
+     * Toggle placeholder 
+     */
+    function togglePlaceholder(placeholder_el) {
+        if (cur_contentdiv.innerHTML.length > 0 && cur_contentdiv.innerHTML != "<br>") {
+            removeClass(placeholder_el, "show");
+        } else {
+            addClass(placeholder_el, "show");
+        }
     }
 
 
@@ -1441,7 +1491,6 @@
      * Sets actions for all toolbar buttons
      */
     BlottoEditorObj.prototype.setToolbar = function(list_of_tools) {
-        console.log("setToolbar:", list_of_tools);
 
         // Container with all toolbar buttons
         var buttons_container_elem = document.createElement("div");
@@ -1484,7 +1533,6 @@
                     break;
 
                 case "web link":
-                    main_menu_buttons += '<button id="toggle-web-link">Web Link</button>';
                     // Set additional buttons for link
                     if (!link_is_set) {
                         main_menu_buttons += '<button id="edit-link">Edit Link</button>';
@@ -1492,10 +1540,10 @@
                     } else {
                         link_is_set = true;
                     }
+                    main_menu_buttons += '<button id="toggle-web-link">Web Link</button>';
                     break;
 
                 case "email link":
-                    main_menu_buttons += '<button id="toggle-email-link">Email Link</button>';
                     // Set additional buttons for link
                     if (!link_is_set) {
                         main_menu_buttons += '<button id="edit-link">Edit Link</button>';
@@ -1503,6 +1551,7 @@
                     } else {
                         link_is_set = true;
                     }
+                    main_menu_buttons += '<button id="toggle-email-link">Email Link</button>';
                     break;
 
                 case "plain":

@@ -26,10 +26,18 @@ $main_color: #00aeff;
     color: #008aca;
 }
 
-/* Main holder of whole set */
+// Make first element with this class without top margin
+// According to this http://stackoverflow.com/a/8539107/1189776
 .text-area-holder {
-    font-size: 1em;
+    margin: 0;
+}
+.text-area-holder ~ .text-area-holder {
     margin: -16px 0 0 0;
+}
+
+/* Main holder of whole set */
+.text-area-holder, .description-section {
+    font-size: 1em;
     height: 100%;
 
     .placeholder {
@@ -153,6 +161,14 @@ $main_color: #00aeff;
             margin-top: -24px;
             background-color: #fff;
         }
+    }
+}
+
+.description-section {
+    margin: 5px 0 0 0;
+
+    .editor-content-wrapper {
+        border: 1px solid #eee;
     }
 }
 
