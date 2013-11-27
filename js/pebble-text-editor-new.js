@@ -96,24 +96,33 @@
     function clickOnLinks() {
         var pressed = false;
 
-        window.addEventListener("keydown", function(e) {
-            if (e.keyCode == 17) {
-                console.log("ctrl down:");
-                for(var i=0; i < SectionElement.editablediv_container().length; i++) {
-                    SectionElement.editablediv_container()[i].setAttribute("contentEditable", false);
-                }
-                // SectionElement.editablediv_container();
+        window.addEventListener("click", function(e) {
+            console.log("click");
+            if(e.ctrlKey) {
+                console.log("e.target:", e.target);
+                console.log("e:", e.target.href);
+                console.log("ctrl down");
             }
         }, false);
 
-        window.addEventListener("keyup", function(e) {
-            if (e.keyCode == 17) {
-                console.log("ctrl up");
-                for(var i=0; i < SectionElement.editablediv_container().length; i++) {
-                    SectionElement.editablediv_container()[i].setAttribute("contentEditable", true);
-                }
-            }
-        }, false);
+        // window.addEventListener("keydown", function(e) {
+        //     if (e.keyCode == 17) {
+        //         console.log("ctrl down:");
+        //         for(var i=0; i < SectionElement.editablediv_container().length; i++) {
+        //             SectionElement.editablediv_container()[i].setAttribute("contentEditable", false);
+        //         }
+        //         // SectionElement.editablediv_container();
+        //     }
+        // }, false);
+
+        // window.addEventListener("keyup", function(e) {
+        //     if (e.keyCode == 17) {
+        //         console.log("ctrl up");
+        //         for(var i=0; i < SectionElement.editablediv_container().length; i++) {
+        //             SectionElement.editablediv_container()[i].setAttribute("contentEditable", true);
+        //         }
+        //     }
+        // }, false);
     }
 
     document.addEventListener("DOMContentLoaded", clickOnLinks());
