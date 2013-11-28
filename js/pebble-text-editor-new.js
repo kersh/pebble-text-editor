@@ -94,35 +94,32 @@
      * When ctrl key is pressed make possible to click on the links
      */
     function clickOnLinks() {
-        var pressed = false;
-
+        var selected_link; // url of clicked link
+        
         window.addEventListener("click", function(e) {
-            console.log("click");
+            // Do this only when ctrl key is pressed
             if(e.ctrlKey) {
-                console.log("e.target:", e.target);
-                console.log("e:", e.target.href);
-                console.log("ctrl down");
+
+                // Get clicked href
+                selected_link = e.target.href;
+
+                // If there is a link
+                if (!!selected_link) {
+                    if (selected_link.substring(0,24) === "javascript:window.open('") {
+                        selected_link = selected_link.substring(24, selected_link.length-2);
+                    }
+                    window.open(selected_link);
+                }
             }
         }, false);
+        
+        window.addEventListener("keydown", function() {
+            addClass(document.documentElement, "activate-links");
+        }, false);
 
-        // window.addEventListener("keydown", function(e) {
-        //     if (e.keyCode == 17) {
-        //         console.log("ctrl down:");
-        //         for(var i=0; i < SectionElement.editablediv_container().length; i++) {
-        //             SectionElement.editablediv_container()[i].setAttribute("contentEditable", false);
-        //         }
-        //         // SectionElement.editablediv_container();
-        //     }
-        // }, false);
-
-        // window.addEventListener("keyup", function(e) {
-        //     if (e.keyCode == 17) {
-        //         console.log("ctrl up");
-        //         for(var i=0; i < SectionElement.editablediv_container().length; i++) {
-        //             SectionElement.editablediv_container()[i].setAttribute("contentEditable", true);
-        //         }
-        //     }
-        // }, false);
+        window.addEventListener("keyup", function() {
+            removeClass(document.documentElement, "activate-links");
+        }, false);
     }
 
     document.addEventListener("DOMContentLoaded", clickOnLinks());
@@ -1658,24 +1655,24 @@
                     ToolbarElement.h2().addEventListener("click", function(){ toggleHeading("h2"); }, false);
                     break;
                 case "web link":
-                    ToolbarElement.web_link().addEventListener("click", function(){ createWebLink(); }, false);
                     // Set additional buttons for link
                     if (!link_is_set) {
-                        ToolbarElement.email_link().addEventListener("click", function(){ createEmailLink(); }, false);
+                        ToolbarElement.open_link().addEventListener("click", function(){ openLink(); }, false);
                         ToolbarElement.edit_link().addEventListener("click", function(){ editLink(); }, false);
                     } else {
                         link_is_set = true;
                     }
+                    ToolbarElement.web_link().addEventListener("click", function(){ createWebLink(); }, false);
                     break;
                 case "email link":
-                    ToolbarElement.email_link().addEventListener("click", function(){ createEmailLink(); }, false);
                     // Set additional buttons for link
                     if (!link_is_set) {
-                        ToolbarElement.email_link().addEventListener("click", function(){ createEmailLink(); }, false);
+                        ToolbarElement.open_link().addEventListener("click", function(){ openLink(); }, false);
                         ToolbarElement.edit_link().addEventListener("click", function(){ editLink(); }, false);
                     } else {
                         link_is_set = true;
                     }
+                    ToolbarElement.email_link().addEventListener("click", function(){ createEmailLink(); }, false);
                     break;
                 case "plain":
                     ToolbarElement.plain().addEventListener("click", function(){ removeFormatting(); }, false);
@@ -1694,7 +1691,6 @@
 //------------------------------------------
 // Application Init
 //------------------------------------------
-
 
     return (window.BlottoEditor = BlottoEditor);
 

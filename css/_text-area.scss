@@ -8,6 +8,16 @@ $main_color: #00aeff;
     cursor: nw-resize !important;
 }
 
+/* Make all links' cursor in editable field as pointer
+   to indicate that links are clickable */
+.activate-links {
+    div[contenteditable] {
+        a {
+            cursor: pointer !important;
+        }
+    }
+}
+
 /* Plus (+) button core style */
 .add-btn {
     color: $main_color;
