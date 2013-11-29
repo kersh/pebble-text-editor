@@ -24,13 +24,16 @@
 
     // All toolbar elements stored in this object
     var ToolbarElement = {
-        // Toolbar container
-        toolbar_div     : document.createElement("div"),
-        init_toolbar_el : function() {
-            this.toolbar_div.id = "toolbar";
-            this.toolbar_div.className = "toolbar group";
-            this.toolbar_div.innerHTML = '<div id="arrow-pointer" class="arrow-pointer"></div>';
-            document.body.insertBefore(this.toolbar_div, document.body.firstChild);
+        // Toolbar core container initialisation
+        init_toolbar : function() {
+            // Create element
+            var toolbar_div_new           = document.createElement("div");
+                toolbar_div_new.id        = "toolbar";
+                toolbar_div_new.className = "toolbar group";
+                toolbar_div_new.innerHTML = '<div id="arrow-pointer" class="arrow-pointer"></div>';
+
+            // Append element do the DOM
+            document.body.insertBefore(toolbar_div_new, document.body.firstChild);
         },
 
         // Toolbar UI elements
@@ -42,131 +45,113 @@
         buttons_wrapper  : function() { return document.getElementById("buttons-container") }, // all button holder
         arrow_pointer    : function() { return document.getElementById("arrow-pointer") },     // arrow icon that pointing on selection
 
-        // Toolbar elements options
-        bold        : function() { return document.getElementById('toggle-bold') },
-        italic      : function() { return document.getElementById('toggle-italic') },
+        // Toolbar buttons (functionality)
+        bold             : function() { return document.getElementById('toggle-bold') },       // "make bold" button
+        italic           : function() { return document.getElementById('toggle-italic') },     // "make italic" button
         
-        color_toggle: function() { return document.getElementById("toggle-color-menu") },
-        color_red   : function() { return document.getElementById("color-red") },
-        color_green : function() { return document.getElementById("color-green") },
-        color_blue  : function() { return document.getElementById("color-blue") },
+        color_toggle     : function() { return document.getElementById("toggle-color-menu") }, // "open color menu" button
+          color_red      : function() { return document.getElementById("color-red") },         // "make text red" button
+          color_green    : function() { return document.getElementById("color-green") },       // "make text green" button
+          color_blue     : function() { return document.getElementById("color-blue") },        // "make text blue" button
 
-        paragraph_toggle: function() { return document.getElementById("toggle-paragraph-menu") },
-        h1          : function() { return document.getElementById("toggle-heading-h1") },
-        h2          : function() { return document.getElementById("toggle-heading-h2") },
+        paragraph_toggle : function() { return document.getElementById("toggle-paragraph-menu") }, // "open paragraph menu" button
+          h1             : function() { return document.getElementById("toggle-heading-h1") }, // "make text as h1" button
+          h2             : function() { return document.getElementById("toggle-heading-h2") }, // "make text as h2" button
 
-        web_link    : function() { return document.getElementById("toggle-web-link") },
-        email_link  : function() { return document.getElementById("toggle-email-link") },
-        edit_link   : function() { return document.getElementById("edit-link") },
-        open_link   : function() { return document.getElementById("open-link") },
+        web_link         : function() { return document.getElementById("toggle-web-link") },   // "create a web link (starts with http://)" button
+        email_link       : function() { return document.getElementById("toggle-email-link") }, // "create an email link (starts with mailto:)" button
+          edit_link      : function() { return document.getElementById("edit-link") },         // "edit selected link" button
+          open_link      : function() { return document.getElementById("open-link") },         // "open selected link" button
 
-        plain       : function() { return document.getElementById("remove-formatting") }
+        plain            : function() { return document.getElementById("remove-formatting") }  // "remove all formatting" button
     }
 
     // All section UI elements stored here
     var SectionElement = {
-        /*
-         * List of used classes.
-         * If you rename default classes in HTML&CSS,
-         * REMEMBER to rename them here as well
-         */
-        editablediv_cls     : "text-editor-content", // contenteditable div with content
+        // List of used classes.
+        editablediv_cls     : "text-editor-content",    // contenteditable div with content
         content_wrapper_cls : "editor-content-wrapper", // container with content (text, media, placeholder)
-        media_container_cls : "media-container", // container for media and media options
-
-        media_container : function() {
-            return document.getElementsByClassName(this.media_container_cls);
-        }, // all media containers
-
-        editablediv_container : function() {
-            return document.getElementsByClassName(this.editablediv_cls);
-        }, // all media containers
-    
+        media_container_cls : "media-container",        // container for media and media options
+        
         // 'Add new section' menu elements
         add_new_section_menu : '', // main container
         cls_add_section_menu : '', // close menu button
-        btn_add_txt_sect : '',     // add new text section
-        btn_add_media_sect : '',   // add new media section
-        btn_add_tbl_sect : ''      // add new table section
+        btn_add_txt_sect     : '', // add new text section
+        btn_add_media_sect   : '', // add new media section
+        btn_add_tbl_sect     : '', // add new table section
+
+        media_container : function() { // all media containers
+            return document.getElementsByClassName(this.media_container_cls); },
+
+        editablediv_container : function() { // all editable div containers
+            return document.getElementsByClassName(this.editablediv_cls); }
     }
 
-    /*
-     * When ctrl key is pressed make possible to click on the links
-     */
-    function clickOnLinks() {
-        var selected_link; // url of clicked link
-        
-        window.addEventListener("click", function(e) {
-            // Do this only when ctrl key is pressed
-            if(e.ctrlKey) {
+    ToolbarElement.init_toolbar();
 
-                // Get clicked href
-                selected_link = e.target.href;
-
-                // If there is a link
-                if (!!selected_link) {
-                    if (selected_link.substring(0,24) === "javascript:window.open('") {
-                        selected_link = selected_link.substring(24, selected_link.length-2);
-                    }
-                    window.open(selected_link);
-                }
-            }
-        }, false);
-        
-        window.addEventListener("keydown", function() {
-            addClass(document.documentElement, "activate-links");
-        }, false);
-
-        window.addEventListener("keyup", function() {
-            removeClass(document.documentElement, "activate-links");
-        }, false);
-    }
-
-    document.addEventListener("DOMContentLoaded", clickOnLinks());
-
+    // Init of editor
     var BlottoEditor = function(option) {
         return new BlottoEditorObj(option);
     }
 
+    /*
+     * Core editor object
+     */
     var BlottoEditorObj = function(option) {
+        /*
+         * Option object
+         *
+         * Params:
+         * @section_class     - Main section class name
+         * @toolbar_include   - Toolbar buttons want to include
+         * @toolbar_exclude   - Toolbar buttons want to exclude
+         * @has_section_menus - Has section menus like "up", "down", "add new section", etc.
+         * @paste_plain       - Make false if want to keep formatted text, when paste into editor
+         */
         option = option || {};
-        option.section_class = option.section_class || "editor-section";
-        
-        if(option.has_section_menus === false) { option.has_section_menus = "false"; } // to be possible to type "false" without '"'
-        option.has_section_menus = option.has_section_menus || true; // by default all sections with pluses (+) and other menus
-        
-        option.toolbar_include = option.toolbar_include || "default";
-        option.toolbar_exclude = option.toolbar_exclude || "default";
 
+        this.section_class   = option.section_class || "editor-section";
+        this.toolbar_include = option.toolbar_include || "default";
+        this.toolbar_exclude = option.toolbar_exclude || "default";
+        if(option.paste_plain === false) { option.paste_plain = "false"; } // to be possible to type "false" without '"'
+        this.paste_plain = option.paste_plain || true;
+        if(option.has_section_menus === false) { option.has_section_menus = "false"; } // to be possible to type "false" without '"'
+        this.has_section_menus = option.has_section_menus || true; // by default all sections with pluses (+) and other menus
+
+        // Object variables
         this.section_cls = option.section_class; // section (core element)
         this.section_element = document.getElementsByClassName(this.section_cls); // section container
         this.cur_contentdiv; // current section element
-        this.list_of_tools = ["bold", "italic", "color", "paragraph", "web link", "email link", "plain"]; // main list of tools
-        this.has_section_menus = option.has_section_menus;
-        ToolbarElement.init_toolbar_el();
+        // ToolbarElement.init_toolbar();
 
         /*
          * Creates new list of tools for particular section
          */
         this.define_list_of_tools = function() {
+            var default_list_of_tools = ["bold", "italic", "color", "paragraph", "web link", "email link", "plain"];
             // Do this if for including tools
-            if (option.toolbar_include !== "default") {
-                this.list_of_tools = option.toolbar_include;
-            } // end if include
+            if (this.toolbar_include !== "default") {
+                return this.toolbar_include;
+            }
 
             // Do this if for excluding tools from main array
-            if (option.toolbar_include === "default" && option.toolbar_exclude !== "default") {
+            if (this.toolbar_include === "default" && this.toolbar_exclude !== "default") {
                 // Find match and remove item from main array
-                for(var i=0; i < option.toolbar_exclude.length; i++) {
-                    for(var n=0; n < this.list_of_tools.length; n++) {
-                        if(option.toolbar_exclude[i] === this.list_of_tools[n]) {
-                            this.list_of_tools.splice(n, 1); // remove matched item from main array
+                for(var i=0; i < this.toolbar_exclude.length; i++) {
+                    for(var n=0; n < default_list_of_tools.length; n++) {
+                        if(this.toolbar_exclude[i] === default_list_of_tools[n]) {
+                            default_list_of_tools.splice(n, 1); // remove matched item from main array
                         }
                     }
                 }
-            } // end if exclude
+                return default_list_of_tools;
+            }
         };
-        this.define_list_of_tools();
+
+        // New list of item for current object
+        this.list_of_tools = this.define_list_of_tools();
+
+        // console.log("this.list_of_tools:", this.list_of_tools);
 
 
 
@@ -179,111 +164,95 @@
         /*
          * Add txt section to DOM
          */
-        this.addTxtSection = function(section_cls) {
-            var par_el = SectionElement.add_new_section_menu.parentNode,
-                ref_el = SectionElement.add_new_section_menu,
-                section_el = document.createElement("div");
+        // this.addTxtSection = function(section_cls) {
+        //     var par_el = SectionElement.add_new_section_menu.parentNode,
+        //         ref_el = SectionElement.add_new_section_menu,
+        //         section_el = document.createElement("div");
 
-                section_el.className = section_cls + ' group';
-                section_el.innerHTML = '<button class="add-btn add-above">+</button>'
-                                     + '<div class="'+ SectionElement.content_wrapper_cls +'">'
-                                     + '<div class="placeholder">Start typing here...</div>'
-                                     + '<div class="'+ SectionElement.editablediv_cls +'" contenteditable></div>'
-                                     + '</div><!-- /.'+ SectionElement.content_wrapper_cls +' -->'
-                                     + '<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>'
-                                     + '<div class="section-options">'
-                                     + '<div class="core-options-holder">'
-                                     + '<button class="remove-section"><i class="fa fa-trash-o"></i></button>'
-                                     + '<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>'
-                                     + '<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>'
-                                     + '<button class="add-media"><i class="fa fa-picture-o"></i></button>'
-                                     + '<div class="align-media-choice">'
-                                     + '<button class="add-media-left"><i class="fa fa-reply"></i></button>'
-                                     + '<button class="add-media-right"><i class="fa fa-share"></i></button>'
-                                     + '</div><!-- /.align-media-choice -->'
-                                     + '</div><!-- /.core-options-holder -->'
-                                     + '<button class="add-btn add-below">+</button>'
-                                     + '</div><!-- /.section-options -->';
+        //         section_el.className = section_cls + ' group';
+        //         section_el.innerHTML = '<button class="add-btn add-above">+</button>'
+        //                              + '<div class="'+ SectionElement.content_wrapper_cls +'">'
+        //                              + '<div class="placeholder">Start typing here...</div>'
+        //                              + '<div class="'+ SectionElement.editablediv_cls +'" contenteditable></div>'
+        //                              + '</div><!-- /.'+ SectionElement.content_wrapper_cls +' -->'
+        //                              + '<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>'
+        //                              + '<div class="section-options">'
+        //                              + '<div class="core-options-holder">'
+        //                              + '<button class="remove-section"><i class="fa fa-trash-o"></i></button>'
+        //                              + '<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>'
+        //                              + '<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>'
+        //                              + '<button class="add-media"><i class="fa fa-picture-o"></i></button>'
+        //                              + '<div class="align-media-choice">'
+        //                              + '<button class="add-media-left"><i class="fa fa-reply"></i></button>'
+        //                              + '<button class="add-media-right"><i class="fa fa-share"></i></button>'
+        //                              + '</div><!-- /.align-media-choice -->'
+        //                              + '</div><!-- /.core-options-holder -->'
+        //                              + '<button class="add-btn add-below">+</button>'
+        //                              + '</div><!-- /.section-options -->';
             
-            ref_el.style.display = "none";
+        //     ref_el.style.display = "none";
 
-            par_el.insertBefore(section_el, ref_el);
-            this.setSectionEvents(section_el); // add event listeners
-            section_el.getElementsByClassName(SectionElement.editablediv_cls)[0].focus();
+        //     par_el.insertBefore(section_el, ref_el);
+        //     this.setSectionEvents(section_el); // add event listeners
+        //     section_el.getElementsByClassName(SectionElement.editablediv_cls)[0].focus();
             
-            this.removeAddSectionMenu();
-        }
+        //     this.removeAddSectionMenu();
+        // }
 
         /*
          * Add media only section to DOM
          */
-        this.addMediaSection = function(section_cls) {
-            console.log("add media section");
-        }
+        // this.addMediaSection = function(section_cls) {
+        //     console.log("add media section");
+        // }
 
         /*
          * Add table section to DOM
          */
-        this.addTblSection = function(section_cls) {
-            console.log("add tbl section");
-        }
-
-
-
-
-
-        //------------------------------------------
-        // _Add New Section Menu functions
-        //------------------------------------------
+        // this.addTblSection = function(section_cls) {
+        //     console.log("add tbl section");
+        // }
 
         /*
          * "Add new section" buttons aka "Pluses"(+)
          */
-        this.addNewSectionMenu = function(e, location) {
-            var par_el, ref_el,
-                add_new_el = document.createElement("div");
-                add_new_el.id = "add-new-section-menu";
-                add_new_el.className = "add-new-section-menu";
-                add_new_el.innerHTML = '<button id="add-text-section"><div class="icon">+</div><div class="lbl">Text Section</div></button>'
-                                     + '<button id="add-media-section"><div class="icon">+</div><div class="lbl">Media Section</div></button>'
-                                     + '<button id="add-tbl-section"><div class="icon">+</div><div class="lbl">Table Section</div></button>'
-                                     + '<button id="close-add-section-menu">✖</button>';
+        // this.addNewSectionMenu = function(e, location) {
+        //     var par_el, ref_el,
+        //         add_new_el = document.createElement("div");
+        //         add_new_el.id = "add-new-section-menu";
+        //         add_new_el.className = "add-new-section-menu";
+        //         add_new_el.innerHTML = '<button id="add-text-section"><div class="icon">+</div><div class="lbl">Text Section</div></button>'
+        //                              + '<button id="add-media-section"><div class="icon">+</div><div class="lbl">Media Section</div></button>'
+        //                              + '<button id="add-tbl-section"><div class="icon">+</div><div class="lbl">Table Section</div></button>'
+        //                              + '<button id="close-add-section-menu">✖</button>';
 
-            SectionElement.add_new_section_menu = document.getElementById("add-new-section-menu");
+        //     SectionElement.add_new_section_menu = document.getElementById("add-new-section-menu");
 
-            // Remove menu if it already exists
-            if (!!SectionElement.add_new_section_menu) {
-                this.removeAddSectionMenu();
-            }
+        //     // Remove menu if it already exists
+        //     if (!!SectionElement.add_new_section_menu) {
+        //         this.removeAddSectionMenu();
+        //     }
 
-            if (location === "above") {
-                par_el = e.target.parentNode.parentNode;
-                ref_el = e.target.parentNode;
-                par_el.insertBefore(add_new_el, ref_el);
-            } else {
-                par_el = e.target.parentNode.parentNode.parentNode;
-                ref_el = e.target.parentNode.parentNode;
-                par_el.insertBefore(add_new_el, ref_el.nextSibling);
-            }
+        //     if (location === "above") {
+        //         par_el = e.target.parentNode.parentNode;
+        //         ref_el = e.target.parentNode;
+        //         par_el.insertBefore(add_new_el, ref_el);
+        //     } else {
+        //         par_el = e.target.parentNode.parentNode.parentNode;
+        //         ref_el = e.target.parentNode.parentNode;
+        //         par_el.insertBefore(add_new_el, ref_el.nextSibling);
+        //     }
 
-            setTimeout(function() {
-                addClass(add_new_el, "show");
-            }, 0);
+        //     setTimeout(function() {
+        //         addClass(add_new_el, "show");
+        //     }, 0);
 
-            // Set focus
-            document.getElementById("add-text-section").focus();
+        //     // Set focus
+        //     document.getElementById("add-text-section").focus();
 
-            // Add event listeners for new "Add new section" menu.
-            this.setEventsForAddNewSection();
-        }
-
-        /*
-         * Removes "Add new section" menu from DOM
-         */
-        this.removeAddSectionMenu = function() {
-            removeClass(SectionElement.add_new_section_menu, "show");
-            SectionElement.add_new_section_menu.parentNode.removeChild(SectionElement.add_new_section_menu);
-        }
+        //     // Add event listeners for new "Add new section" menu.
+        //     this.setEventsForAddNewSection();
+        // }
 
 
 
@@ -296,179 +265,187 @@
         /*
          * Sets all events for "Add new section" menu
          */
-        this.setEventsForAddNewSection = function() {
+        // this.setEventsForAddNewSection = function() {
 
-            // // 'Add new section' menu element
-            SectionElement.add_new_section_menu = document.getElementById("add-new-section-menu");
+        //     // // 'Add new section' menu element
+        //     SectionElement.add_new_section_menu = document.getElementById("add-new-section-menu");
             
-            // // All buttons within menu
-            SectionElement.btn_add_txt_sect     = document.getElementById("add-text-section");
-            SectionElement.btn_add_media_sect   = document.getElementById("add-media-section");
-            SectionElement.btn_add_tbl_sect     = document.getElementById("add-tbl-section");
-            SectionElement.cls_add_section_menu = document.getElementById("close-add-section-menu"); // close menu
+        //     // // All buttons within menu
+        //     SectionElement.btn_add_txt_sect     = document.getElementById("add-text-section");
+        //     SectionElement.btn_add_media_sect   = document.getElementById("add-media-section");
+        //     SectionElement.btn_add_tbl_sect     = document.getElementById("add-tbl-section");
+        //     SectionElement.cls_add_section_menu = document.getElementById("close-add-section-menu"); // close menu
 
-            // If element exists then add events
-            if (!!SectionElement.add_new_section_menu) {
-                SectionElement.btn_add_txt_sect.onclick     = function (obj) {
-                    return function() { obj.addTxtSection(obj.section_cls); }
-                }(this);
+        //     // If element exists then add events
+        //     if (!!SectionElement.add_new_section_menu) {
+        //         SectionElement.btn_add_txt_sect.onclick     = function (obj) {
+        //             return function() { obj.addTxtSection(obj.section_cls); }
+        //         }(this);
 
-                SectionElement.btn_add_media_sect.onclick   = function (obj) {
-                    return function() { obj.addMediaSection(obj.section_cls); }
-                }(this);
+        //         SectionElement.btn_add_media_sect.onclick   = function (obj) {
+        //             return function() { obj.addMediaSection(obj.section_cls); }
+        //         }(this);
 
-                SectionElement.btn_add_tbl_sect.onclick     = function (obj) {
-                    return function() { obj.addTblSection(obj.section_cls); }
-                }(this);
+        //         SectionElement.btn_add_tbl_sect.onclick     = function (obj) {
+        //             return function() { obj.addTblSection(obj.section_cls); }
+        //         }(this);
 
-                SectionElement.cls_add_section_menu.onclick = this.removeAddSectionMenu;
-            }
-        }
+        //         SectionElement.cls_add_section_menu.onclick = BlottoEditorObj.removeAddSectionMenu;
+        //     }
+        // }
 
         /*
-         * This function was created due to the closure inside the loops
+         * Sets all event listeners each section element
+         * @el - element or set of elements
          */
-        this.setSectionEvents = function(el) {
-            var add_section_above,  // (+) add new section above button
-                add_section_below,  // (+) add new section below button
+        // this.setSectionEvents = function(el) {
+        //     var add_section_above,  // (+) add new section above button
+        //         add_section_below,  // (+) add new section below button
                 
-                content_div,        // section container itself
-                btn_rmv_section,    // remove section button
-                btn_move_sec_up,    // move section up button
-                btn_move_sec_down,  // move section down button
-                btn_add_media,      // add new media
-                btn_add_med_left,   // adds media on the left
-                btn_add_med_right;  // adds media on the right
+        //         content_div,        // section container itself
+        //         btn_rmv_section,    // remove section button
+        //         btn_move_sec_up,    // move section up button
+        //         btn_move_sec_down,  // move section down button
+        //         btn_add_media,      // add new media
+        //         btn_add_med_left,   // adds media on the left
+        //         btn_add_med_right;  // adds media on the right
 
-            // Check if it's single element and convert it to array
-            if (!el.length && !!el) {
-                var elem = {};
-                Array.prototype.push.call(elem, el);
-                el = elem;
-            }
+        //     // Check if it's single element and convert it to array
+        //     if (!el.length && !!el) {
+        //         var elem = {};
+        //         Array.prototype.push.call(elem, el);
+        //         el = elem;
+        //     }
 
 
-            // Loop through each 'text editor content' element and add event listeners
-            for(var i = 0; el[i] !== undefined; i++) {
-                // That check only for situation when the 
-                // elements with section_cls doesn't exist on a page
-                if(el[i].length !== undefined) { break; }
+        //     // Loop through each 'text editor content' element and add event listeners
+        //     for(var i = 0; el[i] !== undefined; i++) {
+        //         // That check only for situation when the 
+        //         // elements with section_cls doesn't exist on a page
+        //         if(el[i].length !== undefined) { break; }
 
-                add_section_above = el[i].getElementsByClassName("add-above")[0],
-                add_section_below = el[i].getElementsByClassName("add-below")[0],
+        //         add_section_above = el[i].getElementsByClassName("add-above")[0],
+        //         add_section_below = el[i].getElementsByClassName("add-below")[0],
                 
-                content_div       = el[i].getElementsByClassName(SectionElement.editablediv_cls)[0],
-                btn_rmv_section   = el[i].getElementsByClassName("remove-section")[0]
-                btn_move_sec_up   = el[i].getElementsByClassName("move-sec-up")[0],
-                btn_move_sec_down = el[i].getElementsByClassName("move-sec-down")[0];
-                btn_add_media     = el[i].getElementsByClassName("add-media")[0];
-                btn_add_med_left  = el[i].getElementsByClassName("add-media-left")[0];
-                btn_add_med_right = el[i].getElementsByClassName("add-media-right")[0];
-                cur_contentdiv    = content_div; // sets current editable div element
+        //         content_div       = el[i].getElementsByClassName(SectionElement.editablediv_cls)[0],
+        //         btn_rmv_section   = el[i].getElementsByClassName("remove-section")[0]
+        //         btn_move_sec_up   = el[i].getElementsByClassName("move-sec-up")[0],
+        //         btn_move_sec_down = el[i].getElementsByClassName("move-sec-down")[0];
+        //         btn_add_media     = el[i].getElementsByClassName("add-media")[0];
+        //         btn_add_med_left  = el[i].getElementsByClassName("add-media-left")[0];
+        //         btn_add_med_right = el[i].getElementsByClassName("add-media-right")[0];
+        //         cur_contentdiv    = content_div; // sets current editable div element
 
 
-                // Run placeholder right after load
-                // console.log("content_div:", content_div);
-                content_div.addEventListener("load",  function() {
-                    placeholder("load");
-                    updateTextarea(el[i]);
-                }(),  false);
+        //         // Run placeholder right after load
+        //         // console.log("content_div:", content_div);
+        //         content_div.addEventListener("load",  function() {
+        //             placeholder("load");
+        //             updateTextarea(el[i]);
+        //         }(),  false);
 
-                // Show or hide placeholder within section
-                content_div.addEventListener("keydown", placeholder, false);
+        //         // Show or hide placeholder within section
+        //         content_div.addEventListener("keydown", placeholder, false);
                 
-                // Put all date into textarea right after load
-                // content_div.addEventListener("load",  updateTextarea(el[i]),  false);
+        //         // Put all date into textarea right after load
+        //         // content_div.addEventListener("load",  updateTextarea(el[i]),  false);
 
-                // Apply changes to main container after focus
-                content_div.addEventListener("focus", function(el, list_of_tools){
-                    return function() {
-                        // Create new toolbar only if it wasn't created previously (performance repaint reason)
-                        if(last_used_list_of_tools !== list_of_tools) {
-                            BlottoEditorObj.prototype.setToolbar(list_of_tools); // create toolbar
-                            last_used_list_of_tools = list_of_tools; // update last used list
-                        }
+        //         // Apply changes to main container after focus
+        //         content_div.addEventListener("focus", function(el, list_of_tools){
+        //             return function() {
+        //                 // Create new toolbar only if it wasn't created previously (performance repaint reason)
+        //                 if(last_used_list_of_tools !== list_of_tools) {
+        //                     BlottoEditorObj.prototype.setToolbar(list_of_tools); // create toolbar
+        //                     last_used_list_of_tools = list_of_tools; // update last used list
+        //                 }
 
-                        // Update current editable div to indicate working element
-                        cur_contentdiv = el.getElementsByClassName(SectionElement.editablediv_cls)[0];
+        //                 // Update current editable div to indicate working element
+        //                 cur_contentdiv = el.getElementsByClassName(SectionElement.editablediv_cls)[0];
                         
-                        // Flag for toolbar
-                        is_in_focus = true;
+        //                 // Flag for toolbar
+        //                 is_in_focus = true;
 
-                        // Add .hover for main container when in focus
-                        addClass(this.parentNode.parentNode, "hover");
+        //                 // Add .hover for main container when in focus
+        //                 addClass(this.parentNode.parentNode, "hover");
 
-                        // Check if need to show editing toolbar
-                        if(sel_type==="Range"){ showTools(); }
-                    };
-                }(el[i], this.list_of_tools), false);
+        //                 // Check if need to show editing toolbar
+        //                 if(sel_type==="Range"){ showTools(); }
+        //             };
+        //         }(el[i], this.list_of_tools), false);
 
-                // Make possible to paste plain text
-                content_div.addEventListener("paste", makePlain,    false);
-                
-                // Disable dragging text for editable area
-                content_div.addEventListener("drop",  makePlain,    false);
-
-                /* Place formatting tools */
-                // React on mouse move within content element
-                content_div.addEventListener("mousemove", function() {
-                    if(is_in_focus === true) { positionTools(); } }, false);
-
-                // React on mouse move within tools container
-                ToolbarElement.toolbar().addEventListener("mousemove", function() {
-                    if(is_in_focus === true) { positionTools(); } }, false);
-
-                // Show formatting tools when SELECTED with MOUSE
-                content_div.addEventListener("mouseup", positionTools, false);
-
-                // Show formatting tools when SELECTED with KEYBOARD
-                content_div.addEventListener("keyup", positionTools, false);
-
-                // Show formatting tools when Scroll and move with the content
-                document.addEventListener("scroll", function() {
-                    if(sel_type === "Range") { positionTools(); } }, false);
-
-                // Saves all data into textarea.
-                // Hides editing tools when out of editing element focus.
-                content_div.addEventListener("blur", function(el) {
-                    return function() {
-                        // Indicate when focus is lost
-                        is_in_focus = false;
-                        
-                        // Remove .hover for main container when in blur
-                        removeClass(this.parentNode.parentNode, "hover");
-
-                        // Updates textarea for back-end submition
-                        updateTextarea(el);
-
-                        // Defines whether user selected text or not
-                        sel_type = checkSelectionType(window.getSelection());
-                        if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
-                    };
-                }(el[i]), false);
-
-                /* Section actions */
-                if(this.has_section_menus === true) {
-                    var current_obj = this; // define current object to use within event listeners
+        //         if(option.paste_plain === true) {
+        //             // Make possible to paste plain text
+        //             content_div.addEventListener("paste", makePlain,    false);
                     
-                    // Sets event listener for "Add new section" buttons aka "Pluses"(+)
-                    add_section_above.onclick = function(e) { current_obj.addNewSectionMenu(e, "above"); }
-                    add_section_below.onclick = function(e) { current_obj.addNewSectionMenu(e, "below"); }
+        //             // Disable dragging text for editable area
+        //             content_div.addEventListener("drop",  makePlain,    false);
+        //         } else {
+        //             // Hide placeholder on drop
+        //             content_div.addEventListener("drop", function() {
+        //                 setTimeout(function() { placeholder(); }, 0);
+        //             }, false);
+        //         }
 
-                    // Event listener to remove section
-                    btn_rmv_section.onclick = removeSection;
-                    // Move section up/down
-                    btn_move_sec_up.addEventListener("click", function(){ moveSection(this, "up", current_obj.section_cls); }, false);
-                    btn_move_sec_down.addEventListener("click", function(){ moveSection(this, "down", current_obj.section_cls); }, false);
+        //         /* Place formatting tools */
+        //         // React on mouse move within content element
+        //         content_div.addEventListener("mousemove", function() {
+        //             if(is_in_focus === true) { positionTools(); } }, false);
 
-                    // Event to toggle "Add media" menu
-                    btn_add_media.onclick = toggleMediaMenu;
-                    // Event to insert media into section
-                    btn_add_med_left.addEventListener("click", function(){ addMedia(this, "left"); }, false);
-                    btn_add_med_right.addEventListener("click", function(){ addMedia(this, "right"); }, false);
-                }
-            }
-        }
+        //         // React on mouse move within tools container
+        //         ToolbarElement.toolbar().addEventListener("mousemove", function() {
+        //             if(is_in_focus === true) { positionTools(); } }, false);
+
+        //         // Show formatting tools when SELECTED with MOUSE
+        //         content_div.addEventListener("mouseup", positionTools, false);
+
+        //         // Show formatting tools when SELECTED with KEYBOARD
+        //         content_div.addEventListener("keyup", positionTools, false);
+
+        //         // Show formatting tools when Scroll and move with the content
+        //         document.addEventListener("scroll", function() {
+        //             if(sel_type === "Range") { positionTools(); } }, false);
+
+        //         // Saves all data into textarea.
+        //         // Hides editing tools when out of editing element focus.
+        //         content_div.addEventListener("blur", function(el) {
+        //             return function() {
+        //                 // Indicate when focus is lost
+        //                 is_in_focus = false;
+                        
+        //                 // Remove .hover for main container when in blur
+        //                 removeClass(this.parentNode.parentNode, "hover");
+
+        //                 // Updates textarea for back-end submition
+        //                 updateTextarea(el);
+
+        //                 // Defines whether user selected text or not
+        //                 sel_type = checkSelectionType(window.getSelection());
+        //                 if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
+        //             };
+        //         }(el[i]), false);
+
+        //         /* Section actions */
+        //         if(option.has_section_menus === true) {
+        //             // var current_obj = this; // define current object to use within event listeners
+                    
+        //             // Sets event listener for "Add new section" buttons aka "Pluses"(+)
+        //             add_section_above.onclick = function(e) { BlottoEditorObj.addNewSectionMenu(e, "above"); }
+        //             add_section_below.onclick = function(e) { BlottoEditorObj.addNewSectionMenu(e, "below"); }
+
+        //             // Event listener to remove section
+        //             btn_rmv_section.onclick = removeSection;
+        //             // Move section up/down
+        //             btn_move_sec_up.addEventListener("click", function(){ moveSection(this, "up", current_obj.section_cls); }, false);
+        //             btn_move_sec_down.addEventListener("click", function(){ moveSection(this, "down", current_obj.section_cls); }, false);
+
+        //             // Event to toggle "Add media" menu
+        //             btn_add_media.onclick = toggleMediaMenu;
+        //             // Event to insert media into section
+        //             btn_add_med_left.addEventListener("click", function(){ addMedia(this, "left"); }, false);
+        //             btn_add_med_right.addEventListener("click", function(){ addMedia(this, "right"); }, false);
+        //         }
+        //     }
+        // }
 
 
         //------------------------------------------
@@ -479,8 +456,9 @@
          * All that required for initial run
          */
         this.init = function() {
-            this.setSectionEvents(this.section_element);
-            this.setMediaContainerEvents(SectionElement.media_container());
+            BlottoEditorObj.setSectionEvents(this.section_element);
+            console.log("init_list_of_tools:", this.list_of_tools);
+            this.setMediaContainerEvents(SectionElement.media_container(), this.list_of_tools);
             // this.setToolbar(this.list_of_tools);
         }
 
@@ -805,8 +783,18 @@
             // Width of toolbar
             toolbar_width = document.getElementById("main-menu-buttons").offsetWidth;
 
-            dist_to_right = window.innerWidth - oRect.left;
-            dist_to_left = oRect.left;
+            // Selection distance to right side of the window
+            dist_to_right = window.innerWidth - oRect.left - 20; // -20 is approximate width of scrollbar
+            dist_to_left = oRect.left; // toolbar distance to left side
+
+            // Locate toolbar on to screen if it doesn't fit to the right side
+            if(dist_to_right < toolbar_width) {
+                // Stick toolbar to the right side
+                dist_to_left = oRect.left - (toolbar_width - dist_to_right);
+
+                // Point arrow pointer in the beginning of selection
+                ToolbarElement.arrow_pointer().style.left = (toolbar_width - dist_to_right) + "px";
+            }
 
             // Moves arrow pointer in the middle of selection
             if(sel_width > 10) {
@@ -835,7 +823,6 @@
             // Check if web link or email link currently selected to show different menu
             checkExistingLink();
 
-
             // Show tools normally before user riches bottom side of the browser
             if (current_bottom_distance > min_bottom_distance) {
                 ToolbarElement.toolbar().insertBefore(ToolbarElement.arrow_pointer(), ToolbarElement.buttons_wrapper()); // put arrow pointer on top
@@ -860,6 +847,41 @@
         else {
             hideTools();
         }
+    }
+
+    /*
+     * When ctrl key is pressed make possible to click on the links
+     */
+    function clickOnLinks() {
+        var selected_link; // url of clicked link
+        
+        window.addEventListener("click", function(e) {
+            // Do this only when ctrl key is pressed
+            if(e.ctrlKey) {
+                // Get clicked href
+                selected_link = e.target.href;
+
+                // If there is a link
+                if (!!selected_link) {
+                    if (selected_link.substring(0,24) === "javascript:window.open('") {
+                        selected_link = selected_link.substring(24, selected_link.length-2);
+                    }
+                    window.open(selected_link);
+                }
+            }
+        }, false);
+        
+        window.addEventListener("keydown", function(e) {
+            if(e.keyCode == 17) {
+                addClass(document.documentElement, "activate-links");
+            }
+        }, false);
+
+        window.addEventListener("keyup", function(e) {
+            if(e.keyCode == 17) {
+                removeClass(document.documentElement, "activate-links");
+            }
+        }, false);
     }
 
 
@@ -1152,29 +1174,7 @@
         }
 
         if (e.type === "drop") { // if data was dragged and then dropped
-            /*
-             * FIX THAT LATER. DOES WORK ONLY IN CHROME THUS I SWITCHED DRAG'n'DROP OFF.
-             */
             e.preventDefault();
-
-            // For damn IE
-            // if(isMSIE) {
-            //     var text = e.dataTransfer.getData("Text"); // get data from drag as plain text
-
-            //     setTimeout(function() { // actions after drop event need to be delayed
-            //         pasteHtmlAtCaret(text); // fix for unimplemented in IE 'execCommand("insertHTML")'
-            //                                 // pasteHtmlAtCaret() taken from 'ie-pebble-text-editor.js' that is loaded conditionally
-            //         hideTools();
-            //     }, 0);
-            // }
-            // // For the rest of browsers
-            // else {
-            //     var text = e.dataTransfer.getData("text/plain"); // get data from drag as plain text
-            //     setTimeout(function() { // actions after drop event need to be delayed
-            //         document.execCommand("insertHTML", false, text);
-            //         hideTools();
-            //     }, 0);
-            // }
         }
     }
 
@@ -1463,8 +1463,301 @@
 
 
 //------------------------------------------
+// Add New Section Menu functions
+//------------------------------------------
+
+    /*
+     * "Add new section" buttons aka "Pluses"(+)
+     */
+    BlottoEditorObj.addNewSectionMenu = function(e, location) {
+        var par_el, ref_el,
+            add_new_el = document.createElement("div");
+            add_new_el.id = "add-new-section-menu";
+            add_new_el.className = "add-new-section-menu";
+            add_new_el.innerHTML = '<button id="add-text-section"><div class="icon">+</div><div class="lbl">Text Section</div></button>'
+                                 + '<button id="add-media-section"><div class="icon">+</div><div class="lbl">Media Section</div></button>'
+                                 + '<button id="add-tbl-section"><div class="icon">+</div><div class="lbl">Table Section</div></button>'
+                                 + '<button id="close-add-section-menu">✖</button>';
+
+        SectionElement.add_new_section_menu = document.getElementById("add-new-section-menu");
+
+        // Remove menu if it already exists
+        if (!!SectionElement.add_new_section_menu) {
+            BlottoEditorObj.removeAddSectionMenu();
+        }
+
+        if (location === "above") {
+            par_el = e.target.parentNode.parentNode;
+            ref_el = e.target.parentNode;
+            par_el.insertBefore(add_new_el, ref_el);
+        } else {
+            par_el = e.target.parentNode.parentNode.parentNode;
+            ref_el = e.target.parentNode.parentNode;
+            par_el.insertBefore(add_new_el, ref_el.nextSibling);
+        }
+
+        setTimeout(function() {
+            addClass(add_new_el, "show");
+        }, 0);
+
+        // Set focus
+        document.getElementById("add-text-section").focus();
+
+        // Add event listeners for new "Add new section" menu.
+        BlottoEditorObj.setEventsForAddNewSection();
+    }
+
+    /*
+     * Removes "Add new section" menu from DOM
+     */
+    BlottoEditorObj.removeAddSectionMenu = function() {
+        removeClass(SectionElement.add_new_section_menu, "show");
+        SectionElement.add_new_section_menu.parentNode.removeChild(SectionElement.add_new_section_menu);
+    }
+
+    /*
+     * Add txt section to DOM
+     */
+    BlottoEditorObj.addTxtSection = function(section_cls) {
+        var par_el = SectionElement.add_new_section_menu.parentNode,
+            ref_el = SectionElement.add_new_section_menu,
+            section_el = document.createElement("div");
+
+            section_el.className = section_cls + ' group';
+            section_el.innerHTML = '<button class="add-btn add-above">+</button>'
+                                 + '<div class="'+ SectionElement.content_wrapper_cls +'">'
+                                 + '<div class="placeholder">Start typing here...</div>'
+                                 + '<div class="'+ SectionElement.editablediv_cls +'" contenteditable></div>'
+                                 + '</div><!-- /.'+ SectionElement.content_wrapper_cls +' -->'
+                                 + '<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>'
+                                 + '<div class="section-options">'
+                                 + '<div class="core-options-holder">'
+                                 + '<button class="remove-section"><i class="fa fa-trash-o"></i></button>'
+                                 + '<button class="move-sec-up"><i class="fa fa-angle-up"></i></button>'
+                                 + '<button class="move-sec-down"><i class="fa fa-angle-down"></i></button>'
+                                 + '<button class="add-media"><i class="fa fa-picture-o"></i></button>'
+                                 + '<div class="align-media-choice">'
+                                 + '<button class="add-media-left"><i class="fa fa-reply"></i></button>'
+                                 + '<button class="add-media-right"><i class="fa fa-share"></i></button>'
+                                 + '</div><!-- /.align-media-choice -->'
+                                 + '</div><!-- /.core-options-holder -->'
+                                 + '<button class="add-btn add-below">+</button>'
+                                 + '</div><!-- /.section-options -->';
+        
+        ref_el.style.display = "none";
+
+        par_el.insertBefore(section_el, ref_el);
+        BlottoEditorObj.setSectionEvents(section_el); // add event listeners
+        section_el.getElementsByClassName(SectionElement.editablediv_cls)[0].focus();
+        
+        BlottoEditorObj.removeAddSectionMenu();
+    }
+
+    /*
+     * Add media only section to DOM
+     */
+    BlottoEditorObj.addMediaSection = function(section_cls) {
+        console.log("add media section");
+    }
+
+    /*
+     * Add table section to DOM
+     */
+    BlottoEditorObj.addTblSection = function(section_cls) {
+        console.log("add tbl section");
+    }
+
+
+
+
+
+//------------------------------------------
 // Event listeners
 //------------------------------------------
+
+    /*
+     * Sets all event listeners each section element
+     * @el - element or set of elements
+     */
+    BlottoEditorObj.setSectionEvents = function(el, list_of_tools) {
+        var add_section_above,  // (+) add new section above button
+            add_section_below,  // (+) add new section below button
+            
+            content_div,        // section container itself
+            btn_rmv_section,    // remove section button
+            btn_move_sec_up,    // move section up button
+            btn_move_sec_down,  // move section down button
+            btn_add_media,      // add new media
+            btn_add_med_left,   // adds media on the left
+            btn_add_med_right;  // adds media on the right
+
+        // Check if it's single element and convert it to array
+        if (!el.length && !!el) {
+            var elem = {};
+            Array.prototype.push.call(elem, el);
+            el = elem;
+        }
+
+        // Loop through each 'text editor content' element and add event listeners
+        for(var i = 0; el[i] !== undefined; i++) {
+            // That check only for situation when the 
+            // elements with section_cls doesn't exist on a page
+            if(el[i].length !== undefined) { break; }
+
+            add_section_above = el[i].getElementsByClassName("add-above")[0],
+            add_section_below = el[i].getElementsByClassName("add-below")[0],
+            
+            content_div       = el[i].getElementsByClassName(SectionElement.editablediv_cls)[0],
+            btn_rmv_section   = el[i].getElementsByClassName("remove-section")[0]
+            btn_move_sec_up   = el[i].getElementsByClassName("move-sec-up")[0],
+            btn_move_sec_down = el[i].getElementsByClassName("move-sec-down")[0];
+            btn_add_media     = el[i].getElementsByClassName("add-media")[0];
+            btn_add_med_left  = el[i].getElementsByClassName("add-media-left")[0];
+            btn_add_med_right = el[i].getElementsByClassName("add-media-right")[0];
+            cur_contentdiv    = content_div; // sets current editable div element
+
+            // Run placeholder right after load
+            content_div.addEventListener("load", function() {
+                placeholder("load");
+                updateTextarea(el[i]);
+            }(), false);
+
+            // Show or hide placeholder within section
+            content_div.addEventListener("keydown", placeholder, false);
+            
+            // Put all date into textarea right after load
+            // content_div.addEventListener("load",  updateTextarea(el[i]),  false);
+
+            // Apply changes to main container after focus
+            console.log("list_of_tools:", list_of_tools);
+            content_div.addEventListener("focus", function(el, list_of_tools) {
+                return function() {
+                    // Create new toolbar only if it wasn't created previously (performance repaint reason)
+                    if(last_used_list_of_tools !== list_of_tools) {
+                        BlottoEditorObj.prototype.setToolbar(list_of_tools); // create toolbar
+                        last_used_list_of_tools = list_of_tools; // update last used list
+                    }
+
+                    // Update current editable div to indicate working element
+                    cur_contentdiv = el.getElementsByClassName(SectionElement.editablediv_cls)[0];
+                    
+                    // Flag for toolbar
+                    is_in_focus = true;
+
+                    // Add .hover for main container when in focus
+                    addClass(this.parentNode.parentNode, "hover");
+
+                    // Check if need to show editing toolbar
+                    if(sel_type==="Range"){ showTools(); }
+                };
+            }(el[i], BlottoEditorObj.list_of_tools), false);
+
+            console.log("BlottoEditorObj.paste_plain:", BlottoEditorObj.paste_plain);
+            if(BlottoEditorObj.paste_plain === true) {
+                // Make possible to paste plain text
+                content_div.addEventListener("paste", makePlain,    false);
+                
+                // Disable dragging text for editable area
+                content_div.addEventListener("drop",  makePlain,    false);
+            } else {
+                // Hide placeholder on drop
+                content_div.addEventListener("drop", function() {
+                    setTimeout(function() { placeholder(); }, 0);
+                }, false);
+            }
+
+            /* Place formatting tools */
+            // React on mouse move within content element
+            content_div.addEventListener("mousemove", function() {
+                if(is_in_focus === true) { positionTools(); } }, false);
+
+            // React on mouse move within tools container
+            ToolbarElement.toolbar().addEventListener("mousemove", function() {
+                if(is_in_focus === true) { positionTools(); } }, false);
+
+            // Show formatting tools when SELECTED with MOUSE
+            content_div.addEventListener("mouseup", positionTools, false);
+
+            // Show formatting tools when SELECTED with KEYBOARD
+            content_div.addEventListener("keyup", positionTools, false);
+
+            // Show formatting tools when Scroll and move with the content
+            document.addEventListener("scroll", function() {
+                if(sel_type === "Range") { positionTools(); } }, false);
+
+            // Saves all data into textarea.
+            // Hides editing tools when out of editing element focus.
+            content_div.addEventListener("blur", function(el) {
+                return function() {
+                    // Indicate when focus is lost
+                    is_in_focus = false;
+                    
+                    // Remove .hover for main container when in blur
+                    removeClass(this.parentNode.parentNode, "hover");
+
+                    // Updates textarea for back-end submition
+                    updateTextarea(el);
+
+                    // Defines whether user selected text or not
+                    sel_type = checkSelectionType(window.getSelection());
+                    if(sel_type === "None" || sel_type === "Caret") { hideTools(); }
+                };
+            }(el[i]), false);
+
+            /* Section actions */
+            if(BlottoEditorObj.has_section_menus === true) {
+                // var current_obj = this; // define current object to use within event listeners
+                
+                // Sets event listener for "Add new section" buttons aka "Pluses"(+)
+                add_section_above.onclick = function(e) { BlottoEditorObj.addNewSectionMenu(e, "above"); }
+                add_section_below.onclick = function(e) { BlottoEditorObj.addNewSectionMenu(e, "below"); }
+
+                // Event listener to remove section
+                btn_rmv_section.onclick = removeSection;
+                // Move section up/down
+                btn_move_sec_up.addEventListener("click", function(){ moveSection(this, "up", BlottoEditorObj.section_cls); }, false);
+                btn_move_sec_down.addEventListener("click", function(){ moveSection(this, "down", BlottoEditorObj.section_cls); }, false);
+
+                // Event to toggle "Add media" menu
+                btn_add_media.onclick = toggleMediaMenu;
+                // Event to insert media into section
+                btn_add_med_left.addEventListener("click", function(){ addMedia(this, "left"); }, false);
+                btn_add_med_right.addEventListener("click", function(){ addMedia(this, "right"); }, false);
+            }
+        }
+    }
+
+    /*
+     * Sets all events for "Add new section" menu
+     */
+    BlottoEditorObj.setEventsForAddNewSection = function() {
+
+        // // 'Add new section' menu element
+        SectionElement.add_new_section_menu = document.getElementById("add-new-section-menu");
+        
+        // // All buttons within menu
+        SectionElement.btn_add_txt_sect     = document.getElementById("add-text-section");
+        SectionElement.btn_add_media_sect   = document.getElementById("add-media-section");
+        SectionElement.btn_add_tbl_sect     = document.getElementById("add-tbl-section");
+        SectionElement.cls_add_section_menu = document.getElementById("close-add-section-menu"); // close menu
+
+        // If element exists then add events
+        if (!!SectionElement.add_new_section_menu) {
+            SectionElement.btn_add_txt_sect.onclick     = function (obj) {
+                return function() { BlottoEditorObj.addTxtSection(obj.section_cls); }
+            }(this);
+
+            SectionElement.btn_add_media_sect.onclick   = function (obj) {
+                return function() { BlottoEditorObj.addMediaSection(obj.section_cls); }
+            }(this);
+
+            SectionElement.btn_add_tbl_sect.onclick     = function (obj) {
+                return function() { BlottoEditorObj.addTblSection(obj.section_cls); }
+            }(this);
+
+            SectionElement.cls_add_section_menu.onclick = BlottoEditorObj.removeAddSectionMenu;
+        }
+    }
 
     /*
      * Sets all event listeners for media container elements
@@ -1691,6 +1984,9 @@
 //------------------------------------------
 // Application Init
 //------------------------------------------
+    
+    // Add ability to click on links within editable divs
+    document.addEventListener("DOMContentLoaded", clickOnLinks());
 
     return (window.BlottoEditor = BlottoEditor);
 

@@ -283,13 +283,14 @@
 		  callback : function(){
 		  	BlottoEditor({
 		  		section_class 	: "text-area-holder",
-		  		toolbar_include : ["bold", "italic", "color", "web link", "plain"]
+		  		toolbar_exclude : ["paragraph", "email link"]
 		  	});
 
 		  	BlottoEditor({
 		  		section_class	: "description-section",
-		  		toolbar_exclude : ["web link", "plain"],
-		  		has_section_menus : false
+		  		toolbar_include : ["bold", "italic"],
+		  		has_section_menus : false,
+		  		paste_plain : false
 		  	});
 		  }
 		});
