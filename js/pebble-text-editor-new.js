@@ -118,7 +118,7 @@
          */
         option = option || {};
 
-        this.section_class   = option.section_class || "editor-section";
+        this.section_class   = option.section_class   || "editor-section";
         this.toolbar_include = option.toolbar_include || "default";
         this.toolbar_exclude = option.toolbar_exclude || "default";
 

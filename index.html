@@ -295,5 +295,54 @@
 		});
 	</script>
 
+	<script>
+		(function(window, document, undefined){
+			/*
+		     * Init of editor
+		     */
+		    var Test = function(option) {
+		        return new TestObj(option);
+		    }
+
+		    var TestObj = function(option) {
+		        option = option || {};
+
+		        this.myName = option.myName || "Mike Default";
+		        this.myAge = option.myAge || "18";
+
+		        this.showMyName = function() {
+		        	console.log("name:", this.myName);
+		        	console.log("age:", this.myAge);
+		        };
+		    }
+
+		    TestObj.prototype = {
+		    	myName: '',
+		    	myAge: ''
+		    };
+
+			return (window.Test = Test);
+		})(window, document);
+	</script>
+
+	<script>
+		Test({
+			myName : "John"
+		});
+	</script>
+
 </body>
 </html>
+
+1	1
+2	10
+3	11
+4	100
+5	101
+6	110
+7	111
+8	1000
+9	1001
+10	1010
+
+1100110001 - 817
