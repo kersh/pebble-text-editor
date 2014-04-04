@@ -815,8 +815,7 @@
                     // Set 
                     ToolbarElement.toolbar().style.marginLeft = 0 + "px";
                 }
-            }
-            else {
+            } else {
                 ToolbarElement.arrow_pointer().style.marginLeft = "0px";
             }
 

@@ -2,11 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bad2632d-1c63-4365-b424-e47bb639d69f" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/js/misc/pebble-text-editor-old.js" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/js/pebble-text-editor-mobile.js" afterPath="$PROJECT_DIR$/js/misc/pebble-text-editor-old.js" />
-      <change type="MOVED" beforePath="C:\Users\vlad\Documents\GitHub\pebble-text-editor\js\events-test.js" afterPath="$PROJECT_DIR$/js/misc/events-test.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/css/touch/_toolbar.scss" afterPath="$PROJECT_DIR$/css/touch/_toolbar.scss" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/pebble-text-editor-mobile.js" afterPath="$PROJECT_DIR$/js/pebble-text-editor-mobile.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/pebble-text-editor.js" afterPath="$PROJECT_DIR$/js/pebble-text-editor.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="pebble-text-editor.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,16 +27,14 @@
     <favorites_list name="pebble-text-editor" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.46885467">
+    <splitter split-orientation="horizontal" split-proportion="0.4407234">
       <split-first>
         <leaf>
           <file leaf-file-name="pebble-text-editor.js" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/pebble-text-editor.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="1446" column="7" selection-start="56141" selection-end="56141" vertical-scroll-proportion="0.43087557" vertical-offset="24208" max-vertical-offset="28849">
-                  <folding>
-                    <element signature="n#!!doc" expanded="true" />
-                  </folding>
+                <state line="805" column="0" selection-start="34816" selection-end="34816" vertical-scroll-proportion="-0.05875576" vertical-offset="13685" max-vertical-offset="28781">
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -45,7 +42,7 @@
           <file leaf-file-name="index.html" pinned="false" current="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="280" column="31" selection-start="13546" selection-end="13546" vertical-scroll-proportion="-21.26923" vertical-offset="4207" max-vertical-offset="7531">
+                <state line="280" column="31" selection-start="13546" selection-end="13546" vertical-scroll-proportion="0.0" vertical-offset="4207" max-vertical-offset="7531">
                   <folding />
                 </state>
               </provider>
@@ -54,17 +51,35 @@
         </leaf>
       </split-first>
       <split-second>
-        <splitter split-orientation="vertical" split-proportion="0.61190736">
+        <splitter split-orientation="vertical" split-proportion="0.893054">
           <split-first>
             <leaf>
               <file leaf-file-name="pebble-text-editor-mobile.js" pinned="false" current="true" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/js/pebble-text-editor-mobile.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state line="1513" column="36" selection-start="58130" selection-end="58130" vertical-scroll-proportion="0.066019416" vertical-offset="25687" max-vertical-offset="36958">
+                    <state line="922" column="25" selection-start="40174" selection-end="40174" vertical-scroll-proportion="0.5974026" vertical-offset="15214" max-vertical-offset="38148">
                       <folding>
                         <element signature="n#!!doc" expanded="true" />
-                        <marker date="1396521869807" expanded="true" signature="58090:58093" placeholder="/** Placeholder like native HTML5 ...*/" />
+                        <marker date="1396617587432" expanded="true" signature="62087:62090" placeholder="/** Placeholder like native HTML5 ...*/" />
                       </folding>
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="style.scss" pinned="false" current="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/css/style.scss">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2720">
+                      <folding />
+                    </state>
+                  </provider>
+                </entry>
+              </file>
+              <file leaf-file-name="_toolbar.scss" pinned="false" current="false" current-in-tab="false">
+                <entry file="file://$PROJECT_DIR$/css/touch/_toolbar.scss">
+                  <provider selected="true" editor-type-id="text-editor">
+                    <state line="42" column="25" selection-start="1193" selection-end="1193" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="2805">
+                      <folding />
                     </state>
                   </provider>
                 </entry>
@@ -76,9 +91,10 @@
               <file leaf-file-name="pebble-text-editor-mobile.js" pinned="false" current="false" current-in-tab="true">
                 <entry file="file://$PROJECT_DIR$/js/pebble-text-editor-mobile.js">
                   <provider selected="true" editor-type-id="text-editor">
-                    <state line="1259" column="38" selection-start="49823" selection-end="49823" vertical-scroll-proportion="-0.19281046" vertical-offset="21462" max-vertical-offset="36958">
+                    <state line="1609" column="39" selection-start="62929" selection-end="62929" vertical-scroll-proportion="-1.0" vertical-offset="27353" max-vertical-offset="38097">
                       <folding>
-                        <element signature="n#!!doc" expanded="true" />
+                        <marker date="1396617587432" expanded="true" signature="39250:39348" placeholder="{...}" />
+                        <marker date="1396617587432" expanded="true" signature="40324:40490" placeholder="{...}" />
                       </folding>
                     </state>
                   </provider>
@@ -102,8 +118,9 @@
     <option name="changedFiles">
       <list>
         <option value="$PROJECT_DIR$/js/pebble-text-editor-new.js" />
-        <option value="$PROJECT_DIR$/js/pebble-text-editor.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/css/touch/_toolbar.scss" />
+        <option value="$PROJECT_DIR$/js/pebble-text-editor.js" />
         <option value="$PROJECT_DIR$/js/pebble-text-editor-mobile.js" />
       </list>
     </option>
@@ -169,7 +186,25 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="js" />
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pebble-text-editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="pebble-text-editor" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="css" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="touch" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -180,6 +215,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="SearchEverywhereHistory" value="line&#10;wrap" />
+    <property name="FullScreen" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -229,6 +265,23 @@
     <list size="0" />
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false" SSL_PROTOCOLS="all">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="bad2632d-1c63-4365-b424-e47bb639d69f" name="Default" comment="" />
@@ -239,13 +292,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1696" height="1036" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24366042" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2590959" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.10006028" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.13321277" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="true" content_ui="tabs" />
@@ -279,10 +332,84 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/js/pebble-text-editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="338" column="85" selection-start="17727" selection-end="17727" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="29002">
+        <state line="805" column="0" selection-start="34816" selection-end="34816" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="28832">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="280" column="31" selection-start="13546" selection-end="13546" vertical-scroll-proportion="0.0" vertical-offset="4207" max-vertical-offset="7531">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2720">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/touch/_toolbar.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="25" selection-start="1193" selection-end="1193" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="2805">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/pebble-text-editor-mobile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="922" column="25" selection-start="40174" selection-end="40174" vertical-scroll-proportion="0.0" vertical-offset="15061" max-vertical-offset="38148">
           <folding>
             <element signature="n#!!doc" expanded="true" />
+            <marker date="1396617587432" expanded="true" signature="62087:62090" placeholder="/** Placeholder like native HTML5 ...*/" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/pebble-text-editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="803" column="48" selection-start="34701" selection-end="34714" vertical-scroll-proportion="0.0" vertical-offset="13225" max-vertical-offset="28832">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="280" column="31" selection-start="13546" selection-end="13546" vertical-scroll-proportion="0.0" vertical-offset="4207" max-vertical-offset="7531">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2720">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/touch/_toolbar.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="25" selection-start="1193" selection-end="1193" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="2805">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/pebble-text-editor-mobile.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="904" column="0" selection-start="39165" selection-end="39165" vertical-scroll-proportion="0.0" vertical-offset="14857" max-vertical-offset="37587">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <marker date="1396617587432" expanded="true" signature="62087:62090" placeholder="/** Placeholder like native HTML5 ...*/" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/pebble-text-editor.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="338" column="85" selection-start="17727" selection-end="17727" vertical-scroll-proportion="0.0" vertical-offset="51" max-vertical-offset="29002">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -298,7 +425,7 @@
         <state line="390" column="0" selection-start="19914" selection-end="19914" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="30124">
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1396521869807" expanded="true" signature="58090:58093" placeholder="/** Placeholder like native HTML5 ...*/" />
+            <marker date="1396617587432" expanded="true" signature="62087:62090" placeholder="/** Placeholder like native HTML5 ...*/" />
           </folding>
         </state>
       </provider>
@@ -310,85 +437,73 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/misc/pebble-text-editor-mobile-old.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="24888">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="24888" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/misc/events-test.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2023">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2023" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/ie-pebble-text-editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="881">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="881" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/if-ie.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="881">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="881" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/modernizr-custom.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="868">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="868" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/modernizr-full.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="13940">
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="996" column="0" selection-start="15304" selection-end="15304" vertical-scroll-proportion="0.0" vertical-offset="15362" max-vertical-offset="64821">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="13940" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="280" column="31" selection-start="13546" selection-end="13546" vertical-scroll-proportion="-21.26923" vertical-offset="4207" max-vertical-offset="7531">
+        <state line="280" column="31" selection-start="13546" selection-end="13546" vertical-scroll-proportion="0.0" vertical-offset="4207" max-vertical-offset="7531">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2720">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/touch/_toolbar.scss">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="42" column="25" selection-start="1193" selection-end="1193" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="2805">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/pebble-text-editor.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1446" column="7" selection-start="56141" selection-end="56141" vertical-scroll-proportion="0.43087557" vertical-offset="24208" max-vertical-offset="28849">
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
+        <state line="805" column="0" selection-start="34816" selection-end="34816" vertical-scroll-proportion="-0.05875576" vertical-offset="13685" max-vertical-offset="28781">
+          <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="jar://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/lib/JavaScriptLanguage.jar!/com/intellij/lang/javascript/index/predefined/DHTML.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1032" column="22" selection-start="15701" selection-end="15701" vertical-scroll-proportion="-7.1570883" vertical-offset="23148" max-vertical-offset="64821" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/pebble-text-editor-mobile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1513" column="36" selection-start="58130" selection-end="58130" vertical-scroll-proportion="0.066019416" vertical-offset="25687" max-vertical-offset="36958">
+        <state line="922" column="25" selection-start="40174" selection-end="40174" vertical-scroll-proportion="0.5974026" vertical-offset="15214" max-vertical-offset="38148">
           <folding>
             <element signature="n#!!doc" expanded="true" />
-            <marker date="1396521869807" expanded="true" signature="58090:58093" placeholder="/** Placeholder like native HTML5 ...*/" />
+            <marker date="1396617587432" expanded="true" signature="62087:62090" placeholder="/** Placeholder like native HTML5 ...*/" />
           </folding>
         </state>
       </provider>

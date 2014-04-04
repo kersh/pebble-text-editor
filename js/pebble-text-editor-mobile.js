@@ -801,7 +801,7 @@
      */
     function checkExistingLink() {
 
-        console.log("checkExistingLink");
+//        console.log("checkExistingLink");
 
         // damn IE is special!
         if (isMSIE) {
@@ -841,11 +841,14 @@
             sel_height,
             current_bottom_distance,
             toolbar_width = undefined,
+            half_toolbar_width = undefined,
             ratio_arrow,
-            ratio_toolbar,
-            dist_to_right,
-            dist_to_left,
+            ratio_toolbar_left,
+            sel_dist_to_right,
+            sel_dist_to_left,
             dist_to_top,
+            middle_of_selection_from_left,
+            middle_of_selection_from_right,
             min_bottom_distance = 140,
             tools_height = 32;
 
@@ -854,26 +857,93 @@
 
         // Show formatting tools if user selected anything
         if(sel_type === "Range") {
+
             // Define position of selection
             oRange = selection.getRangeAt(0);
             oRect = oRange.getBoundingClientRect();
 
             removeUnderline(selection);
+            // Width of toolbar
+            toolbar_width = document.getElementById("main-menu-buttons").offsetWidth;
+            half_toolbar_width = toolbar_width / 2;
 
             // Height and width of selecion
             sel_height = oRect.bottom - oRect.top;
             sel_width = oRect.right - oRect.left;
+            sel_dist_to_left = oRect.left; // toolbar distance to left side
+            // Selection distance to right side of the window
+            sel_dist_to_right = window.innerWidth - oRect.right; // -20 is approximate width of scrollbar
+            middle_of_selection_from_left = sel_dist_to_left + (sel_width / 2);
+            middle_of_selection_from_right = sel_dist_to_right + (sel_width / 2);
 
-            // Current distance from selection to bottom
-            current_bottom_distance = window.innerHeight - oRect.bottom;
+            // Toolbar location
+            //-----------------
+            // Put toolbar in the middle of selection
+            if (middle_of_selection_from_left > half_toolbar_width) {
+                // If it's enough space on the right, keep toolbar in the center
+                if (middle_of_selection_from_right > half_toolbar_width) {
+                    ratio_toolbar_left = middle_of_selection_from_left - half_toolbar_width;
+                    ToolbarElement.toolbar().style.marginLeft = ratio_toolbar_left + "px";
+                }
+                // Put toolbar to the right side if it's not enough space
+                else {
+                    ratio_toolbar_left = window.innerWidth - toolbar_width;
+                    // Push toolbar left if screen is too narrow
+                    if (ratio_toolbar_left < 0) {
+                        ratio_toolbar_left = 0;
+                    }
+                    ToolbarElement.toolbar().style.marginLeft = ratio_toolbar_left + "px";
+                }
+            }
+            // Put toolbar on the left side if selection is close to left side.
+            else {
+                ratio_toolbar_left = 0;
+                ToolbarElement.toolbar().style.marginLeft = ratio_toolbar_left + "px";
+            }
 
+            // Arrow location
+            //---------------
             // Moves arrow pointer in the middle of selection
             if(sel_width > 10){
-                sel_width = (sel_width - 10) / 2;
-                ToolbarElement.arrow_pointer().style.left = oRect.left + sel_width + "px";
+                // Set arrow in the center of selection if selection width less than toolbar width
+                if (middle_of_selection_from_left > half_toolbar_width) {
+                    // If it's enough space on the right, keep arrow in the center of selection
+                    if (middle_of_selection_from_right > half_toolbar_width) {
+                        ToolbarElement.arrow_pointer().style.left = (half_toolbar_width - 5) + "px";
+                    }
+                    // Put toolbar to the right side if it's not enough space
+                    else {
+                        // If toolbar is bigger than window, then locate arrow according to the toolbar width
+                        if (toolbar_width < window.innerWidth) {
+                            sel_width = toolbar_width - middle_of_selection_from_right - 5;
+                        }
+                        // If window is small then arrow located according to the window width
+                        else {
+                            sel_width = middle_of_selection_from_left - 5;
+                        }
+                        ToolbarElement.arrow_pointer().style.left = sel_width + "px";
+                    }
+                }
+                else {
+                    sel_width = (sel_width - 10) / 2;
+                    ToolbarElement.arrow_pointer().style.left = oRect.left + sel_width + "px";
+                }
             }
+            // Set it to selection start if selection is too narrow
             else {
-                ToolbarElement.arrow_pointer().style.left = "0px";
+                if (middle_of_selection_from_left > half_toolbar_width) {
+                    // If it's enough space on the right, keep arrow in the center of selection
+                    if (middle_of_selection_from_right > half_toolbar_width) {
+                        ToolbarElement.arrow_pointer().style.left = (half_toolbar_width - 5) + "px";
+                    }
+                    // Put toolbar to the right side if it's not enough space
+                    else {
+                        sel_width = toolbar_width - middle_of_selection_from_right - 5;
+                        ToolbarElement.arrow_pointer().style.left = sel_width + "px";
+                    }
+                } else {
+                    ToolbarElement.arrow_pointer().style.left = (oRect.left - 2) + "px";
+                }
             }
 
             // Check if web link or email link currently selected to show different menu
@@ -1515,7 +1585,7 @@
      * @param e
      */
     function placeholder(e) {
-        console.log("placeholder");
+//        console.log("placeholder");
         var placeholder_el = cur_contentdiv.parentNode.getElementsByClassName("placeholder")[0];
 
         if (e !== "load") {
@@ -1533,10 +1603,10 @@
      */
     function togglePlaceholder(placeholder_el) {
         if (cur_contentdiv.innerHTML.length > 0 && cur_contentdiv.innerHTML != "<br>") {
-            console.log("remove here");
+//            console.log("remove here");
             removeClass(placeholder_el, "show");
         } else {
-            console.log("show here");
+//            console.log("show here");
             addClass(placeholder_el, "show");
         }
     }
