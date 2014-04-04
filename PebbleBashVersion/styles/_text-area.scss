@@ -1,0 +1,213 @@
+/* Core variables */
+$main_color: #00aeff;
+
+.ne-resize {
+    cursor: ne-resize !important;
+}
+.nw-resize {
+    cursor: nw-resize !important;
+}
+
+/* Make all links' cursor in editable field as pointer
+   to indicate that links are clickable */
+.activate-links {
+    div[contenteditable] {
+        a {
+            cursor: pointer !important;
+        }
+    }
+}
+
+/* Plus (+) button core style */
+.add-btn {
+    color: $main_color;
+    display: block;
+    margin: 0 auto;
+    padding-left: 0;
+    font-size: 1.2em;
+    height: 16px;
+    width: 14px;
+    line-height: 0;
+    visibility: hidden;
+    position: relative;
+    background: none;
+}
+.add-btn:hover {
+    color: #008aca;
+}
+
+// Make first element with this class without top margin
+// According to this http://stackoverflow.com/a/8539107/1189776
+.text-area-holder {
+    margin: 0;
+}
+.text-area-holder ~ .text-area-holder {
+    margin: -16px 0 0 0;
+}
+
+/* Main holder of whole set */
+.text-area-holder, .description-section {
+    font-size: 1em;
+    height: 100%;
+
+    .placeholder {
+        color: #bbb;
+        position: absolute;
+        margin: 4px 0;
+        z-index: -999;
+        display: none;
+        // float: left;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .placeholder.show {
+        display: block;
+    }
+    
+    /* Set defaults for all buttons */
+    button {
+        border: none;
+        outline: none;
+    }
+
+    .editor-content-wrapper {
+        display: block;
+        outline: none;
+        border: 1px solid rgba(0,0,0,0);
+        height: 100%;
+        width: 100%;
+        padding: 4px;
+        margin: 0;
+
+        /* Main field with content */
+        .text-editor-content {
+            white-space: normal;
+            word-wrap: break-word;
+            display: block;
+            outline: none;
+            margin: 4px 0;
+            border-bottom: none;
+            min-height: 1.2em;
+        }
+    } //.editor-content-wrapper
+
+    .editor-content-wrapper:before,
+    .editor-content-wrapper:after {
+        content: "";
+        display: table;
+    }
+    .editor-content-wrapper:after {
+        clear: both;
+    }
+
+    .text-editor-textarea {
+        display: none;
+        width: 100%;
+        height: 250px;
+    }
+
+    /* Style for plus on the top */
+    button.add-above {
+        border: none;
+        margin-bottom: 5px;
+    }
+
+    /* Container with options for current section */
+    .section-options {
+        display: block;
+        position: relative;
+        visibility: hidden;
+        top: 0;
+        margin-top: 0;
+        
+        /* Additional holder for core buttons */
+        .core-options-holder {
+            display: inline-block;
+            border: 1px solid $main_color;
+            border-top: none;
+            border-right: none;
+            
+            /* Style for "Remove" "Move Up" "Move Down" buttons */
+            button {
+                color: $main_color;
+                font-size: 1em;
+                margin: 0;
+                padding: 0 6px;
+                height: 20px;
+                width: 29px;
+                line-height: 20px;
+                display: block;
+                float: left;
+                border-right: 1px solid $main_color;
+                background-color: #fff;
+            }
+
+            button:hover {
+                color: darken($main_color, 25);
+            }
+
+            .align-media-choice {
+                position: absolute;
+                display: none;
+                padding: 0;
+                margin: -22px 0 0 -44px;
+                border-top: 1px solid $main_color;
+                border-left: 1px solid $main_color;
+                background-color: #fff;
+            }
+            .align-media-choice.show {
+                display: inline-block;
+            }
+        }
+
+        /* Style for plus on the bottom */
+        > button.add-below {
+            border: none;
+            margin-top: -24px;
+            background-color: #fff;
+        }
+    }
+}
+
+.description-section {
+    margin: 5px 0 0 0;
+
+    .editor-content-wrapper {
+        border: 1px solid #eee;
+    }
+}
+
+@import "media-container";
+
+@import "no-touch/text-area";
+@import "touch/text-area";
+@import "new-section-menu";
+
+@media screen and (max-width: 318px) {
+    .text-area-holder {
+        /* Container with options for current section */
+        .section-options {
+            /* Style for plus on the bottom */
+            > button.add-below {
+                margin-right: 25%;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: 238px) {
+    .text-area-holder {
+        /* Container with options for current section */
+        .section-options {
+            /* Style for plus on the bottom */
+            > button.add-below {
+                margin-right: 10%;
+            }
+        }
+    }
+}

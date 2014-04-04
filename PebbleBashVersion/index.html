@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, user-scalable=1.0"> -->
+    <meta name="viewport"
+          content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <!-- <meta name="viewport" content="initial-scale=1.0, user-scalable=no"> -->
+
+    <title>Testing Events</title>
+
+    <!-- STYLES HERE -->
+    <link rel="stylesheet" href="styles/normalize.css">
+    <link rel="stylesheet" href="styles/style.css">
+
+    <!-- Awesome font -->
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
+
+    <!-- CONDITIONAL CSS for IE -->
+    <!--[if IE]>
+
+    <![endif]-->
+
+    <!-- CONDITIONAL JAVASCRIPT -->
+    <!--<script src="js/modernizr-full.js"></script>-->
+    <script src="js/modernizr-custom.js"></script>
+    <script src="js/if-ie.js"></script>
+
+</head>
+<body>
+<div class="happy-browsing"><img src="img/no-js.jpg" alt="Turn on JavaScript"/></div>
+
+<div id="nav" class="content">
+    <div class="navigation group">
+        <ul class="group">
+            <li><a href="#">Link 1</a></li>
+            <li><a href="#">Link 2</a></li>
+            <li><a href="#">Link 3</a></li>
+            <li><a href="#">Link 4</a></li>
+            <li><a href="#">Link 5</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="content" id="main-content">
+    <div id="debugging-info">This is touch device!</div>
+<div style="color:red">Some <em>rich</em> <span style="font-size:2em">HTML</span></div>
+
+    <!--https://www.youtube.com/watch?v=VbVAUvtX21o-->
+    <!--http://www.youtube.com/embed/1B-vb6yZBI8-->
+    <!--<iframe width="500" height="281" src="https://www.youtube.com/embed/VbVAUvtX21o" frameborder="0" allowfullscreen style="float:left;"></iframe>-->
+
+    <!--https://vimeo.com/89885058-->
+    <!--//player.vimeo.com/video/86856549-->
+    <!--<iframe src="//player.vimeo.com/video/89885058" width="500" height="281" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>-->
+
+
+    <!-- description area -->
+    <!--<div class="description-section group">-->
+        <!--<div class="editor-content-wrapper">-->
+            <!--<div class="placeholder">Start typing here...</div>-->
+            <!--<div class="text-editor-content" contenteditable></div>-->
+            <!--&lt;!&ndash; /.text-editor-content &ndash;&gt;-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.editor-content-wrapper &ndash;&gt;-->
+        <!--<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>-->
+    <!--</div>-->
+    <!-- /.description-section -->
+
+    <!--<div class="description-section group">-->
+        <!--<div class="editor-content-wrapper">-->
+            <!--<div class="placeholder">Start typing here...</div>-->
+            <!--<div class="text-editor-content" contenteditable>Lorem ipsum dolor sit amet, consectetur adipisicing elit.-->
+                <!--Modi, expedita, tempora, quam itaque deserunt maiores dolores nostrum animi ad in repellat fugit cum-->
+                <!--temporibus nesciunt eveniet eum minus fuga illum.-->
+            <!--</div>-->
+            <!--&lt;!&ndash; /.text-editor-content &ndash;&gt;-->
+        <!--</div>-->
+        <!--&lt;!&ndash; /.editor-content-wrapper &ndash;&gt;-->
+        <!--<textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>-->
+    <!--</div>-->
+    <!-- /.description-section -->
+    <!-- end description area -->
+
+    <div class="red text-area-holder group">
+        <button class="add-btn add-above">+</button>
+
+        <div class="editor-content-wrapper">
+            <div class="placeholder">Start typing here...</div>
+            <div class="text-editor-content" contenteditable></div><!-- /.text-editor-content -->
+        </div><!-- /.editor-content-wrapper -->
+        <textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+        <div class="section-options">
+            <div class="core-options-holder">
+                <button class="remove-section"><i class="fa fa-trash-o"></i></button>
+                <button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
+                <button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
+                <button class="add-media"><i class="fa fa-picture-o"></i></button>
+                <div class="align-media-choice">
+                    <button class="add-media-left"><i class="fa fa-reply"></i></button>
+                    <button class="add-media-right"><i class="fa fa-share"></i></button>
+                </div>
+            </div><!-- /.core-options-holder -->
+
+            <button class="add-btn add-below">+</button>
+        </div><!-- /.section-options -->
+    </div><!-- /.text-area-holder -->
+
+    <div class="red text-area-holder group">
+        <button class="add-btn add-above">+</button>
+
+        <div class="editor-content-wrapper">
+            <div class="placeholder">Start typing here...</div>
+            <div class="text-editor-content" contenteditable></div><!-- /.text-editor-content -->
+        </div><!-- /.editor-content-wrapper -->
+        <textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+        <div class="section-options">
+            <div class="core-options-holder">
+                <button class="remove-section"><i class="fa fa-trash-o"></i></button>
+                <button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
+                <button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
+                <button class="add-media"><i class="fa fa-picture-o"></i></button>
+                <div class="align-media-choice">
+                    <button class="add-media-left"><i class="fa fa-reply"></i></button>
+                    <button class="add-media-right"><i class="fa fa-share"></i></button>
+                </div>
+            </div><!-- /.core-options-holder -->
+
+            <button class="add-btn add-below">+</button>
+        </div><!-- /.section-options -->
+    </div><!-- /.text-area-holder -->
+
+    <div class="text-area-holder group">
+        <button class="add-btn add-above">+</button>
+
+        <div class="editor-content-wrapper">
+            <div class="placeholder">Start typing here...</div>
+            <div class="text-editor-content" contenteditable>I've become so numb, I can't feel you there, Become so
+                tired, so much more aware I'm becoming this, all I want to do Is be more like me and be less like
+                you.I've become so numb, I can't feel you there, Become so tired, so much more aware I'm becoming this,
+                all I want to do Is be more like me and be less like you.[Chorus:]
+            </div>
+            <!-- /.text-editor-content -->
+        </div>
+        <!-- /.editor-content-wrapper -->
+        <textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+        <div class="section-options">
+            <div class="core-options-holder">
+                <button class="remove-section"><i class="fa fa-trash-o"></i></button>
+                <button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
+                <button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
+                <button class="add-media"><i class="fa fa-picture-o"></i></button>
+                <div class="align-media-choice">
+                    <button class="add-media-left"><i class="fa fa-reply"></i></button>
+                    <button class="add-media-right"><i class="fa fa-share"></i></button>
+                </div>
+            </div>
+            <!-- /.core-options-holder -->
+
+            <button class="add-btn add-below">+</button>
+        </div>
+        <!-- /.section-options -->
+    </div>
+    <!-- /.text-area-holder -->
+
+    <div class="text-area-holder group">
+        <button class="add-btn add-above">+</button>
+
+        <div class="editor-content-wrapper">
+            <div class="media-container" style="width: 30%; float: right;">
+                <div class="media-options">
+                    <button class="align-media"><i class="fa fa-arrow-left"></i></button>
+                    <button class="replace-media"><i class="fa fa-undo"></i> Replace</button>
+                    <button class="remove-media"><i class="fa fa-trash-o"></i></button>
+                    <div class="resize-img-left-bot"></div>
+                    <div class="corner-resize-left-front"></div>
+                    <div class="corner-resize-left-back"></div>
+                    <div class="resize-img-right-bot"></div>
+                    <div class="corner-resize-right-front"></div>
+                    <div class="corner-resize-right-back"></div>
+                </div>
+                <!-- /.media-options -->
+                <img src="img/cat.jpg" alt="cat"/>
+            </div>
+            <!-- /.media-container -->
+
+            <div class="placeholder">Start typing here...</div>
+            <div class="text-editor-content" contenteditable>Helllo world!<a
+                    href="javascript:window.open('http://google.com')">Looo ooo ooo ooo ooo ooo ooo ooo ooo ong link
+                here</a> Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of
+                the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
+                since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen
+                book. When an unknown printer took a galley of type and scrambled it to make a cake. Lorem ipsum dolor
+                sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of the printing and typesetting
+                industry. Lorem ipsum dolor sit amet, consectetur adipisicing elit! Lorem Ipsum is simply dummy text of
+                the printing and typesetting industry.
+            </div>
+            <!-- /.text-editor-content -->
+        </div>
+        <!-- /.editor-content-wrapper -->
+
+        <textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+        <div class="section-options">
+            <div class="core-options-holder">
+                <button class="remove-section"><i class="fa fa-trash-o"></i></button>
+                <button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
+                <button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
+                <button class="add-media"><i class="fa fa-picture-o"></i></button>
+                <div class="align-media-choice">
+                    <button class="add-media-left"><i class="fa fa-reply"></i></button>
+                    <button class="add-media-right"><i class="fa fa-share"></i></button>
+                </div>
+            </div>
+            <!-- /.core-options-holder -->
+
+            <button class="add-btn add-below">+</button>
+        </div>
+        <!-- /.section-options -->
+    </div>
+    <!-- /.text-area-holder -->
+
+    <div class="text-area-holder group">
+        <button class="add-btn add-above">+</button>
+
+        <div class="editor-content-wrapper">
+            <div class="media-container" style="width: 30%; float: left;">
+                <div class="media-options">
+                    <button class="align-media"><i class="fa fa-arrow-right"></i></button>
+                    <button class="replace-media"><i class="fa fa-undo"></i> Replace</button>
+                    <button class="remove-media"><i class="fa fa-trash-o"></i></button>
+                    <div class="resize-img-left-bot"></div>
+                    <div class="resize-img-right-bot"></div>
+                </div>
+                <!-- /.media-options -->
+                <img src="img/cat3.png" alt="cat"/>
+            </div>
+            <!-- /.media-container -->
+
+            <div class="placeholder">Start typing here...</div>
+            <div class="text-editor-content" contenteditable>EDWARD IV. now felt quite sure of the throne, and he
+                married secretly a beautiful lady called Elizabeth Woodville. When this marriage became known, the Earl
+                of Warwick was very angry, because he thought the King should have married some one more great and
+                powerful. The Earl of Warwick himself was so great and powerful that he was called the King-maker, and
+                he had done much to make Edward king. Edward soon acted in many ways which displeased the earl, and they
+                quarreled, and plots were formed to drive Edward from the throne. Among the people who plotted against
+                him was the Duke of Clarence, King Edward's own brother. At last the Earl of Warwick became so angry
+                with Edward that he took him prisoner, and shut him up in a castle called Middleham. So there were two
+                kings in England, both of them prisoners. The King-maker, having made and unmade the King, now ruled the
+                country himself for a year. He really had intended to make the Duke of Clarence king, but he found that
+                even he was not powerful enough to do that. In about a year's time Warwick set Edward free again and,
+                strange to say, they made up their quarrels, and were friends once more. But in a very short time they
+                again quarreled; so badly this time that the Earl of Warwick, who had fought so hard for the White Rose
+                of York, forsook it and joined the Red Rose of Lancaster.
+            </div>
+            <!-- /.text-editor-content -->
+        </div>
+        <!-- /.editor-content-wrapper -->
+
+        <textarea name="text-editor-textarea" class="text-editor-textarea"></textarea>
+
+        <div class="section-options">
+            <div class="core-options-holder">
+                <button class="remove-section"><i class="fa fa-trash-o"></i></button>
+                <button class="move-sec-up"><i class="fa fa-angle-up"></i></button>
+                <button class="move-sec-down"><i class="fa fa-angle-down"></i></button>
+                <button class="add-media"><i class="fa fa-picture-o"></i></button>
+                <div class="align-media-choice">
+                    <button class="add-media-left"><i class="fa fa-reply"></i></button>
+                    <button class="add-media-right"><i class="fa fa-share"></i></button>
+                </div>
+            </div>
+            <!-- /.core-options-holder -->
+
+            <button class="add-btn add-below">+</button>
+        </div>
+        <!-- /.section-options -->
+    </div>
+    <!-- /.text-area-holder -->
+
+    <h1>Hello, world!</h1>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Optio, adipisci, at architecto dicta excepturi
+        recusandae impedit aperiam ad maxime obcaecati in alias quas tempora eum dolorem a amet et magni.</p>
+
+    <ul class="random-text">
+        <li id="first-li">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi, expedita, tempora, quam itaque
+            deserunt maiores dolores nostrum animi ad in repellat fugit cum temporibus nesciunt eveniet eum minus fuga
+            illum.
+        </li>
+        <li id="second-li">Sequi, quos nemo nisi eligendi tempore est fugit odit modi praesentium nesciunt! Dignissimos
+            quo excepturi facere amet est eos qui? Ipsam, nesciunt, obcaecati ad vero praesentium facere illum suscipit
+            fuga?
+        </li>
+        <li id="third-li">Quod ea sed officiis veritatis voluptate quaerat iusto maxime quas. Quidem, facilis, facere,
+            numquam repellat dicta aut consequuntur explicabo illum sequi quae iusto commodi rem culpa doloremque a
+            ratione perferendis.
+        </li>
+        <li id="fourth-li">Ipsam, quae, ex ea necessitatibus ad explicabo distinctio tempora voluptatum fugiat
+            repudiandae alias eaque facilis cumque quaerat quo quos sapiente suscipit iste cupiditate ut hic
+            exercitationem voluptas commodi laudantium fuga.
+        </li>
+        <li>Ipsa, impedit, perspiciatis in obcaecati maxime hic cum cupiditate fugit. Esse, fugiat, dolorum, vero
+            explicabo nulla enim quas distinctio dicta nesciunt totam architecto natus ullam dolorem qui pariatur
+            laborum voluptatem?
+        </li>
+        <li>Iusto, laborum, eligendi asperiores illum perferendis fugiat recusandae enim accusamus neque sed tempora
+            doloribus architecto explicabo ex assumenda nam inventore voluptates quia deleniti blanditiis consequuntur
+            in officiis deserunt possimus cumque.
+        </li>
+        <li>Hic, praesentium, tenetur, fuga nemo earum veniam commodi ipsam deserunt quidem a optio doloribus quia nobis
+            possimus iste eveniet perferendis aut beatae voluptatem nihil officiis amet iure. Facere, ducimus, ullam.
+        </li>
+        <li>Vel, voluptatibus, ipsum eligendi sequi aspernatur tempore veritatis placeat dolore necessitatibus nisi
+            ullam quos et minima odit ducimus nihil aliquam. Deleniti, minus, beatae maxime accusantium soluta iste
+            facilis repellat rerum.
+        </li>
+        <li>Vero, numquam, perferendis obcaecati earum ipsa esse cum aliquam libero minima ducimus dolorem mollitia quam
+            consectetur asperiores incidunt iusto tenetur itaque dolore architecto iste ad veniam neque in eum
+            perspiciatis.
+        </li>
+        <li>Quae, voluptatem voluptatibus odio consectetur et veritatis suscipit sint unde molestias ratione tempore
+            nulla non pariatur ullam eos architecto culpa fugiat nobis vitae ipsam sapiente qui optio? Porro,
+            repudiandae dolorem!
+        </li>
+        <li>Ipsa, impedit, perspiciatis in obcaecati maxime hic cum cupiditate fugit. Esse, fugiat, dolorum, vero
+            explicabo nulla enim quas distinctio dicta nesciunt totam architecto natus ullam dolorem qui pariatur
+            laborum voluptatem?
+        </li>
+        <li>Iusto, laborum, eligendi asperiores illum perferendis fugiat recusandae enim accusamus neque sed tempora
+            doloribus architecto explicabo ex assumenda nam inventore voluptates quia deleniti blanditiis consequuntur
+            in officiis deserunt possimus cumque.
+        </li>
+        <li>Hic, praesentium, tenetur, fuga nemo earum veniam commodi ipsam deserunt quidem a optio doloribus quia nobis
+            possimus iste eveniet perferendis aut beatae voluptatem nihil officiis amet iure. Facere, ducimus, ullam.
+        </li>
+        <li>Vel, voluptatibus, ipsum eligendi sequi aspernatur tempore veritatis placeat dolore necessitatibus nisi
+            ullam quos et minima odit ducimus nihil aliquam. Deleniti, minus, beatae maxime accusantium soluta iste
+            facilis repellat rerum.
+        </li>
+        <li>Vero, numquam, perferendis obcaecati earum ipsa esse cum aliquam libero minima ducimus dolorem mollitia quam
+            consectetur asperiores incidunt iusto tenetur itaque dolore architecto iste ad veniam neque in eum
+            perspiciatis.
+        </li>
+        <li>Quae, voluptatem voluptatibus odio consectetur et veritatis suscipit sint unde molestias ratione tempore
+            nulla non pariatur ullam eos architecto culpa fugiat nobis vitae ipsam sapiente qui optio? Porro,
+            repudiandae dolorem!
+        </li>
+    </ul>
+
+
+</div>
+<!-- /.content -->
+
+<!-- SCRIPTS GO HERE -->
+<script>
+    yepnope({
+        test: Modernizr.touch,
+        yep: ['js/fastclick.js', 'js/pebble-text-editor-mobile.js'],
+        nope: 'js/pebble-text-editor.js',
+        complete: function () {
+//            console.log("Loaded");
+            PebblePadTextEditor({
+                section_class: "text-area-holder"
+            });
+
+//            PebblePadTextEditor({
+//                section_class: "description-section",
+//                toolbar_include: ["bold", "italic"],
+//                has_section_menus: false,
+//                paste_plain: false
+//            });
+        }
+    });
+</script>
+
+</body>
+</html>

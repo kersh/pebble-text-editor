@@ -1,0 +1,23 @@
+.touch {
+    .media-container.hover {
+        .media-options {
+            opacity: 1;
+            background-color: rgba(0, 0, 0, 0.6);
+
+            .resize-img-left-bot {
+                @extend .resize-img;
+                left: 0;
+                margin: 0 0 -5px -5px;
+                cursor: ne-resize;
+                z-index: 1;
+            }
+            .resize-img-right-bot {
+                @extend .resize-img;
+                right: 0;
+                margin: 0 -5px -5px 0;
+                cursor: nw-resize;
+                z-index: 1;
+            }
+        }
+    } //.media-container.hover
+}

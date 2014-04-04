@@ -1,0 +1,160 @@
+// All these style will be applied to the touch device users
+.touch .toolbar {
+    position: absolute;
+    left: 0;
+    height: $heightOfMainMenu;
+    width: 100%;
+    
+    .arrow-pointer {
+        margin-top: -20px;
+        position: absolute;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 20px solid $btn_main_bg_color;
+    }
+
+    // Main buttons container
+    .buttons-container {
+        position: relative;
+        height: $heightOfMainMenu;
+        overflow: hidden;
+    }
+
+    // Main menu holder
+    .main-menu {
+        margin-top: 0px;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch;
+        transition: margin $speedOfMenuTransition ease-in-out;
+        -moz-transition: margin $speedOfMenuTransition ease-in-out;
+        -webkit-transition: margin $speedOfMenuTransition ease-in-out;
+
+        .main-menu-buttons {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 525px;
+
+            > button {
+                outline: none;
+                float: none;
+                white-space: nowrap;
+                display: inline;
+                margin: 0;
+                padding: 25px 30px;
+                float: left;
+                font-size: 1em;
+                border: none;
+                border-right: 1px solid $border_color;
+                color: $font_color;
+                background-color: $btn_main_bg_color;
+            }
+
+            > button:first-child { border-left: 1px solid $border_color; }
+
+            > button:active {
+                color: darken($font_color, 5);
+                background-color: lighten($btn_main_bg_color_hover, 20);
+            }
+        } //.main-menu-buttons
+    } //.main-menu
+
+    // When main menu is hidden
+    .main-menu.hide-main-menu {
+        margin-top: -$heightOfMainMenu;
+        transition: margin $speedOfMenuTransition ease-in-out;
+        -moz-transition: margin $speedOfMenuTransition ease-in-out;
+        -webkit-transition: margin $speedOfMenuTransition ease-in-out;
+    }
+
+    // Context menu holder
+    .context-menu {
+        left: 0;
+        height: $heightOfMainMenu;
+        width: 100%;
+        border: 1px solid #aaa;
+        background-color: $btn_main_bg_color;
+        -webkit-overflow-scrolling: touch;
+
+        .sub-menu-holder {
+            position: relative;
+            width: 84%;
+            overflow: auto;
+            overflow-y: hidden;
+            display: inline-block;
+        }
+
+        > button.back-to-main {
+            outline: none;
+            position: relative;
+            font-size: .7em;
+            float: left;
+            display: inline-block;
+            height: 50px;
+            width: 15%;
+            border: 2px solid $font_color;
+            margin: 0 2px 0 0;
+            color: $font_color;
+            background-color: $btn_main_bg_color;
+        }
+        > button.back-to-main:active {
+            border-color: darken($font_color, 25);
+            background-color: darken($btn_main_bg_color, 25);
+        }
+    }
+
+    // Color context menu holder
+    .color-menu {
+        @extend .context-menu;
+
+        .sub-menu-container {
+            width: 800px;
+            
+            > button {
+                width: 50px;
+                height: 50px;
+                display: inline-block;
+                border: 2px solid $font_color;
+                margin: 0 2px 0 0;
+            }
+            > button:active { border: 2px solid #aaa; }
+            > button#color-red { background-color: red; }
+            > button#color-green { background-color: green; }
+            > button#color-blue { background-color: blue; }
+        }
+    }
+    .color-menu.show-menu {
+        margin-top: 0;
+    }
+    
+    // Paragraph context menu holder
+    .paragraph-menu {
+        @extend .context-menu;
+
+        .sub-menu-container {
+            width: 600px;
+
+            > button {
+                outline: none;
+                height: 50px;
+                display: inline-block;
+                border: 2px solid $font_color;
+                margin: 0 2px 0 0;
+                color: $font_color;
+                background-color: $btn_main_bg_color;
+            }
+            > button:active { border-color: $btn_main_bg_color; }
+        }
+    }
+
+    .hide-menu {
+        display: none;
+    }
+} //.touch .toolbar

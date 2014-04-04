@@ -1,0 +1,174 @@
+@charset "UTF-8";
+/* viewport fix for windows surface */
+// @-ms-viewport {
+//   width: device-width;
+// }
+
+// @viewport {
+//   width: device-width;
+// }
+
+.happy-browsing {
+  display: none;
+  width: 320px;
+  height: 320px;
+  margin: 30px auto;
+}
+
+.no-js {
+  .content {
+    display: none;
+  }
+
+  .happy-browsing {
+    display: block;
+  }
+}
+
+$zEditingTools: 1000;
+$zInterface: 0;
+
+@mixin transition($property, $duration, $trans-type) {
+  -webkit-transition: $property $duration $trans-type;
+  -moz-transition: $property $duration $trans-type;
+  -o-transition: $property $duration $trans-type;
+  transition: $property $duration $trans-type;
+}
+
+@mixin border-radius($value) {
+  -webkit-border-radius: $value;
+  -moz-border-radius: $value;
+  border-radius: $value;
+}
+
+@mixin transform($value) {
+  -webkit-transform: $value;
+  -moz-transform: $value;
+  -ms-transform: $value;
+  -o-transform: $value;
+  transform: $value;
+}
+
+@mixin box-shadow($value) {
+  -webkit-box-shadow: $value;
+  -moz-box-shadow: $value;
+  box-shadow: $value;
+}
+
+/*
+ * These selection declarations have to be separate
+ * No text-shadow: twitter.com/miketaylr/status/12228805301
+ */
+::-moz-selection {
+  background: #00aeff;
+  color: #fff;
+  text-shadow: none;
+}
+
+::selection {
+  background: #00aeff;
+  color: #fff;
+  text-shadow: none;
+}
+
+body {
+  background: #f4f4f4;
+  // -webkit-user-select: none;
+  -webkit-touch-callout: none !important;
+}
+
+* {
+  -webkit-touch-callout: none !important;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* style.scss */
+.group:before,
+.group:after {
+  content: "";
+  display: table;
+}
+
+.group:after {
+  clear: both;
+}
+
+.group {
+  zoom: 1; /* For IE 6/7 (trigger hasLayout) */
+}
+
+#nav.content {
+  text-align: center;
+}
+
+.content {
+  overflow: hidden;
+  position: relative;
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto 10px auto;
+  padding: 0 20px;
+  border: 1px solid #a4a4a4;
+}
+
+ul.random-text {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+
+  > li {
+    display: inline-block;
+    margin: 10px 0;
+  }
+}
+
+.navigation {
+  display: inline-block;
+  margin: 0 auto;
+
+  > ul {
+    list-style-type: none;
+    margin: 10px 0;
+    padding: 0;
+
+    li {
+      float: left;
+      margin: 0 10px 0 0;
+
+      a {
+        background-color: #eee;
+      }
+    }
+  }
+}
+
+.touch #debugging-info {
+  margin: 10px auto;
+  width: 150px;
+  text-align: center;
+  background-color: cyan;
+  display: block;
+}
+
+.no-touch #debugging-info {
+  display: none;
+}
+
+@import "text-area";
+@import "toolbar";
+
+/* old Smartphones (portrait and landscape) ----------- */
+@media screen and (max-width: 28.688em) {
+  .text-editor-content,
+  .text-editor-textarea {
+    width: 100%;
+  }
+
+  .content {
+    border: none;
+    border-top: 1px solid #a4a4a4;
+    border-bottom: 1px solid #a4a4a4;
+  }
+}

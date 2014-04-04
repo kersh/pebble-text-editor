@@ -1,0 +1,75 @@
+// All variables defined here
+$heightOfMainMenu: 69px;
+$speedOfMenuTransition: .15s;
+
+$btn_main_bg_color: #3a3a3a;
+$btn_main_bg_color_hover: #202020;
+$font_color: #f6f6f6;
+$border_color: #f6f6f6;
+// --------------------------
+
+
+
+
+// Main toolbar styles
+.toolbar {
+    position: fixed;
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity $speedOfMenuTransition ease-in-out;
+    -moz-transition: opacity $speedOfMenuTransition ease-in-out;
+    -webkit-transition: opacity $speedOfMenuTransition ease-in-out;
+    z-index: -999;
+
+    // Container that holds all the buttons
+    .button-container {
+        position: relative;
+        width: 100%;
+    }
+    
+    // Arrow that indicates position of selection
+    .arrow-pointer {
+        position: relative;
+        display: block;
+        margin-left: 0px;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-bottom: 5px solid $btn_main_bg_color;
+    }
+
+    // Same arrow but reversed
+    .arrow-pointer-bottom {
+        border-bottom: none;
+        border-top: 5px solid black;
+    }
+
+    // Main menu when link is selected
+    .main-menu {
+        #edit-link, #open-link {
+            display: none;
+        }
+    }
+
+    // Main menu when link is selected
+    .main-menu.is-link {
+        #toggle-web-link, #toggle-email-link {
+            display: none;
+        }
+
+        #edit-link, #open-link {
+            display: inline;
+        }
+    }
+}
+
+@import "no-touch/toolbar";
+@import "touch/toolbar";
+
+/* Should be at the bottom to overwrite other styles */
+.show-tools {
+    visibility: visible;
+    opacity: 1;
+    z-index: $zEditingTools;
+}

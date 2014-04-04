@@ -1,0 +1,151 @@
+// All these style will be applied to desktop users
+.no-touch .toolbar {
+    
+    // Set width to avoid elements wrapping when reach right side of the screen
+    .main-menu {
+        width: 500px;
+        overflow: auto;
+    }
+    
+    // Main menu holder
+    .main-menu-buttons {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        float: left;
+
+        > button {
+            outline: none;
+            float: left;
+            margin: 0;
+            padding: 2px 6px;
+            font-size: 1em;
+            border: none;
+            border-right:  1px solid $border_color;
+            color: $font_color;
+            background-color: $btn_main_bg_color;
+        }
+
+        > button:first-child {
+            -webkit-border-top-left-radius: 3px;
+            -webkit-border-bottom-left-radius: 3px;
+
+            -moz-border-radius-topleft: 3px;
+            -moz-border-radius-bottomleft: 3px;
+
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+        > button:last-child {
+            border-right: none;
+
+            -webkit-border-top-right-radius: 3px;
+            -webkit-border-bottom-right-radius: 3px;
+
+            -moz-border-radius-topright: 3px;
+            -moz-border-radius-bottomright: 3px;
+
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        > button:hover,
+        > button.is-selected {
+            color: $font_color;
+            background-color: $btn_main_bg_color_hover;
+        }
+        > button:active {
+            color: darken($font_color, 5);
+            background-color: lighten($btn_main_bg_color_hover, 20);
+        }
+    } //.main-menu-buttons
+    
+    // Context menu holder
+    .context-menu {
+        position: absolute;
+        padding: 4px;
+        height: 0;
+        width: 106px;
+        border: 1px solid #aaa;
+        overflow: hidden;
+        display: block;
+        visibility: hidden;
+        z-index: -999;
+        background-color: $btn_main_bg_color;
+
+        > button.back-to-main {
+            display: none;
+            font-size: .7em;
+            float: left;
+            height: 31px;
+            width: 15%;
+            border: 1px solid #555;
+            margin: 0 2px 0 0;
+        }
+
+        .sub-menu-container {
+            padding: 2px;
+        }
+        .sub-menu-container:before,
+        .sub-menu-container:after {
+            content: "";
+            display: table;
+        }
+        .sub-menu-container:after {
+            clear: both;
+        }
+    }
+
+    // Color context menu holder
+    .color-menu {
+        margin: -1px 0 0 89px;
+        @extend .context-menu;
+
+        button {
+            float: left;
+            width: 21px;
+            height: 21px;
+            display: block;
+            border: 2px solid $font_color;
+            margin: 2px 2px 0 0;
+            background-color: #fff;
+        }
+        button:hover { border: 2px solid darken($border_color, 20); }
+        button#color-red { background-color: red; }
+        button#color-green { background-color: green; }
+        button#color-blue { background-color: blue; }
+    }
+    .color-menu.located-reverse { margin: -130px 0 0 89px; }
+    .color-menu.show-menu {
+        visibility: visible;
+        height: 110px;
+        
+        transition: height .2s ease-in-out;
+        -moz-transition: height .2s ease-in-out;
+        -webkit-transition: height .2s ease-in-out;
+    }
+
+    // Paragraph context menu holder
+    .paragraph-menu {
+        margin: -1px 0 0 140px;
+        @extend .context-menu;
+
+        button {
+            width: 94px;
+            display: block;
+            border: 2px solid #555;
+            margin: 2px 2px 0 0;
+            background-color: #fff;
+        }
+    }
+    .paragraph-menu.located-reverse { margin: -130px 0 0 140px; }
+    .paragraph-menu.show-menu {
+        visibility: visible;
+        height: 110px;
+        
+        transition: height .2s ease-in-out;
+        -moz-transition: height .2s ease-in-out;
+        -webkit-transition: height .2s ease-in-out;
+    }
+    
+} //.no-touch .toolbar

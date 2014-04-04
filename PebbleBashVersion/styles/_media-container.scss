@@ -1,0 +1,102 @@
+.resize-img {
+    width: 30px;
+    height: 30px;
+    bottom: 0;
+    position: absolute;
+}
+
+.corner-resize-front {
+    width: 25px;
+    height: 25px;
+    bottom: 0;
+    position: absolute;
+}
+
+.corner-resize-back {
+    width: 25px;
+    height: 25px;
+    bottom: 0;
+    position: absolute;
+}
+
+/* Field with media */
+.media-container {
+    position: relative;
+    margin: 4px;
+    // @include transition(width, .15s, ease-out);
+
+    .media-options {
+        background-color: rgba(0, 0, 0, 0);
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+
+        @include transition(opacity, .15s, ease-out);
+
+        > button {
+            color: #F3FFE2;
+            border: 1px solid #F3FFE2;
+            border-radius: 3px;
+            margin: 2px;
+            margin-right: 0;
+            padding: 2px 6px;
+            font-size: .65em;
+            background: none;
+        }
+        > button:hover {
+            text-decoration: underline;
+        }
+
+        .corner-resize-left-front {
+            @extend .corner-resize-front;
+            left: 0;
+            border-top: 28px solid transparent;
+            border-bottom: 0px solid transparent;
+            border-left: 28px solid rgba(255, 255, 255, .2);
+            z-index: 0;
+        }
+        .corner-resize-left-back {
+            @extend .corner-resize-front;
+            left: 0;
+            border-top: 25px solid transparent;
+            border-bottom: 0px solid transparent;
+            border-left: 25px solid rgba(255, 255, 255, .5);
+            z-index: 0;
+        }
+
+        .corner-resize-right-front {
+            @extend .corner-resize-front;
+            right: 0;
+            border-style: solid;
+            border-width: 0 0 28px 28px;
+            border-color: transparent transparent rgba(255, 255, 255, .2) transparent;
+            z-index: 0;
+        }
+        .corner-resize-right-back {
+            @extend .corner-resize-front;
+            right: 0;
+            border-style: solid;
+            border-width: 0 0 25px 25px;
+            border-color: transparent transparent rgba(255, 255, 255, .5) transparent;
+            z-index: 0;
+        }
+    }
+
+    img {
+        width: 100%;
+        display: block;
+    }
+}
+
+@import "no-touch/media-container";
+@import "touch/media-container";
